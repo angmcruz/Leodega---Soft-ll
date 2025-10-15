@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class StoreDisponibility extends Model
 {
     use HasFactory;
-    protected $table = 'user';
+    protected $table = 'store_disponibility';
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
+        'store_id',
         'start_date',
-        'state',
-        'enable_messages'
+        'end_date',
     ];
     //
 }

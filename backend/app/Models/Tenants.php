@@ -5,18 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Tenants extends Model
 {
     use HasFactory;
-    protected $table = 'user';
+    protected $table = 'tenants';
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'start_date',
-        'state',
-        'enable_messages'
+        'user_id',
+        'search_preference'
     ];
     //
 }

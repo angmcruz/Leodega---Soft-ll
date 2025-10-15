@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class StorePrices extends Model
 {
     use HasFactory;
-    protected $table = 'user';
+    protected $table = 'store_prices';
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'start_date',
-        'state',
-        'enable_messages'
+        'store_room_id',
+        'mode',
+        'price',
+        'disponibility'
     ];
     //
 }
