@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Ratings;
 
-use App\Models\Landlords;
 use Illuminate\Http\Request;
 
-class LandlordsController extends Controller
+class RatingsController extends Controller
 {
-    //
     public function index(){
 
     }

@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Landlords;
+use App\Models\cancelations_polices;
 use Illuminate\Http\Request;
 
-class LandlordsController extends Controller
+class cancelations_policesController extends Controller
 {
     //
     public function index(){

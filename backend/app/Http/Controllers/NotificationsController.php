@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Landlords;
 use Illuminate\Http\Request;
+use App\Models\Notifications;
 
-class LandlordsController extends Controller
+class NotificationsController extends Controller
 {
     //
     public function index(){
@@ -28,4 +28,5 @@ class LandlordsController extends Controller
     public function destroy($id){
 
     }
+
 }

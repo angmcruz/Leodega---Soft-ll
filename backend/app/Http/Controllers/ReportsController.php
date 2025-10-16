@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Landlords;
 use Illuminate\Http\Request;
+use App\Models\Reports;
 
-class LandlordsController extends Controller
+class ReportsController extends Controller
 {
     //
-    public function index(){
+     public function index(){
 
     }
 

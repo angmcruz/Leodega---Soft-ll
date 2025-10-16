@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Landlords;
 use Illuminate\Http\Request;
+use App\Models\StoreModeration;
 
-class LandlordsController extends Controller
+class StoreModerationController extends Controller
 {
     //
     public function index(){

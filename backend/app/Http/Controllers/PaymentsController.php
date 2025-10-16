@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Landlords;
 use Illuminate\Http\Request;
+use App\Models\Payments;
 
-class LandlordsController extends Controller
+class PaymentsController extends Controller
 {
-    //
     public function index(){
 
     }

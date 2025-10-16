@@ -1,12 +1,18 @@
 <?php
 
+use App\Http\Controllers\cancelations_policesController;
 use App\Http\Controllers\FavoritesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LandlordsController;
+use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\RatingsController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\StoreDisponibilityController;
+use App\Http\Controllers\StoreModerationController;
 use App\Http\Controllers\StorePhotoController;
 use App\Http\Controllers\storePricesController;
 use App\Http\Controllers\storeRoomsController;
@@ -67,4 +73,38 @@ Route::post('/reservations', [StoreDisponibilityController::class, 'store']);
 Route::put('/reservations/{id}', [StoreDisponibilityController::class, 'update']);
 Route::delete('/reservations/{id}', [StoreDisponibilityController::class, 'destroy']);
 
+Route::get('/payments', [PaymentsController::class, 'index']);
+Route::get('/payments/{id}', [PaymentsController::class, 'show']);
+Route::post('/payments', [PaymentsController::class, 'store']);
+Route::put('/payments/{id}', [PaymentsController::class, 'update']);
+Route::delete('/payments/{id}', [PaymentsController::class, 'destroy']);
 
+Route::get('/notifications', [NotificationsController::class, 'index']);
+Route::get('/notifications/{id}', [NotificationsController::class, 'show']);
+Route::post('/notifications', [NotificationsController::class, 'store']);
+Route::put('/notifications/{id}', [NotificationsController::class, 'update']);
+Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
+
+Route::get('/ratings', [RatingsController::class, 'index']);
+Route::get('/ratings/{id}', [RatingsController::class, 'show']);
+Route::post('/ratings', [RatingsController::class, 'store']);
+Route::put('/ratings/{id}', [RatingsController::class, 'update']);
+Route::delete('/ratings/{id}', [RatingsController::class, 'destroy']);
+
+Route::get('/cancelations_polices', [cancelations_policesController::class, 'index']);
+Route::get('/cancelations_polices/{id}', [cancelations_policesController::class, 'show']);
+Route::post('/cancelations_polices', [cancelations_policesController::class, 'store']);
+Route::put('/cancelations_polices/{id}', [cancelations_policesController::class, 'update']);
+Route::delete('/cancelations_polices/{id}', [cancelations_policesController::class, 'destroy']);
+
+Route::get('/reports', [ReportsController::class, 'index']);
+Route::get('/reports/{id}', [ReportsController::class, 'show']);
+Route::post('/reports', [ReportsController::class, 'store']);
+Route::put('/reports/{id}', [ReportsController::class, 'update']);
+Route::delete('/reports/{id}', [ReportsController::class, 'destroy']);
+
+Route::get('/store_moderation', [StoreModerationController::class, 'index']);
+Route::get('/store_moderation/{id}', [StoreModerationController::class, 'show']);
+Route::post('/store_moderation', [StoreModerationController::class, 'store']);
+Route::put('/store_moderation/{id}', [StoreModerationController::class, 'update']);
+Route::delete('/store_moderation/{id}', [StoreModerationController::class, 'destroy']);
