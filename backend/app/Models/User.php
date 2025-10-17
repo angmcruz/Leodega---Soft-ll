@@ -18,5 +18,24 @@ class User extends Model
         'state',
         'enable_messages'
     ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    public function setPasswordAttribute($value)
+    {
+        if ($value && (strlen($value) !== 60 || !preg_match('/^\$2y\$/', $value))) {
+            $this->attributes['password'] = bcrypt($value);
+        } else {
+            $this->attributes['password'] = $value;
+        }
+    }
+
+    // Relation with Landlords
+    public function landlord()
+    {
+        return $this->hasOne(Landlords::class, 'user_id');
+    }
     //
 }

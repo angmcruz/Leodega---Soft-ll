@@ -5,27 +5,39 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\StoreModeration;
 
-class StoreModerationController extends Controller
+class StoreModerationController extends ApiController
 {
     //
     public function index(){
-
+        return $this->indexModel(StoreModeration::class);
     }
 
     public function show($id){
-
+        return $this->showModel(StoreModeration::class, $id);
     }
 
     public function store(Request $request){
-
+        $rules =[
+            'store_id' => 'required|exists:store_rooms,id',
+            'status' => 'required|in:pending,approved,rejected',
+            'reason_rejected' => 'nullable|string',
+            'moderation_date' => 'date',
+        ];
+        return $this->storeModel($request, StoreModeration::class, $rules);
     }
 
 
     public function update(Request $request, $id){
-
+        $rules =[
+            'store_id' => 'sometimes|exists:store_rooms,id',
+            'status' => 'sometimes|in:pending,approved,rejected',
+            'reason_rejected' => 'nullable|string',
+            'moderation_date' => 'date',
+        ];
+        return $this->updateModel($request, StoreModeration::class, $id, $rules);
     }
 
     public function destroy($id){
-
+        return $this->destroyModel(StoreModeration::class, $id);
     }
 }
