@@ -17,7 +17,7 @@ class storePricesController extends ApiController
 
     public function store(Request $request){
         $rules = [
-            'store_room_id' => 'required|exists:store_rooms,id',
+            'store_room_id' => 'required|exists:storeRooms,id',
             'mode' => 'required|in:day,month,year',
             'price' => 'required|numeric|min:0.5',
             'disponibility' => 'boolean'
@@ -28,7 +28,7 @@ class storePricesController extends ApiController
 
     public function update(Request $request, $id){
         $rules = [
-            'store_room_id' => 'exists:store_rooms,id',
+            'store_room_id' => 'exists:storeRooms,id',
             'mode' => 'in:day,month,year',
             'price' => 'numeric|min:0.5',
             'disponibility' => 'boolean'

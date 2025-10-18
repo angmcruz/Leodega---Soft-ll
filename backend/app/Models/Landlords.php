@@ -18,5 +18,13 @@ class Landlords extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }  
+
+    public function storeRooms(){
+        return $this->hasMany(StoreRooms::class, 'landlord_id');
+    }
+
+    public function cancelationPolicies(){
+        return $this->hasMany(cancelations_polices::class, 'landlord_id');
+    }
     
 }

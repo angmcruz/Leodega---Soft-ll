@@ -17,9 +17,9 @@ class StoreDisponibilityController extends ApiController
 
     public function store(Request $request){
         $rules = [
-            'store_id' => 'required|exists:store_rooms,id',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'store_id' => 'required|exists:storeRooms,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ];
         return $this->storeModel($request, StoreDisponibility::class, $rules);
     }
@@ -27,9 +27,9 @@ class StoreDisponibilityController extends ApiController
 
     public function update(Request $request, $id){
         $rules = [
-            'store_id' => 'required|exists:store_rooms,id',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'store_id' => 'required|exists:storeRooms,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ];
         return $this->updateModel($request, StoreDisponibility::class, $id, $rules);    
     }

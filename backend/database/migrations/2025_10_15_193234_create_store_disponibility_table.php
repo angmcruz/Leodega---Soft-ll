@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('store_disponibility', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('store_id')->constrained('store_rooms')->onDelete('cascade');
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->foreignId('store_room_id')->constrained('storeRooms')->onDelete('cascade');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
         });
     }

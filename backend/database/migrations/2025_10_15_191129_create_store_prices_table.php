@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('store_prices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('store_room_id')->constrained('store_rooms')->onDelete('cascade');
+            $table->foreignId('store_room_id')->constrained('storeRooms')->onDelete('cascade');
             $table->enum('mode', ['day', 'month', 'year'])->nullable(false);
-            $table->decimal('price', 10, 2)->nullable(false)->check('price >= 0.5');
+            $table->decimal('price', 10, 2)->nullable(false);
             $table->boolean('disponibility')->default(true);
             $table->timestamps();
         });

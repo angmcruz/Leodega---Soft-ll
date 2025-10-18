@@ -14,14 +14,14 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('store_room_id')->constrained('store_rooms')->onDelete('cascade');
+            $table->foreignId('store_room_id')->constrained('storeRooms')->onDelete('cascade');
             $table->foreignId('tenant_id')->constrained('tenants')->onDelete('cascade');
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->date('start_date')->default(DB::raw('CURRENT_DATE'));
+            $table->date('end_date');
             $table->enum('status', ['pending', 'confirmed', 'canceled'])->default('pending');
-            $table->decimal('total_mount', 10, 2)->nullable();
-            $table->text('cancelation_reason')->nullable();
-            $table->dateTime(('creation_date'))->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->decimal('total_mount', 10, 2);
+            $table->text('cancelation_reason');
+            $table->date(('creation_date'))->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->timestamps();
         });

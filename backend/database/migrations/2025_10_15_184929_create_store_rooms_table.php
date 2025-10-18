@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('store_rooms', function (Blueprint $table) {
+        Schema::create('storeRooms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('landlord_id')->constrained('landlords')->onDelete('cascade');
             $table->string('direction')->nullable(false);
@@ -20,7 +20,8 @@ return new class extends Migration
             $table->decimal('size', 10, 2)->nullable(false);
             $table->string('description')->nullable(false);
             $table->enum('publication_status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->dateTime('publication_date')->default(now());
+            $table->dateTime('publication_date')->useCurrent();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('store_rooms');
+        Schema::dropIfExists('storeRooms');
     }
 };

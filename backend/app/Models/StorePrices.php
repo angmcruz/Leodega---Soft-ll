@@ -15,5 +15,9 @@ class StorePrices extends Model
         'price',
         'disponibility'
     ];
-    //
+    
+    public function storeRooms(){
+        return $this->belongsTo(StoreRooms::class, 'store_room_id');
+    }
+
 }

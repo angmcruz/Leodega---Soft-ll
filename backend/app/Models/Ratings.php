@@ -16,5 +16,14 @@ class Ratings extends Model
         'stars',
         'comment',
     ];
-    //
+
+    public function storeRooms(){
+        return $this->belongsTo(StoreRooms::class, 'store_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    
 }

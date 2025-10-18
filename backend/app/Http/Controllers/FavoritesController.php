@@ -21,7 +21,7 @@ class FavoritesController extends ApiController
         $rules = [
             'user_id'=>'required|exists:user,id',
             'store_id'=>'required|exists:storeRooms,id',
-            'save_date'=>'required|date'
+            'save_date'=>'date'
         ];
         return $this->storeModel($request, Favorites::class, $rules);
     }

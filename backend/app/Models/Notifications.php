@@ -15,4 +15,16 @@ class Notifications extends Model
         'receptor_id',
         'message',
     ];
+
+    public function reservation(){
+        return $this->belongsTo(Reservations::class, 'reservation_id');
+    }
+
+    public function emisor(){
+        return $this->belongsTo(User::class, 'emisor_id');
+    }
+
+    public function receptor(){
+        return $this->belongsTo(User::class, 'receptor_id');
+    }
 }

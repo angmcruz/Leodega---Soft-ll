@@ -18,10 +18,10 @@ class StoreModerationController extends ApiController
 
     public function store(Request $request){
         $rules =[
-            'store_id' => 'required|exists:store_rooms,id',
+            'store_id' => 'required|exists:storeRooms,id',
             'status' => 'required|in:pending,approved,rejected',
-            'reason_rejected' => 'nullable|string',
-            'moderation_date' => 'date',
+            'reason_rejected' => 'required|string',
+            'moderation_date' => 'sometimes|date',
         ];
         return $this->storeModel($request, StoreModeration::class, $rules);
     }
@@ -29,10 +29,10 @@ class StoreModerationController extends ApiController
 
     public function update(Request $request, $id){
         $rules =[
-            'store_id' => 'sometimes|exists:store_rooms,id',
+            'store_id' => 'sometimes|exists:storeRooms,id',
             'status' => 'sometimes|in:pending,approved,rejected',
-            'reason_rejected' => 'nullable|string',
-            'moderation_date' => 'date',
+            'reason_rejected' => 'required|string',
+            'moderation_date' => 'sometimes|date',
         ];
         return $this->updateModel($request, StoreModeration::class, $id, $rules);
     }

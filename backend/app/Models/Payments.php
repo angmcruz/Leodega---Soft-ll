@@ -16,4 +16,8 @@ class Payments extends Model
         'payment_state',
         'payment_date',
     ];
+
+    public function reservation(){
+        return $this->belongsTo(Reservations::class, 'reservation_id');
+    }
 }

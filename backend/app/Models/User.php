@@ -37,5 +37,31 @@ class User extends Model
     {
         return $this->hasOne(Landlords::class, 'user_id');
     }
-    //
+
+    public function tenant(){
+        return $this->hasOne(Tenants::class, 'user_id');
+    }
+
+    public function sendNotifications(){
+        return $this->hasMany(Notifications::class, 'emisor_id');
+    }
+
+    public function receivedNotifications(){
+        return $this->hasMany(Notifications::class, 'receptor_id');
+    }
+
+    public function ratings(){
+        return $this->hasMany(Ratings::class, 'user_id');
+    }
+
+    public function reports(){
+        return $this->hasMany(Reports::class, 'user_id');
+    }
+
+    public function admin(){
+        return $this->hasOne(Admin::class, 'user_id');
+    }
+
+    
+
 }

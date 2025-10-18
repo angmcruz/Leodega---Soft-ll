@@ -17,7 +17,7 @@ class RatingsController extends ApiController
 
     public function store(Request $request){
         $rules = [
-            'store_id' => 'required|exists:store_rooms,id',
+            'store_id' => 'required|exists:storeRooms,id',
             'user_id' => 'required|exists:user,id',
             'stars' => 'required|integer|between:1,5',
             'comment' => 'required|string',
@@ -27,7 +27,7 @@ class RatingsController extends ApiController
 
     public function update(Request $request, $id){
         $rules = [
-            'store_id' => 'sometimes|exists:store_rooms,id',
+            'store_id' => 'sometimes|exists:storeRooms,id',
             'user_id' => 'sometimes|exists:user,id',
             'stars' => 'sometimes|integer|between:1,5',
             'comment' => 'sometimes|string',

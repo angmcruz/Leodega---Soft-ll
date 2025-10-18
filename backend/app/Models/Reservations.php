@@ -20,4 +20,16 @@ class Reservations extends Model
         'cancelation_reason',
         'creation_date'
     ];
+
+    public function storeRooms(){
+        return $this->belongsTo(StoreRooms::class, 'store_room_id');
+    }
+
+    public function tenants(){
+        return $this->belongsTo(Tenants::class, 'tenant_id');
+    }
+
+    public function payments(){
+        return $this->hasMany(Payments::class, 'reservation_id');
+    }
 }

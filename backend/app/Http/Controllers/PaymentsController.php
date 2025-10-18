@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Payments;
 use Faker\Provider\ar_EG\Payment;
-use Illuminate\Support\Facades\Validator;
 
 class PaymentsController extends ApiController
 {
@@ -22,7 +21,7 @@ class PaymentsController extends ApiController
             'reservation_id'=>'required|exists:reservations,id',
             'payment_method'=>'required|in:credit card,debit card',
             'payment_state'=>'required|in:paid,pending,failed',
-            'payment_date'=>'required|date'
+            'payment_date'=>'date'
         ];
         return $this->storeModel($request, Payments::class, $rules);
     }

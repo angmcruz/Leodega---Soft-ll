@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\cancelations_policesController;
 use App\Http\Controllers\FavoritesController;
 use Illuminate\Http\Request;
@@ -29,6 +30,12 @@ Route::get('/landlords/{id}', [LandlordsController::class, 'show']);
 Route::post('/landlords', [LandlordsController::class, 'store']);
 Route::put('/landlords/{id}', [LandlordsController::class, 'update']);
 Route::delete('/landlords/{id}', [LandlordsController::class, 'destroy']);
+
+Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin/{id}', [AdminController::class, 'show']);
+Route::post('/admin', [AdminController::class, 'store']);
+Route::put('/admin/{id}', [AdminController::class, 'update']);
+Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
 
 Route::get('/tenants', [TenantsController::class, 'index']);
 Route::get('/tenants/{id}', [TenantsController::class, 'show']);

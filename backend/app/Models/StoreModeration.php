@@ -16,4 +16,9 @@ class StoreModeration extends Model
         'reason_rejected',
         'moderation_date',
     ];
+
+    public function storeRoom()
+    {
+        return $this->belongsTo(StoreRooms::class, 'store_id');
+    }
 }

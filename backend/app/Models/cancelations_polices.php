@@ -16,4 +16,8 @@ class cancelations_polices extends Model
         'description',
         'is_default',
     ];
+
+    public function landlord(){
+        return $this->belongsTo(Landlords::class, 'landlord_id');
+    }
 }

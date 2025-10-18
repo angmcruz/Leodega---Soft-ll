@@ -14,4 +14,13 @@ class Tenants extends Model
         'search_preference'
     ];
     //
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+     public function reservations(){
+        return $this->hasMany(Reservations::class, 'tenant_id');
+    }
+
 }
