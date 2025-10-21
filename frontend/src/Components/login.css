@@ -1,0 +1,81 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  --azure: #207bff;
+  --ruddy-purple: #7551E9;
+  --antiflash-white: #f5f7fa;
+  --orange-leo: #FEB42B;
+}
+
+.header{
+  color: white;
+  padding: 20px, 20px;
+}
+
+.header-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo{
+  margin: 0;
+}
+
+.navbar ul{
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar li{
+  margin: 0 50px;
+}
+
+.navbar a {
+  color: black;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.auth-buttons {
+  display: flex;
+  padding: 30px;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 10px 30px;
+  margin: 0 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.login-button {
+  color: black; /* Contraste para texto */
+  width: 90px;
+}
+
+.login-button:hover {
+  background-color: var(--ruddy-purple); /* Hover más dinámico */
+  color: white;
+}
+
+.signup-button {
+  background-color: var(--ruddy-purple);
+  color: white;
+  width: 100px;
+}
+
+.signup-button:hover {
+  background-color: var(--ruddy-purple);
+}

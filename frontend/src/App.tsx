@@ -1,15 +1,23 @@
 import { useState } from 'react'
-import viteLogo from '/vite.svg'
+
 import './App.css'
+import Header from './Components/header'
+import Hero from './Components/Hero'
+import SearchBar from './Components/SearchBar'
+import Work from './Components/Work'
+import Choose from './Components/Choose'
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
+  return(
     <>
-      
+      <Header />
+      <Hero />
+      <SearchBar />
+      <Work />
+      <Choose/>
     </>
   )
+  
 }
 
 export default App
