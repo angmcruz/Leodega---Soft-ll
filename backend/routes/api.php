@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\cancelations_policesController;
 use App\Http\Controllers\FavoritesController;
 use Illuminate\Http\Request;
@@ -18,6 +19,13 @@ use App\Http\Controllers\StorePhotoController;
 use App\Http\Controllers\storePricesController;
 use App\Http\Controllers\storeRoomsController;
 use App\Http\Controllers\TenantsController;
+
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{id}', [UserController::class, 'show']);
