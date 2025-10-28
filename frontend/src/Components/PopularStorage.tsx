@@ -31,7 +31,7 @@ const warehouses = [
 
 const PopularStorage = () => {
   return (
-    <section className="w-full bg-white py-24 px-6 text-center">
+    <section className="w-full bg-white py-14 px-6 text-center">
       {/* Etiqueta superior */}
       <div className="mb-4">
         <span className="bg-[#F5E8FF] text-[#A855F7] text-sm font-medium px-4 py-1 rounded-full">

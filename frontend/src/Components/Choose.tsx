@@ -3,7 +3,7 @@ import { DollarSign, User, Clock, MessageSquare } from "lucide-react";
 import backgroundShapes from "../img/LOGO_LEODEGA ISO.png"
 import bodegaImage from "../img/bodegaa.webp"
 
-const Choose: React.FC = () => {
+const Choose = () => {
   return (
     <section className="relative w-full bg-white py-24 px-6 overflow-hidden">
       {/* Fondo geométrico con opacidad baja */}

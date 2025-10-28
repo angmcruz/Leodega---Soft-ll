@@ -7,6 +7,8 @@ import SearchBar from './Components/SearchBar'
 import Work from './Components/Work'
 import Choose from './Components/Choose'
 import PopularStorage from './Components/PopularStorage'
+import Testimonial from './Components/Testimonial'
+import Footer from './Components/Footer'
 
 function App() {
   return(
@@ -18,6 +20,9 @@ function App() {
       <Choose/>
       
       <PopularStorage />
+      <Testimonial />
+
+      <Footer />
     </>
   )
   
