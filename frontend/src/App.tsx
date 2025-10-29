@@ -1,5 +1,4 @@
-import { useState } from 'react'
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './Components/Header'
 import Hero from './Components/Hero'
@@ -9,23 +8,28 @@ import Choose from './Components/Choose'
 import PopularStorage from './Components/PopularStorage'
 import Testimonial from './Components/Testimonial'
 import Footer from './Components/Footer'
+import Login from './Components/login'
 
 function App() {
-  return(
-    <>
-      <Header />
-      <Hero />
-      <SearchBar />
-      <Work />
-      <Choose/>
-      
-      <PopularStorage />
-      <Testimonial />
-
-      <Footer />
-    </>
+  return (
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={
+          <>
+            <Header />
+            <Hero />
+            <SearchBar />
+            <Work />
+            <Choose/>
+            <PopularStorage />
+            <Testimonial />
+            <Footer />
+          </>
+        } />
+      </Routes>
+    </Router>
   )
-  
 }
 
 export default App

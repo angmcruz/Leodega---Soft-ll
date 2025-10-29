@@ -1,6 +1,6 @@
-import React from 'react';
-import {Menu, X} from "lucide-react";
-import {useState} from "react";
+import { Link } from 'react-router-dom';
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 import logo from '../img/LOGO_H_1.png';
 
 const Header = () => {
@@ -34,12 +34,13 @@ const Header = () => {
           </ul>
 
           <div className="hidden lg:flex justify-center space-x-6 items-center">
-            <a href="#" className="py-2 px-3 border rounded-md w-35 text-center">
+            <Link to="/login" className="py-2 px-3 border rounded-md w-35 text-center">
               Iniciar Sesión
-            </a>
+            </Link>
             <a
               href="#"
-              className="py-2 px-3 rounded-md text-white bg-leodega_p w-40 text-center">
+              className="py-2 px-3 rounded-md text-white bg-leodega_p w-40 text-center"
+            >
               Registrarse
             </a>
           </div>
@@ -60,14 +61,14 @@ const Header = () => {
                         </li>
                     ))}
                 </ul>
-                <div className="flex space-x-6">
-                    <a href="#" className='py-2 px-3 border rounded-md'>
-                        Iniciar Sesión
-                    </a>
-                    <a href="#" className="py-2 px-3 rounded-md text-white bg-leodega_p">
-                        Registrarse
-                    </a>
-                </div>
+        <div className="flex space-x-6">
+          <Link to="/login" onClick={() => setMobileDrawerOpen(false)} className='py-2 px-3 border rounded-md'>
+            Iniciar Sesión
+          </Link>
+          <a className="py-2 px-3 rounded-md text-white bg-leodega_p" href="#">
+            Registrarse
+          </a>
+        </div>
             </div>
         )}
       </div>
