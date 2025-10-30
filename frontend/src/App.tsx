@@ -9,11 +9,13 @@ import PopularStorage from './Components/PopularStorage'
 import Testimonial from './Components/Testimonial'
 import Footer from './Components/Footer'
 import Login from './Components/login'
+import Register from './Components/Register'
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={
           <>
