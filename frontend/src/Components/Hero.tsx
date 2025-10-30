@@ -1,7 +1,6 @@
 import googlePlay from '../img/google_play.png';
 import appStore from '../img/appstore.png';
-import warehouseFront from '../img/bodega.png'
-import React from "react";
+import warehouseFront from '../img/bodega.png';
 import backgroundShapes from "../img/LOGO_LEODEGA ISO.png";
 
 
