@@ -9,23 +9,33 @@ import Choose from './Components/Choose'
 import PopularStorage from './Components/PopularStorage'
 import Testimonial from './Components/Testimonial'
 import Footer from './Components/Footer'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import LoginPage from './Components/Login/LoginPage'
+
 
 function App() {
-  return(
-    <>
-      <Header />
-      <Hero />
-      <SearchBar />
-      <Work />
-      <Choose/>
-      
-      <PopularStorage />
-      <Testimonial />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={
+          <>
+            <Header />
+            <Hero />
+            <SearchBar />
+            <Work />
+            <Choose />
+            <PopularStorage />
+            <Testimonial />
+            <Footer />
+          </>
+        }
+        />
+        <Route path ="/Login" element ={<LoginPage />}/>
+      </Routes>
+    </BrowserRouter>
 
-      <Footer />
-    </>
   )
-  
+
 }
 
 export default App
