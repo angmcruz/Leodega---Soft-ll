@@ -37,12 +37,12 @@ const Header = () => {
             <Link to="/login" className="py-2 px-3 border rounded-md w-35 text-center">
               Iniciar Sesión
             </Link>
-            <a
-              href="#"
+            <Link
+              to="/register"
               className="py-2 px-3 rounded-md text-white bg-leodega_p w-40 text-center"
             >
               Registrarse
-            </a>
+            </Link>
           </div>
 
 
@@ -65,9 +65,9 @@ const Header = () => {
           <Link to="/login" onClick={() => setMobileDrawerOpen(false)} className='py-2 px-3 border rounded-md'>
             Iniciar Sesión
           </Link>
-          <a className="py-2 px-3 rounded-md text-white bg-leodega_p" href="#">
+          <Link to="/register" onClick={() => setMobileDrawerOpen(false)} className="py-2 px-3 rounded-md text-white bg-leodega_p">
             Registrarse
-          </a>
+          </Link>
         </div>
             </div>
         )}
