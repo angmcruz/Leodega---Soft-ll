@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate} from 'react-router-dom';
+
 
 const Login: React.FC = () => {
+    const navigate = useNavigate();
     return (
         <div className="min-h-screen flex flex-col">
             <header className="pt-[40px] mb-[10px] pl-[30px] lg:pt-[80px] lg:pl-[60px] lg:mb-[2px]"><div className="flex items-center gap-3">
@@ -42,7 +45,9 @@ const Login: React.FC = () => {
                             </label>
                             <a href="#" className="text-sm text-[#ff8682]">Olvidé mi contraseña</a>
                         </div>
-                        <button type="submit" className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-6">
+                        <button type="submit" 
+                        onClick={()=>navigate('/VerifyCode')}
+                        className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-6">
                             Iniciar Sesión
                         </button>
                         <p className="text-center text-gray-700 mb-6 text-sm ">
@@ -72,7 +77,7 @@ const Login: React.FC = () => {
                     <img 
                         src="/src/img/logimage.png" 
                         alt="Login" 
-                        className="w-[550px] h-[640px] object-cover rounded-xl"
+                        className="w-[550px] h-[600px] object-cover rounded-xl"
                     />
                 </div>
             </div>

@@ -17,12 +17,14 @@ import PreguntaInicio4 from './Pages/Components/PreguntaInicio4'
 import PreguntaInicio5 from './Pages/Components/PreguntaInicio5'
 import PreguntaInicio6 from './Pages/Components/PreguntaInicio6'
 import PreguntaInicio7 from './Pages/Components/PreguntaInicio7'
+import VerifyCode from './Components/VerifyCode'
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/register" element={<Register />} />
+        <Route path="/verifyCode" element={<VerifyCode />} />
         <Route path="/login" element={<Login />} />
         <Route path="/preguntainicio1" element={<PreguntaIncio1 />} />
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
