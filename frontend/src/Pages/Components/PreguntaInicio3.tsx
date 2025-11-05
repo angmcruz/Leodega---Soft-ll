@@ -39,7 +39,7 @@ const PreguntaInicio3: React.FC = () => {
                     
                     <div className="mb-8 sm:mb-10">
                         <div className="flex gap-1 sm:gap-1.5 lg:gap-2 justify-center px-2">
-                            {[...Array(8)].map((_, index) => (
+                            {[...Array(7)].map((_, index) => (
                                 <div
                                     key={index}
                                     className={`h-[6px] sm:h-[8px] lg:h-[10px] rounded-full transition-all duration-300 flex-shrink-0 ${
@@ -51,7 +51,9 @@ const PreguntaInicio3: React.FC = () => {
                     </div>
 
                     <div className="flex justify-between items-center gap-3 sm:gap-4 px-2">
-                        <button className="bg-[#8b5cf6] text-white rounded-lg sm:rounded-xl font-medium text-[14px] sm:text-[15px] lg:text-[17px] hover:bg-[#7c4ee0] transition-all duration-200 shadow-md hover:shadow-lg w-[140px] sm:w-[160px] lg:w-[180px] py-3 sm:py-3.5">
+                        <button 
+                            onClick={()=>navigate('/PreguntaInicio2')}
+                            className="bg-[#8b5cf6] text-white rounded-lg sm:rounded-xl font-medium text-[14px] sm:text-[15px] lg:text-[17px] hover:bg-[#7c4ee0] transition-all duration-200 shadow-md hover:shadow-lg w-[140px] sm:w-[160px] lg:w-[180px] py-3 sm:py-3.5">
                             Atrás
                         </button>
                         <button 

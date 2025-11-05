@@ -13,6 +13,10 @@ import Register from './Components/Register'
 import PreguntaIncio1 from './Pages/Components/PreguntaInicio1'
 import PreguntaInicio2 from './Pages/Components/PreguntaInicio2'
 import PreguntaInicio3 from './Pages/Components/PreguntaInicio3'
+import PreguntaInicio4 from './Pages/Components/PreguntaInicio4'
+import PreguntaInicio5 from './Pages/Components/PreguntaInicio5'
+import PreguntaInicio6 from './Pages/Components/PreguntaInicio6'
+import PreguntaInicio7 from './Pages/Components/PreguntaInicio7'
 
 function App() {
   return (
@@ -23,6 +27,11 @@ function App() {
         <Route path="/preguntainicio1" element={<PreguntaIncio1 />} />
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
         <Route path="/preguntainicio3" element={<PreguntaInicio3 />} />
+        <Route path="/preguntainicio4" element={<PreguntaInicio4 />} />
+        <Route path="/preguntainicio5" element={<PreguntaInicio5 />} />
+        <Route path="/preguntainicio6" element={<PreguntaInicio6 />} />
+        <Route path="/preguntainicio7" element={<PreguntaInicio7 />} />
+
         <Route path="/" element={
           <>
             <Header />
