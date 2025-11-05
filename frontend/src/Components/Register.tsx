@@ -147,7 +147,7 @@ const Register: React.FC = () => {
                             </label>
                         </div>
 
-                        <button onClick={()=> navigate('/PreguntaInicio1')} className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-4">
+                        <button  className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-4">
                             Crear cuenta
                         </button>
 
