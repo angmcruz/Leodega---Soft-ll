@@ -1,5 +1,9 @@
+import { useNavigate } from "react-router-dom";
 
 const Decision = () => {
+    const navigate = useNavigate();
+    const goArrendador = () => navigate('/preguntainicio1');
+
     return (
         <div className="min-h-screen flex flex-col">
             <header className="pt-[40px] mb-[10px] pl-[30px] lg:pt-[80px] lg:pl-[60px] lg:mb-[2px]"><div className="flex items-center gap-3">
@@ -13,7 +17,7 @@ const Decision = () => {
                     ¿Cuál es su rol en la plataforma?
                 </h2>
                 
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-32 justify-center items-stretch w-full max-w-4xl">    <div className="flex flex-col lg:flex-row items-center gap-4 cursor-pointer hover:scale-105 transition-transform duration-200 p-6 rounded-xl hover:bg-gray-50">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-32 justify-center items-stretch w-full max-w-4xl">    <button type="button" onClick={goArrendador} className="flex flex-col lg:flex-row items-center gap-4 cursor-pointer hover:scale-105 transition-transform duration-200 p-6 rounded-xl hover:bg-gray-50">
                         <div className="bg-gray-100 rounded-lg p-4 lg:p-6 flex items-center justify-center h-32 w-32 lg:h-40 lg:w-40">
                             <img 
                                 src="/src/img/arrendador.png" 
@@ -22,9 +26,9 @@ const Decision = () => {
                             />
                         </div>
                         <span className="text-[#313131] font-medium text-[25px] lg:mt-0">Arrendador</span>
-                    </div>
+                    </button>
 
-                    <div className="flex flex-col lg:flex-row items-center gap-4 cursor-pointer hover:scale-105 transition-transform duration-200 p-6 rounded-xl hover:bg-gray-50">
+                    <button type="button" onClick={() => navigate('/')} className="flex flex-col lg:flex-row items-center gap-4 cursor-pointer hover:scale-105 transition-transform duration-200 p-6 rounded-xl hover:bg-gray-50">
                         <div className="bg-gray-100 rounded-lg p-4 lg:p-6 flex items-center justify-center h-32 w-32 lg:h-40 lg:w-40">
                             <img 
                                 src="/src/img/arrendatario.png" 
@@ -33,7 +37,7 @@ const Decision = () => {
                             />
                         </div>
                         <span className="text-[#313131] font-medium text-[25px] lg:mt-0">Arrendatario</span>
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>

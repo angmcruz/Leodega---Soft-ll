@@ -24,7 +24,7 @@ const PreguntaInicio1: React.FC = () => {
       </header>
 
       <main className="flex flex-col justify-center items-center flex-1 px-6">
-        <div className="w-full max-w-5xl text-center mt-[-90px] ">
+  <div className="w-full max-w-4xl text-center lg:text-left mt-[-90px] ">
           <h1 className="text-2xl sm:text-3xl font-semibold mb-3">
             ¿Cuál de estas opciones describe mejor tu espacio?
           </h1>
