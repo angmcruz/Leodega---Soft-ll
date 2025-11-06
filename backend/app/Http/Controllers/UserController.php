@@ -19,6 +19,7 @@ class UserController extends ApiController
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:user',
+            'phone'=> 'required|string|unique:user|max:10',
             'password' => 'required|string|min:8',
             'role' => 'in:admin,landlord,tenant',
             'start_date' => 'date|default:now()',
@@ -33,6 +34,7 @@ class UserController extends ApiController
         $rules = [
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:user,email,'.$id,
+            'phone'=> 'sometimes|required|string|unique:user,phone,'.$id.'|max:10',
             'password' => 'sometimes|required|string|min:8',
             'role' => 'sometimes|in:admin,landlord,tenant',
             'start_date' => 'sometimes|date|nullable',
