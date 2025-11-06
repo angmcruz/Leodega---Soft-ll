@@ -42,8 +42,8 @@ const PreguntaInicio2: React.FC = () => {
                 </div>
             </header>
             
-            <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-20 py-6 lg:py-8">
-                <div className="w-full max-w-5xl">
+                <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-20 py-6 lg:py-8">
+                <div className="w-full max-w-4xl text-center lg:text-left">
                     <h1 className="text-[20px] sm:text-[22px] md:text-[25px] lg:text-[30px] font-semibold text-center text-[#1a1a1a] mb-5 sm:mb-6 lg:mb-7 leading-tight lg:mt-[-70px]">
                         ¿Qué tipo de almacenamiento deseas?
                     </h1>
