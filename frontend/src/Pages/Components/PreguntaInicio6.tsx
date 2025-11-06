@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
+import FooterNav from "./FooterNav";
 
 const PreguntaInicio6 = () => {
   const navigate = useNavigate();
   const [precio, setPrecio] = useState("");
   const [tamano, setTamano] = useState("");
 
-  const precioBase = precio ? parseFloat(precio) : 0;
+  const precioBase = precio ? Number.parseFloat(precio) : 0;
   const tarifaServicio = precioBase * 0.1; // 10% ejemplo
   const ganancia = precioBase - tarifaServicio;
 
@@ -27,7 +29,7 @@ const PreguntaInicio6 = () => {
       </header>
 
       {/* Contenido principal */}
-      <main className="flex flex-col justify-center items-center flex-1 px-6">
+      <main className="flex flex-col justify-center items-center flex-1 px-6 mt-[-90px] ">
         <div className="w-full max-w-2xl text-center">
           <h1 className="text-2xl sm:text-3xl font-semibold mb-2">
             Configura un precio y tamaño de bodega
@@ -79,39 +81,13 @@ const PreguntaInicio6 = () => {
             </div>
           </div>
 
-          {/* Barra de progreso */}
-          <div className="flex justify-center gap-2 my-10">
-            {[...Array(7)].map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === 5 ? "w-28 bg-purple-500" : "w-28 bg-gray-200"
-                }`}
-              ></div>
-            ))}
-          </div>
+          <ProgressBar totalSteps={7} activeIndex={5} />
 
-          {/* Botones */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => navigate("/PreguntaInicio5")}
-              className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium px-8 py-3 shadow-md transition-all"
-            >
-              Atrás
-            </button>
-
-            <button
-              onClick={() => navigate("/PreguntaInicio7")}
-              disabled={!precio || !tamano}
-              className={`rounded-lg font-medium px-8 py-3 shadow-md transition-all ${
-                precio && tamano
-                  ? "bg-purple-500 hover:bg-purple-600 text-white"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Siguiente
-            </button>
-          </div>
+          <FooterNav
+            onBack={() => navigate('/PreguntaInicio5')}
+            onNext={() => navigate('/PreguntaInicio7')}
+            nextDisabled={!precio || !tamano}
+          />
         </div>
       </main>
     </div>

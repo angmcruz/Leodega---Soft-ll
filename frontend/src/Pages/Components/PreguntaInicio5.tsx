@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
+import FooterNav from "./FooterNav";
 
 const PreguntaInicio5 = () => {
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const PreguntaInicio5 = () => {
       </header>
 
       {/* Contenido principal */}
-      <main className="flex flex-col justify-center items-center flex-1 px-6">
+      <main className="flex flex-col justify-center items-center flex-1 px-6 mt-[-90px] ">
         <div className="w-full max-w-2xl text-center">
           <h1 className="text-2xl sm:text-3xl font-semibold mb-3">
             Da un título y descripción a tu bodega
@@ -34,10 +36,11 @@ const PreguntaInicio5 = () => {
 
           {/* Campos */}
           <div className="text-left">
-            <label className="block text-gray-700 font-medium mb-2">
+            <label htmlFor="titulo" className="block text-gray-700 font-medium mb-2">
               Título
             </label>
             <input
+              id="titulo"
               type="text"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
@@ -45,7 +48,9 @@ const PreguntaInicio5 = () => {
               className="w-full border border-gray-300 rounded-md p-3 mb-6 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
 
+            <label htmlFor="descripcion" className="sr-only">Descripción</label>
             <textarea
+              id="descripcion"
               rows={5}
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
@@ -59,39 +64,13 @@ const PreguntaInicio5 = () => {
             </p>
           </div>
 
-          {/* Barra de progreso */}
-          <div className="flex justify-center gap-2 my-10">
-            {[...Array(7)].map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === 4 ? "w-28 bg-purple-500" : "w-28 bg-gray-200"
-                }`}
-              ></div>
-            ))}
-          </div>
+          <ProgressBar totalSteps={7} activeIndex={4} />
 
-          {/* Botones */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => navigate("/PreguntaInicio4")}
-              className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium px-8 py-3 shadow-md transition-all"
-            >
-              Atrás
-            </button>
-
-            <button
-              onClick={() => navigate("/PreguntaInicio6")}
-              disabled={!titulo || !descripcion}
-              className={`rounded-lg font-medium px-8 py-3 shadow-md transition-all ${
-                titulo && descripcion
-                  ? "bg-purple-500 hover:bg-purple-600 text-white"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Siguiente
-            </button>
-          </div>
+          <FooterNav
+            onBack={() => navigate('/PreguntaInicio4')}
+            onNext={() => navigate('/PreguntaInicio6')}
+            nextDisabled={!titulo || !descripcion}
+          />
         </div>
       </main>
     </div>
