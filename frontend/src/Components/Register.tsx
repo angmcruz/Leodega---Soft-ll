@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Register: React.FC = () => {
+    const navigate = useNavigate();
+    const [name, setName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState(''); 
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
+        if((password !== confirmPassword)) {
+            alert("Las contraseñas no coinciden");
+            return;
+        }
         e.preventDefault();
         console.log('Formulario enviado');
     };
@@ -40,7 +55,8 @@ const Register: React.FC = () => {
                                     <input 
                                         type="text" 
                                         className="w-full text-base focus:outline-none px-2 py-1" 
-                                        placeholder="Angie Melissa"
+                                        placeholder="Ingrese su nombre"
+                                        value= {name} onChange={(e)=> setName(e.target.value)} required
                                     />
                                 </fieldset>
                             </div>
@@ -50,7 +66,8 @@ const Register: React.FC = () => {
                                     <input 
                                         type="text" 
                                         className="w-full text-base focus:outline-none px-2 py-1" 
-                                        placeholder="Cruz Naranjo"
+                                        placeholder="Ingerese su apellido"
+                                        value = {lastName} onChange ={(e)=> setLastName(e.target.value)} required
                                     />
                                 </fieldset>
                             </div>
@@ -63,7 +80,8 @@ const Register: React.FC = () => {
                                     <input 
                                         type="email" 
                                         className="w-full text-base focus:outline-none px-2 py-1" 
-                                        placeholder="user1@gmail.com"
+                                        placeholder="user@gmail.com"
+                                        value={email} onChange={(e)=> setEmail(e.target.value)} required
                                     />
                                 </fieldset>
                             </div>
@@ -73,7 +91,8 @@ const Register: React.FC = () => {
                                     <input 
                                         type="tel" 
                                         className="w-full text-base focus:outline-none px-2 py-1" 
-                                        placeholder="0934124567"
+                                        placeholder="0000000000"
+                                        value={phone} onChange={(e)=> setPhone(e.target.value)} required
                                     />
                                 </fieldset>
                             </div>
@@ -87,6 +106,7 @@ const Register: React.FC = () => {
                                         type={showPassword ? "text" : "password"}
                                         className="w-full text-base focus:outline-none px-2 py-1 pr-10" 
                                         placeholder="***************************"
+                                        value={password} onChange={(e)=> setPassword(e.target.value)} required
                                     />
                                     <button
                                         type="button"
@@ -107,6 +127,7 @@ const Register: React.FC = () => {
                                         type={showConfirmPassword ? "text" : "password"}
                                         className="w-full text-base focus:outline-none px-2 py-1 pr-10" 
                                         placeholder="***************************"
+                                        value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)} required
                                     />
                                     <button
                                         type="button"
@@ -126,7 +147,8 @@ const Register: React.FC = () => {
                             </label>
                         </div>
 
-                        <button onClick={handleSubmit} className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-4">
+                        <button  
+                        className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-4">
                             Crear cuenta
                         </button>
 

@@ -85,7 +85,9 @@ const Login: React.FC = () => {
                             </label>
                             <a href="#" className="text-sm text-[#ff8682]">Olvidé mi contraseña</a>
                         </div>
-                        <button type="submit" disabled={loading} className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-6">
+                        <button type="submit" disabled={loading} 
+                          onClick={()=>navigate('/VerifyCode')}
+                          className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-6">
                             {loading ? "Ingresando..." : "Iniciar Sesión"}
                         </button>
                         <p className="text-center text-gray-700 mb-6 text-sm ">
@@ -112,10 +114,10 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className="mt-[-40px] hidden lg:flex w-full lg:w-1/2 justify-center items-center">
-                    <img
-                        src="/src/img/logimage.png"
-                        alt="Login"
-                        className="w-[550px] h-[640px] object-cover rounded-xl"
+                    <img 
+                        src="/src/img/logimage.png" 
+                        alt="Login" 
+                        className="w-[550px] h-[600px] object-cover rounded-xl"
                     />
                 </div>
             </div>
