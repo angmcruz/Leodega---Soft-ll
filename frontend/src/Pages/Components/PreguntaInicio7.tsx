@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
+import ModalConfirmacion from "../../Components/ModalConfirmacion";
 
 const PreguntaInicio7 = () => {
   const navigate = useNavigate();
@@ -22,6 +23,17 @@ const PreguntaInicio7 = () => {
 
   const handleCheckboxChange = (name: SeguridadKey) => {
     setSeguridad((prev) => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleEnviar = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleConfirm = () => {
+    setIsModalOpen(false);
+    navigate('/bodegas');
   };
 
   return (
@@ -121,9 +133,18 @@ const PreguntaInicio7 = () => {
 
           <FooterNav
             onBack={() => navigate('/PreguntaInicio6')}
-            onNext={() => navigate('/final')}
+            onNext={handleEnviar}
             nextDisabled={!politica}
             nextLabel={"Enviar Solicitud"}
+          />
+
+          <ModalConfirmacion
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            titulo="Tu solicitud ha sido enviada, se te notificará cuando haya una respuesta"
+            mensaje=""
+            textoBoton="Aceptar"
+            onConfirm={handleConfirm}
           />
         </div>
       </main>
