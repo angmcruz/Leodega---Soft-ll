@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
+import FooterNav from "./FooterNav";
 
 const PreguntaInicio7 = () => {
   const navigate = useNavigate();
-  const [seguridad, setSeguridad] = useState({
+  const [seguridad, setSeguridad] = useState<{
+    camara: boolean;
+    ruido: boolean;
+    control: boolean;
+    objetos: boolean;
+  }>({
     camara: false,
     ruido: false,
     control: false,
@@ -11,7 +18,9 @@ const PreguntaInicio7 = () => {
   });
   const [politica, setPolitica] = useState("");
 
-  const handleCheckboxChange = (name) => {
+  type SeguridadKey = keyof typeof seguridad;
+
+  const handleCheckboxChange = (name: SeguridadKey) => {
     setSeguridad((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
@@ -33,8 +42,8 @@ const PreguntaInicio7 = () => {
 
       {/* Contenido principal */}
       <main className="flex flex-col justify-center items-center flex-1 px-6">
-        <div className="w-full max-w-2xl text-left">
-          <h1 className="text-2xl sm:text-3xl font-semibold mb-8 text-center">
+        <div className="w-full max-w-2xl text-left mt-[-90px] ">
+          <h1 className="text-2xl sm:text-3xl font-semibold mb-6 text-center">
             Comparte información de seguridad
           </h1>
 
@@ -92,10 +101,11 @@ const PreguntaInicio7 = () => {
           </h2>
 
           <div className="mb-10">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="politica" className="block text-sm font-medium text-gray-700 mb-1">
               Política
             </label>
             <select
+              id="politica"
               value={politica}
               onChange={(e) => setPolitica(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -107,39 +117,14 @@ const PreguntaInicio7 = () => {
             </select>
           </div>
 
-          {/* Barra de progreso */}
-          <div className="flex justify-center gap-2 my-10">
-            {[...Array(7)].map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === 6 ? "w-28 bg-purple-500" : "w-28 bg-gray-200"
-                }`}
-              ></div>
-            ))}
-          </div>
+          <ProgressBar totalSteps={7} activeIndex={6} />
 
-          {/* Botones */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => navigate("/PreguntaInicio6")}
-              className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium px-8 py-3 shadow-md transition-all"
-            >
-              Atrás
-            </button>
-
-            <button
-              onClick={() => navigate("/final")}
-              disabled={!politica}
-              className={`rounded-lg font-medium px-8 py-3 shadow-md transition-all ${
-                politica
-                  ? "bg-purple-500 hover:bg-purple-600 text-white"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Enviar Solicitud
-            </button>
-          </div>
+          <FooterNav
+            onBack={() => navigate('/PreguntaInicio6')}
+            onNext={() => navigate('/final')}
+            nextDisabled={!politica}
+            nextLabel={"Enviar Solicitud"}
+          />
         </div>
       </main>
     </div>

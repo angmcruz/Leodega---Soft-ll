@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
+import FooterNav from "./FooterNav";
 import {
   MapContainer,
   TileLayer,
@@ -8,8 +10,12 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+// @ts-ignore - leaflet types may not be installed in the project
 import L from "leaflet";
 import axios from "axios";
+const AnyMapContainer = MapContainer as any;
+const AnyTileLayer = TileLayer as any;
+const AnyMarker = Marker as any;
 
 const markerIcon = new L.Icon({
   iconUrl:
@@ -30,13 +36,27 @@ function FlyToLocation({ position }: FlyToProps) {
   return null;
 }
 
+interface LocationMarkerProps {
+  position: [number, number];
+  setPosition: (pos: [number, number]) => void;
+}
+
+function LocationMarker({ position, setPosition }: Readonly<LocationMarkerProps>) {
+  useMapEvents({
+    click: (e: any) => {
+      setPosition([e.latlng.lat, e.latlng.lng]);
+    },
+  });
+  // @ts-ignore
+  return <AnyMarker position={position as any} icon={markerIcon as any} />;
+}
+
 const PreguntaInicio4: React.FC = () => {
   const navigate = useNavigate();
   const [position, setPosition] = useState<[number, number]>([-0.1807, -78.4678]); // Quito
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState<any[]>([]);
 
-  // 🔍 Buscar dirección con Nominatim
   const handleSearch = async (query: string) => {
     setSearch(query);
     if (query.length < 3) return setSuggestions([]);
@@ -53,22 +73,11 @@ const PreguntaInicio4: React.FC = () => {
     }
   };
 
-  // 📍 Seleccionar dirección
   const handleSelect = (lat: string, lon: string, name: string) => {
-    setPosition([parseFloat(lat), parseFloat(lon)]);
+    setPosition([Number.parseFloat(lat), Number.parseFloat(lon)]);
     setSearch(name);
     setSuggestions([]);
   };
-
-  // 📍 Marcar clic manual en el mapa
-  function LocationMarker() {
-    useMapEvents({
-      click(e) {
-        setPosition([e.latlng.lat, e.latlng.lng]);
-      },
-    });
-    return <Marker position={position} icon={markerIcon} />;
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -92,13 +101,12 @@ const PreguntaInicio4: React.FC = () => {
           <h1 className="text-2xl sm:text-3xl font-semibold mb-3 text-[#1a1a1a]">
             ¿Dónde se encuentra tu espacio?
           </h1>
-          <p className="text-gray-500 mb-10 text-sm sm:text-base">
+          <p className="text-gray-500 mb-3 text-sm sm:text-base">
             Solo compartiremos la dirección con usuarios que hayan realizado una
             reserva confirmada.
           </p>
 
-          {/* 🔍 Campo de búsqueda */}
-          <div className="relative w-full mb-8">
+          <div className="relative w-full mb-3">
             <input
               type="text"
               value={search}
@@ -109,57 +117,37 @@ const PreguntaInicio4: React.FC = () => {
             {suggestions.length > 0 && (
               <ul className="absolute z-[1000] w-full bg-white border rounded-xl shadow-md max-h-60 overflow-auto mt-1">
                 {suggestions.map((s) => (
-                  <li
-                    key={s.place_id}
-                    onClick={() => handleSelect(s.lat, s.lon, s.display_name)}
-                    className="px-4 py-2 hover:bg-purple-50 cursor-pointer text-sm text-gray-700 transition-colors"
-                  >
-                    {s.display_name}
+                  <li key={s.place_id} className="">
+                    <button
+                      type="button"
+                      onClick={() => handleSelect(s.lat, s.lon, s.display_name)}
+                      className="w-full text-left px-4 py-2 hover:bg-purple-50 cursor-pointer text-sm text-gray-700 transition-colors"
+                    >
+                      {s.display_name}
+                    </button>
                   </li>
                 ))}
               </ul>
             )}
           </div>
 
-          {/* 🗺️ Mapa interactivo */}
           <div className="w-full h-[420px] rounded-2xl overflow-hidden shadow-md mb-10 border border-gray-100">
-            <MapContainer center={position} zoom={13} className="w-full h-full">
-              <TileLayer
+            <AnyMapContainer center={position as any} zoom={13 as any} className="w-full h-full">
+              <AnyTileLayer
                 attribution='&copy; OpenStreetMap contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <FlyToLocation position={position} />
-              <LocationMarker />
-            </MapContainer>
+              <LocationMarker position={position} setPosition={setPosition} />
+            </AnyMapContainer>
           </div>
+          
+          <ProgressBar totalSteps={7} activeIndex={3} />
 
-          {/* 🔘 Indicador de progreso */}
-          <div className="flex justify-center gap-2 my-10">
-            {[...Array(7)].map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === 3 ? "w-28 bg-purple-500" : "w-28 bg-gray-200"
-                }`}
-              ></div>
-            ))}
-          </div>
-
-          {/* BOTONES */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => navigate("/preguntainicio3")}
-              className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium px-8 py-3 shadow-md transition-all"
-            >
-              Atrás
-            </button>
-            <button
-              onClick={() => navigate("/preguntainicio5")}
-              className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium px-8 py-3 shadow-md transition-all"
-            >
-              Siguiente
-            </button>
-          </div>
+          <FooterNav
+            onBack={() => navigate("/preguntainicio3")}
+            onNext={() => navigate("/preguntainicio5")}
+          />
         </div>
       </main>
     </div>

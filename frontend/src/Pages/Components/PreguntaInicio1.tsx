@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProgressBar from "./ProgressBar";
+import FooterNav from "./FooterNav";
 
 const PreguntaInicio1: React.FC = () => {
   const navigate = useNavigate();
@@ -16,23 +18,13 @@ const PreguntaInicio1: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Header */}
       <header className="flex justify-end items-center gap-3 p-6">
-        <img
-          src="/src/img/LOGO_LEODEGA ISO.png"
-          alt="Logo Leodega"
-          className="h-10"
-        />
-        <img
-          src="/src/img/LOGO_LEODEGA TEXTO-19.png"
-          alt="Leodega"
-          className="h-8"
-        />
+        <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className="h-10"/>
+        <img src="/src/img/LOGO_LEODEGA TEXTO-19.png" alt="Leodega" className="h-8" />
       </header>
 
-      {/* Contenido principal */}
       <main className="flex flex-col justify-center items-center flex-1 px-6">
-        <div className="w-full max-w-5xl text-center">
+        <div className="w-full max-w-5xl text-center mt-[-90px] ">
           <h1 className="text-2xl sm:text-3xl font-semibold mb-3">
             ¿Cuál de estas opciones describe mejor tu espacio?
           </h1>
@@ -40,7 +32,6 @@ const PreguntaInicio1: React.FC = () => {
             Selecciona la propiedad que tienes. A continuación, indícanos la ubicación.
           </p>
 
-          {/* Opciones */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center mb-10">
             {options.map((option) => (
               <button
@@ -51,8 +42,7 @@ const PreguntaInicio1: React.FC = () => {
                     selectedOption === option.id
                       ? "border-purple-500 shadow-lg scale-[1.03]"
                       : "border-gray-200 hover:border-gray-300 hover:shadow-md"
-                  }`}
-              >
+                  }`}>
                 <img
                   src={option.image}
                   alt={option.name}
@@ -63,47 +53,19 @@ const PreguntaInicio1: React.FC = () => {
                     selectedOption === option.id
                       ? "bg-purple-500 text-white"
                       : "bg-gray-50 text-gray-700"
-                  }`}
-                >
+                  }`} >
                   {option.name}
                 </div>
               </button>
             ))}
           </div>
-
-          {/* Barra de progreso */}
-          <div className="flex justify-center gap-2 my-10">
-            {[...Array(7)].map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === 0 ? "w-28 bg-purple-500" : "w-28 bg-gray-200"
-                }`}
-              ></div>
-            ))}
-          </div>
-
-          {/* Botones */}
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={() => navigate("/register")}
-              className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium px-8 py-3 shadow-md transition-all"
-            >
-              Atrás
-            </button>
-
-            <button
-              onClick={() => selectedOption && navigate("/preguntainicio2")}
-              disabled={!selectedOption}
-              className={`rounded-lg font-medium px-8 py-3 shadow-md transition-all ${
-                selectedOption
-                  ? "bg-purple-500 hover:bg-purple-600 text-white"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Siguiente
-            </button>
-          </div>
+          <ProgressBar totalSteps={7} activeIndex={0} />
+          <FooterNav
+            onBack={() => navigate("/register")}
+            onNext={() => selectedOption && navigate("/preguntainicio2")}
+            backDisabled={false}
+            nextDisabled={!selectedOption}
+          />
         </div>
       </main>
     </div>

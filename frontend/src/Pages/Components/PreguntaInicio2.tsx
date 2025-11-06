@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ProgressBar from './ProgressBar';
+import FooterNav from './FooterNav';
 import { Building2, Lock, Users } from 'lucide-react';
 
 const PreguntaInicio2: React.FC = () => {
@@ -76,39 +78,13 @@ const PreguntaInicio2: React.FC = () => {
                             );
                         })}
                     </div>
-                    
-                    
-                    <div className="mb-8 sm:mb-10">
-                        <div className="flex gap-1 sm:gap-1.5 lg:gap-2 justify-center px-2">
-                            {[...Array(7)].map((_, index) => (
-                                <div
-                                    key={index}
-                                    className={`h-[6px] sm:h-[8px] lg:h-[10px] rounded-full transition-all duration-300 flex-shrink-0 ${
-                                        index === 1 ? 'w-[32px] sm:w-[80px] lg:w-[120px] bg-[#8b5cf6]' : 'w-[32px] sm:w-[80px] lg:w-[120px] bg-[#e5e7eb]'
-                                    }`}
-                                ></div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="flex justify-between items-center gap-3 sm:gap-4 px-2">
-                        <button 
-                            onClick={()=>navigate('/PreguntaInicio1')}
-                            className="bg-[#8b5cf6] text-white rounded-lg sm:rounded-xl font-medium text-[14px] sm:text-[15px] lg:text-[17px] hover:bg-[#7c4ee0] transition-all duration-200 shadow-md hover:shadow-lg w-[140px] sm:w-[160px] lg:w-[180px] py-3 sm:py-3.5">
-                            Atrás
-                        </button>
-                        <button 
-                            onClick={() => selectedOption && navigate('/preguntainicio3')}
-                            className={`rounded-lg sm:rounded-xl font-medium text-[14px] sm:text-[15px] lg:text-[17px] transition-all duration-200 w-[140px] sm:w-[160px] lg:w-[180px] py-3 sm:py-3.5 ${
-                                selectedOption 
-                                    ? 'bg-[#8b5cf6] text-white hover:bg-[#7c4ee0] shadow-md hover:shadow-lg' 
-                                    : 'bg-[#e5e7eb] text-[#9ca3af] cursor-not-allowed'
-                            }`}
-                            disabled={!selectedOption}
-                        >
-                            Siguiente
-                        </button>
-                    </div>
+                    <ProgressBar totalSteps={7} activeIndex={1} />
+                    <FooterNav
+                        onBack={() => navigate('/PreguntaInicio1')}
+                        onNext={() => selectedOption && navigate('/preguntainicio3')}
+                        backDisabled={false}
+                        nextDisabled={!selectedOption}
+                    />
                 </div>
             </div>
         </div>
