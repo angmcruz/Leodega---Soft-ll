@@ -13,6 +13,7 @@ import Register from './Components/Register'
 import PreguntaIncio1 from './Pages/Components/PreguntaInicio1'
 import PreguntaInicio2 from './Pages/Components/PreguntaInicio2'
 import PreguntaInicio3 from './Pages/Components/PreguntaInicio3'
+import Dashboard from "./Pages/Dashboard"; //after login 
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/preguntainicio1" element={<PreguntaIncio1 />} />
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
         <Route path="/preguntainicio3" element={<PreguntaInicio3 />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={
           <>
             <Header />

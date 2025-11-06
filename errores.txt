@@ -1,0 +1,4 @@
+1. el api/me no devuelve el user con postman si 
+    user llega vacio, pero en front si se guarda en local storage
+2.
+3.
