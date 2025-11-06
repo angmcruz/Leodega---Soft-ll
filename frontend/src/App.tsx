@@ -14,7 +14,7 @@ import PreguntaIncio1 from './Pages/Components/PreguntaInicio1'
 import PreguntaInicio2 from './Pages/Components/PreguntaInicio2'
 import PreguntaInicio3 from './Pages/Components/PreguntaInicio3'
 
-import Dashboard from "./Pages/Dashboard"; //after login 
+import Dashboard from "./Pages/Dashboard/Dashboard"; //after login 
 import PreguntaInicio4 from './Pages/Components/PreguntaInicio4'
 import PreguntaInicio5 from './Pages/Components/PreguntaInicio5'
 import PreguntaInicio6 from './Pages/Components/PreguntaInicio6'
