@@ -20,6 +20,7 @@ import PreguntaInicio5 from './Pages/Components/PreguntaInicio5'
 import PreguntaInicio6 from './Pages/Components/PreguntaInicio6'
 import PreguntaInicio7 from './Pages/Components/PreguntaInicio7'
 import VerifyCode from './Components/VerifyCode'
+import Decision from './Components/Decision'
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
         <Route path="/preguntainicio1" element={<PreguntaIncio1 />} />
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
         <Route path="/preguntainicio3" element={<PreguntaInicio3 />} />
-
+        <Route path="/decision" element={<Decision />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/preguntainicio4" element={<PreguntaInicio4 />} />
         <Route path="/preguntainicio5" element={<PreguntaInicio5 />} />
