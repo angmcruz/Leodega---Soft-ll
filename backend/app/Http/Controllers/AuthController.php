@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -31,7 +32,7 @@ class AuthController extends Controller
                 'user' => $user,
                 'token' => $token,
                 'token_type' => 'Bearer',
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -54,6 +55,37 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Sesión cerrada correctamente',
-        ]);
+        ], 200);
     }
+
+    public function register(Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'lastName' => 'required|string|max:255',
+        'phone' => 'required|string|max:20',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6',
+    ]);
+
+    $user = User::create([
+        'name' => $validated['name'],
+        'lastName' => $validated['lastName'],
+        'phone' => $validated['phone'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+    ]);
+    //ya con token de acceso
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Usuario creado correctamente',
+        'user' => $user,
+        'token' => $token,
+        'token_type' => 'Bearer'
+    ], 201);
+}
+
+
+
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { Link } from 'react-router-dom';
 
 
 const Login: React.FC = () => {
@@ -91,7 +92,7 @@ const Login: React.FC = () => {
                             {loading ? "Ingresando..." : "Iniciar Sesión"}
                         </button>
                         <p className="text-center text-gray-700 mb-6 text-sm ">
-                            ¿Todavía no tienes cuenta?{" "} <a href="#" className="text-[#ff8682] font-medium">Regístrate</a>
+                            ¿Todavía no tienes cuenta?{" "} <Link to='/register' className="text-[#ff8682] font-medium">Regístrate</Link>
                         </p>
                         <div className="relative flex items-center justify-center mb-6">
                             <div className="border-t border-gray-300 w-full absolute"></div>
