@@ -21,7 +21,7 @@ const Decision = () => {
             lastname: userData.lastName,
             role,
             enable_messages: true,
-            state: "pending",
+            state: "active",
 
         };
         delete finalUser.lastName;
