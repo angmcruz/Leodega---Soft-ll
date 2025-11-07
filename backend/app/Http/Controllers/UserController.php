@@ -18,6 +18,7 @@ class UserController extends ApiController
     public function store(Request $request){
         $rules = [
             'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:user',
             'phone'=> 'required|string|unique:user|max:10',
             'password' => 'required|string|min:8',
@@ -33,6 +34,7 @@ class UserController extends ApiController
     public function update(Request $request, $id){
         $rules = [
             'name' => 'sometimes|required|string|max:255',
+            'lastname' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:user,email,'.$id,
             'phone'=> 'sometimes|required|string|unique:user,phone,'.$id.'|max:10',
             'password' => 'sometimes|required|string|min:8',
