@@ -84,7 +84,7 @@ const Login: React.FC = () => {
                                 <input type="checkbox" className="w-5 h-5 border-2 border-gray-400 rounded" />
                                 Recuérdame
                             </label>
-                            <a href="#" className="text-sm text-[#ff8682]">Olvidé mi contraseña</a>
+                            <Link to= "/ResetPassword"className="text-sm text-[#ff8682]">Olvidé mi contraseña</Link>
                         </div>
                         <button type="submit" disabled={loading} 
                           onClick={()=>navigate('/VerifyCode')}

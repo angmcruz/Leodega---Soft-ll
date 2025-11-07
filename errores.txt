@@ -1,4 +1,5 @@
 1. el api/me no devuelve el user con postman si 
     user llega vacio, pero en front si se guarda en local storage
-2.
+2.al momento de reestablecer contrasena, error tabla user
+no tiene remember_token
 3.

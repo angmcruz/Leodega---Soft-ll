@@ -18,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.api' => ApiAuthenticate::class,
         ]);
+        $middleware->trustHosts([ //se cambia a hosting cuando haya dominio real 
+        '127\.0\.0\.1', 
+        'localhost',    
+    ]);
         
     })
     ->withExceptions(function (Exceptions $exceptions): void {
