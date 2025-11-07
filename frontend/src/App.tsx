@@ -46,10 +46,10 @@ function App() {
         <Route path="/preguntainicio6" element={<PreguntaInicio6 />} />
         <Route path="/preguntainicio7" element={<PreguntaInicio7 />} />
         <Route path="/bodegas" element={<Layout><Bodegas/></Layout>} />
-        <Route path="/admin/mensajes" element={<Layout><Mensajes/></Layout>} />
-        <Route path="/admin/solicitudes" element={<Layout><Solicitudes/></Layout>} />
-        <Route path="/admin/calendario" element={<Layout><Calendario/></Layout>} />
-        <Route path="/admin/settings" element={<Layout><Settings/></Layout>} />
+        <Route path="/mensajes" element={<Layout><Mensajes/></Layout>} />
+        <Route path="/solicitudes" element={<Layout><Solicitudes/></Layout>} />
+        <Route path="/calendario" element={<Layout><Calendario/></Layout>} />
+        <Route path="/settings" element={<Layout><Settings/></Layout>} />
         <Route path="/" element={
           <>
             <Header />

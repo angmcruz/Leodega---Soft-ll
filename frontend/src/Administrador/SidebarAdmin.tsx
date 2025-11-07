@@ -26,12 +26,12 @@ export default function SidebarAdmin({ activeItem, setActiveItem }: SidebarAdmin
                 <SidebarItem
                     label="Mensajes"
                     active={activeItem === 'mensajes'}
-                    onClick={() => { setActiveItem('mensajes'); navigate('/admin/mensajes'); }}
+                    onClick={() => { setActiveItem('mensajes'); navigate('/mensajes'); }}
                 />
                 <SidebarItem
                     label="Solicitudes"
                     active={activeItem === 'solicitudes'}
-                    onClick={() => { setActiveItem('solicitudes'); navigate('/admin/solicitudes'); }}
+                    onClick={() => { setActiveItem('solicitudes'); navigate('/solicitudes'); }}
                 />
 
                 <div className="mt-8 mb-3 px-6">
@@ -43,12 +43,12 @@ export default function SidebarAdmin({ activeItem, setActiveItem }: SidebarAdmin
                 <SidebarItem
                     label="Calendario"
                     active={activeItem === 'calendario'}
-                    onClick={() => { setActiveItem('calendario'); navigate('/admin/calendario'); }}
+                    onClick={() => { setActiveItem('calendario'); navigate('/calendario'); }}
                 />
                 <SidebarItem
                     label="Settings"
                     active={activeItem === 'settings'}
-                    onClick={() => { setActiveItem('settings'); navigate('/admin/settings'); }}
+                    onClick={() => { setActiveItem('settings'); navigate('/settings'); }}
                 />
                 <SidebarItem
                     label="Logout"
