@@ -7,7 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        leodega_p: 'rgba(117, 81, 233, 1)'
+        leodega_p: 'rgba(117, 81, 233, 1)',
+        primary: "#6C63FF",
+        secondary: "#FEC107",
       }
     },
   },

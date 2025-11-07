@@ -15,13 +15,20 @@ import PreguntaInicio2 from './Pages/Components/PreguntaInicio2'
 import PreguntaInicio3 from './Pages/Components/PreguntaInicio3'
 import NewPassword from "./Pages/NewPassword";
 
-import Dashboard from "./Pages/Dashboard"; //after login 
+import Dashboard from "./Pages/Dashboard/Dashboard";
 import PreguntaInicio4 from './Pages/Components/PreguntaInicio4'
 import PreguntaInicio5 from './Pages/Components/PreguntaInicio5'
 import PreguntaInicio6 from './Pages/Components/PreguntaInicio6'
 import PreguntaInicio7 from './Pages/Components/PreguntaInicio7'
 import VerifyCode from './Components/VerifyCode'
 import ResetPassword from './Pages/ResetPassword'
+import Decision from './Components/Decision'
+import Bodegas from './Administrador/Bodegas'
+import Layout from './Administrador/Layout'
+import Mensajes from './Administrador/Mensajes'
+import Solicitudes from './Administrador/Solicitudes'
+import Calendario from './Administrador/Calendario'
+import Settings from './Administrador/Settings'
 
 
 function App() {
@@ -34,7 +41,7 @@ function App() {
         <Route path="/preguntainicio1" element={<PreguntaIncio1 />} />
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
         <Route path="/preguntainicio3" element={<PreguntaInicio3 />} />
-
+        <Route path="/decision" element={<Decision />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/reset-password" element={<NewPassword />} />
@@ -42,7 +49,11 @@ function App() {
         <Route path="/preguntainicio5" element={<PreguntaInicio5 />} />
         <Route path="/preguntainicio6" element={<PreguntaInicio6 />} />
         <Route path="/preguntainicio7" element={<PreguntaInicio7 />} />
-
+        <Route path="/bodegas" element={<Layout><Bodegas/></Layout>} />
+        <Route path="/mensajes" element={<Layout><Mensajes/></Layout>} />
+        <Route path="/solicitudes" element={<Layout><Solicitudes/></Layout>} />
+        <Route path="/calendario" element={<Layout><Calendario/></Layout>} />
+        <Route path="/settings" element={<Layout><Settings/></Layout>} />
         <Route path="/" element={
           <>
             <Header />

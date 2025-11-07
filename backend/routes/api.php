@@ -125,6 +125,8 @@ Route::post('/reports', [ReportsController::class, 'store']);
 Route::put('/reports/{id}', [ReportsController::class, 'update']);
 Route::delete('/reports/{id}', [ReportsController::class, 'destroy']);
 
+// Route::resource('reports', ReportsController::class)->except('create', 'edit');
+
 Route::get('/store_moderation', [StoreModerationController::class, 'index']);
 Route::get('/store_moderation/{id}', [StoreModerationController::class, 'show']);
 Route::post('/store_moderation', [StoreModerationController::class, 'store']);
