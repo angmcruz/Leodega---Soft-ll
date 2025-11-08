@@ -29,6 +29,7 @@ import Mensajes from './Administrador/Mensajes'
 import Solicitudes from './Administrador/Solicitudes'
 import Calendario from './Administrador/Calendario'
 import Settings from './Administrador/Settings'
+import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
 
 
 function App() {
@@ -38,7 +39,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/verifyCode" element={<VerifyCode />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/preguntainicio1" element={<PreguntaIncio1 />} />
+        <Route path="/preguntainicio1" element={<PreguntaInicio1 />} />
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
         <Route path="/preguntainicio3" element={<PreguntaInicio3 />} />
         <Route path="/decision" element={<Decision />} />

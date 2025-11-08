@@ -289,7 +289,7 @@ const Calendario: React.FC = () => {
     return (
         
         <div className="mb-2 pl-8 pt-5 pr-8">
-            <h1 className="text-2xl font-bold text-gray-900">Calendario</h1>
+            <h1 className="text-2xl font-bold pb-3 text-gray-900">Calendario</h1>
             <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="flex items-center justify-between mb-6">
                 <button onClick={goToToday} className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"  >
