@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
@@ -18,6 +18,29 @@ const PreguntaInicio7 = () => {
     objetos: false,
   });
   const [politica, setPolitica] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(()=>{
+    const storedData = localStorage.getItem("optionData");
+    if(storedData){
+      const parsed =JSON.parse(storedData);
+      if(parsed.step7Data?.seguridad && parsed.step7Data?.politica){
+        setSeguridad(parsed.step7Data.seguridad)
+        setPolitica(parsed.step7Data?.politica)
+      }
+    }
+  },[]);
+
+  useEffect(() => {
+    const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
+    const updatedData = {
+      ...existingData,
+      step7Data: { seguridad, politica },
+    };
+    localStorage.setItem("optionData", JSON.stringify(updatedData));
+  }, [seguridad, politica]);
+
 
   type SeguridadKey = keyof typeof seguridad;
 
@@ -25,10 +48,13 @@ const PreguntaInicio7 = () => {
     setSeguridad((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEnviar = () => {
-    setIsModalOpen(true);
+    setIsProcessing(true);
+    setTimeout(()=>{
+      setIsProcessing(false);
+      setIsModalOpen(true);
+    }, 2500);
   };
 
   const handleConfirm = () => {
@@ -148,6 +174,13 @@ const PreguntaInicio7 = () => {
           />
         </div>
       </main>
+
+      {isProcessing && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm z-50">
+          <div className="w-10 h-10 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-lg font-medium text-gray-700">Procesando solicitud...</p>
+        </div>
+      )}
     </div>
   );
 };
