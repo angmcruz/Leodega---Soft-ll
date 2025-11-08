@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
+import api from "../../api/axios";
 
 const PreguntaInicio1: React.FC = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const storedUser = localStorage.getItem("auth_user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const landlordID = user?.landlord?.id;
+
+
 
   const options = [
     { id: "habitacion", name: "Habitación", image: "/src/img/habitacionLogo.png" },
@@ -16,15 +22,37 @@ const PreguntaInicio1: React.FC = () => {
     { id: "bodega", name: "Bodega Indep.", image: "/src/img/bodegaLogo.png" },
   ];
 
+  useEffect(() => {
+    const storedData = localStorage.getItem("optionData");
+    if (storedData) {
+      const parsed = JSON.parse(storedData);
+      if (parsed.step1Data?.selectedOption) {
+        setSelectedOption(parsed.step1Data.selectedOption);
+      }
+    }
+  }, []);
+
+  const handleOptionClick = (id: string) => {
+    setSelectedOption(id);
+    const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
+    const updatedData = {
+      ...existingData,
+      step1Data: { selectedOption: id }
+    };
+
+    localStorage.setItem("optionData", JSON.stringify(updatedData));
+  };
+
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <header className="flex justify-end items-center gap-3 p-6">
-        <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className="h-10"/>
+        <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className="h-10" />
         <img src="/src/img/LOGO_LEODEGA TEXTO-19.png" alt="Leodega" className="h-8" />
       </header>
 
       <main className="flex flex-col justify-center items-center flex-1 px-6">
-  <div className="w-full max-w-4xl text-center lg:text-left mt-[-90px] ">
+        <div className="w-full max-w-4xl text-center lg:text-left mt-[-90px] ">
           <h1 className="text-2xl sm:text-3xl font-semibold mb-3">
             ¿Cuál de estas opciones describe mejor tu espacio?
           </h1>
@@ -36,12 +64,11 @@ const PreguntaInicio1: React.FC = () => {
             {options.map((option) => (
               <button
                 key={option.id}
-                onClick={() => setSelectedOption(option.id)}
+                onClick={() => handleOptionClick(option.id)}
                 className={`relative bg-white rounded-2xl border-2 transition-all duration-300 w-full max-w-[280px] h-[120px] flex items-center justify-center overflow-hidden
-                  ${
-                    selectedOption === option.id
-                      ? "border-purple-500 shadow-lg scale-[1.03]"
-                      : "border-gray-200 hover:border-gray-300 hover:shadow-md"
+                    ${selectedOption === option.id
+                    ? "border-purple-500 shadow-lg scale-[1.03]"
+                    : "border-gray-200 hover:border-gray-300 hover:shadow-md"
                   }`}>
                 <img
                   src={option.image}
@@ -49,11 +76,10 @@ const PreguntaInicio1: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
                 <div
-                  className={`absolute bottom-0 w-full text-center text-sm font-medium py-2 transition-colors ${
-                    selectedOption === option.id
+                  className={`absolute bottom-0 w-full text-center text-sm font-medium py-2 transition-colors ${selectedOption === option.id
                       ? "bg-purple-500 text-white"
                       : "bg-gray-50 text-gray-700"
-                  }`} >
+                    }`} >
                   {option.name}
                 </div>
               </button>

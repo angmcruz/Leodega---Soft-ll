@@ -18,11 +18,15 @@ class storeRoomsController extends ApiController
     public function store(Request $request){
         $rules = [
             'landlord_id' => 'required|exists:landlords,id',
+            'room_type' => 'required|in:habitacion,garaje,contenedor,sotano,atico',
+            'storage_type'=> 'required|in:completa,privado,compartido',
             'direction' => 'required|string',
             'city' => 'required|string',
             'geographical_zone' => 'required|string',
             'size' => 'required|numeric',
+            'title'=> 'required|string',
             'description' => 'required|string',
+            'security'=>'required|string',
             'publication_status' => 'in:pending,approved,rejected',
             'publication_date' => 'date',
         ];
@@ -33,11 +37,15 @@ class storeRoomsController extends ApiController
     public function update(Request $request, $id){
         $rules = [
             'landlord_id' => 'exists:landlords,id',
+            'room_type' => 'in:habitacion,garaje,contenedor,sotano,atico',
+            'storage_type' => 'in:complet,privado,compartido',
             'direction' => 'string',
             'city' => 'string',
             'geographical_zone' => 'string',
             'size' => 'numeric',
+            'title'=> 'string',
             'description' => 'string',
+            'security'=>'string',
             'publication_status' => 'in:pending,approved,rejected',
             'publication_date' => 'date',
         ];
