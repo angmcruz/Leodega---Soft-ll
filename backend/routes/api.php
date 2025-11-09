@@ -45,6 +45,8 @@ Route::get('/landlords/{id}', [LandlordsController::class, 'show']);
 Route::post('/landlords', [LandlordsController::class, 'store']);
 Route::put('/landlords/{id}', [LandlordsController::class, 'update']);
 Route::delete('/landlords/{id}', [LandlordsController::class, 'destroy']);
+Route::get('/landlords/{id}/storeRooms', [storeRoomsController::class, 'getByLandlord']);
+
 
 Route::get('/admin', [AdminController::class, 'index']);
 Route::get('/admin/{id}', [AdminController::class, 'show']);

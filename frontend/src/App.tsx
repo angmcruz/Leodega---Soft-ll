@@ -14,7 +14,6 @@ import PreguntaInicio2 from './Pages/Components/PreguntaInicio2'
 import PreguntaInicio3 from './Pages/Components/PreguntaInicio3'
 import NewPassword from "./Pages/NewPassword";
 
-import Dashboard from "./Pages/Dashboard/Dashboard";
 import PreguntaInicio4 from './Pages/Components/PreguntaInicio4'
 import PreguntaInicio5 from './Pages/Components/PreguntaInicio5'
 import PreguntaInicio6 from './Pages/Components/PreguntaInicio6'
@@ -42,7 +41,6 @@ function App() {
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
         <Route path="/preguntainicio3" element={<PreguntaInicio3 />} />
         <Route path="/decision" element={<Decision />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/reset-password" element={<NewPassword />} />
         <Route path="/preguntainicio4" element={<PreguntaInicio4 />} />
