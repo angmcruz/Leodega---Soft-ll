@@ -25,7 +25,7 @@ const Login: React.FC = () => {
             localStorage.setItem("auth_user", JSON.stringify(data.user));
 
             if(data.user.role === "landlord"){
-                navigate("/dashboard");
+                navigate("/bodegas");
             }else if(data.user.role === "tenant"){
                 navigate("/");
             }else{
