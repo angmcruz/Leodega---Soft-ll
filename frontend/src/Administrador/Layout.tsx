@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { LayoutRouteProps } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 
-import { HeaderAdmin } from "./HeaderAdmin";
+import { HeaderArrendador } from "./HeaderArrendador";
 import SidebarAdmin from "./SidebarAdmin";
 const Layout: React.FC<LayoutRouteProps> = ({ children }) => {
     const [activeItem, setActiveItem] = useState('bodegas');
@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutRouteProps> = ({ children }) => {
         <div className="flex h-screen bg-gray-50 overflow-hidden">
             <SidebarAdmin activeItem={activeItem} setActiveItem={setActiveItem} />
             <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-                <HeaderAdmin />
+                <HeaderArrendador />
                 <main className="flex-1 overflow-auto bg-gray-50">
                     {children}
                 </main>
