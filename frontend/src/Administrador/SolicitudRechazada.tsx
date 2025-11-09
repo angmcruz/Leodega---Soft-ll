@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, Mail, MessageSquare, Home, Bell } from 'lucide-react';
+import { CheckCircle, Mail, Home, Bell } from 'lucide-react';
 
 interface SolicitudRechazadaProps {
     solicitud: {

@@ -46,8 +46,7 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                     <div className="relative">
                         <button
                             onClick={() => setMostrarMenuOrden(!mostrarMenuOrden)}
-                            className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 bg-white transition-colors"
-                        >
+                            className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 bg-white transition-colors">
                             <span className="text-sm text-gray-600">Short by:</span>
                             <span className="text-sm font-medium text-gray-900">{getSortLabel()}</span>
                             <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -166,13 +165,9 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                                 </div>
                                 <div className='flex flex-row gap-4 text-gray-600'>
                                     <div className='flex items-center gap-2'>
-                                        <input 
-                                                    type='checkbox'
-                                                    checked={isChecked}
-                                                    onChange={(e) => setIsChecked(e.target.checked)}
-                                                    className='w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer'
-                                                />
-                                                <span>300 m²</span>
+                                        <input type='checkbox' checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}
+                                            className='w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer'/>
+                                        <span>300 m²</span>
                                     </div>
                                     <div className='flex items-center gap-2'>
                                         <span>Altura: 6 metros</span>

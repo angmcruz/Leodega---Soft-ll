@@ -206,7 +206,7 @@ const Calendario: React.FC = () => {
         
         return (
         <div className="border border-gray-200 rounded-lg overflow-hidden">
-            <div className="grid grid-cols-8 bg-gray-50 border-b border-gray-200">
+            <div className="grid grid-cols-8 border-b border-gray-200">
             <div className="p-3"></div>
             {weekDays.map((day, idx) => (
                 <div key={idx} className="p-3 text-center border-l border-gray-200">
@@ -288,8 +288,8 @@ const Calendario: React.FC = () => {
 
     return (
         
-        <div className="mb-2 pl-8 pt-5 pr-8">
-            <h1 className="text-2xl font-bold pb-3 text-gray-900">Calendario</h1>
+            <div className="mb-6 pl-8 pt-10 mt-[-10px] pr-8 bg-[#f5f6fa]  min-h-screen">
+                <h1 className="text-2xl font-semibold text-gray-900 pb-3 ">Calendario</h1>
             <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="flex items-center justify-between mb-6">
                 <button onClick={goToToday} className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"  >
