@@ -19,7 +19,7 @@ class storeRoomsController extends ApiController
     public function store(Request $request){
         $rules = [
             'landlord_id' => 'required|exists:landlords,id',
-            'room_type' => 'required|in:habitacion,garaje,contenedor,sotano,atico',
+            'room_type' => 'required|in:habitacion,garaje,contenedor,sotano,atico, bodega',
             'storage_type'=> 'required|in:completa,privado,compartido',
             'direction' => 'required|string',
             'city' => 'required|string',
@@ -38,7 +38,7 @@ class storeRoomsController extends ApiController
     public function update(Request $request, $id){
         $rules = [
             'landlord_id' => 'exists:landlords,id',
-            'room_type' => 'in:habitacion,garaje,contenedor,sotano,atico',
+            'room_type' => 'in:habitacion,garaje,contenedor,sotano,atico, bodega',
             'storage_type' => 'in:complet,privado,compartido',
             'direction' => 'string',
             'city' => 'string',

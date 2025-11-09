@@ -59,19 +59,22 @@ const PreguntaInicio7 = () => {
       const user = JSON.parse(localStorage.getItem("auth_user")|| "{}");
 
       const storeRoom = {
-        landlord_id: user?.landlord?.id||"",
+        landlord_id: user?.landlord?.id|| "",
         room_type: data.step1Data?.selectedOption || "",
         storage_type: data.step2Data?.selectedOption || "",
         direction: data.location?.direction || "",
         city: data.location?.city || "",
         geographical_zone: data.location?.geographical_zone || "",
-        size: data.priceData?.tamano || "",
+        size: Number(data.priceData?.tamano) || 0,
         title: data.titleData?.titulo || "",
         description: data.titleData?.descripcion || "",
         security: JSON.stringify(data.step7Data?.seguridad || {}),
         publication_status: "pending",
         publication_date: new Date().toISOString(),
       };
+
+      console.log("Datos enviados:", storeRoom);
+
 
       const response = await api.post("/storeRooms", storeRoom);
 
