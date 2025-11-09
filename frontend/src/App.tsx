@@ -30,6 +30,7 @@ import Solicitudes from './Administrador/Solicitudes'
 import Calendario from './Administrador/Calendario'
 import Settings from './Administrador/Settings'
 import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
+import BodegaDetalle from './Administrador/BodegaDetalle'
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
         <Route path="/solicitudes" element={<Layout><Solicitudes/></Layout>} />
         <Route path="/calendario" element={<Layout><Calendario/></Layout>} />
         <Route path="/settings" element={<Layout><Settings/></Layout>} />
+        
         <Route path="/" element={
           <>
             <Header />
