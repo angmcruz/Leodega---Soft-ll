@@ -1,6 +1,6 @@
 import { Bell, ChevronDown } from "lucide-react";
 
-export const HeaderAdmin: React.FC = () => {
+export const HeaderArrendador: React.FC = () => {
     return (
         <header className="bg-white border-b border-gray-200 px-8 py-3.5 flex items-center justify-between h-[72px]">
         <div className="flex-1 max-w-md">

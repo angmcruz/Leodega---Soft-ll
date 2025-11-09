@@ -112,9 +112,10 @@ const Solicitudes: React.FC = () => {
     }
 
     return (
-        <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] ">
-            <div className="mb-6">
-                <h1 className="text-2xl mt-5 font-semibold text-gray-900">Solicitudes</h1>
+        
+        <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
+            <div className="mb-6 mt-3">
+                <h1 className="text-2xl font-semibold text-gray-900">Solicitudes</h1>
             </div>
 
             <div className="inline-flex items-center gap-3 mb-6 pl-4 pr-4 bg-white border border-gray-200 rounded-xl shadow-sm">
