@@ -54,5 +54,7 @@ class StoreRooms extends Model
         return $this->hasMany(Reservations::class, 'store_room_id');
     }
 
+     
+
 }
 

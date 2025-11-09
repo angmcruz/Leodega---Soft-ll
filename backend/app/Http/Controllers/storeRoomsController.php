@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Landlords;
 use Illuminate\Http\Request;
 use App\Models\StoreRooms;
 
@@ -54,5 +55,16 @@ class storeRoomsController extends ApiController
 
     public function destroy($id){
         return $this->destroyModel(StoreRooms::class, $id);
+    }
+
+    public function getByLandlord($landlordId)
+    {
+        $landlord = Landlords::with('storeRooms')->find($landlordId);
+
+        if (!$landlord) {
+            return response()->json(['message' => 'Landlord no encontrado'], 404);
+        }
+
+        return response()->json($landlord->storeRooms, 200);
     }
 }

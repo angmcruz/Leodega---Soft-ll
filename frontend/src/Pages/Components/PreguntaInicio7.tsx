@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
+import api from "../../api/axios";
 import ModalConfirmacion from "../../Components/ModalConfirmacion";
 
 const PreguntaInicio7 = () => {
@@ -49,17 +50,50 @@ const PreguntaInicio7 = () => {
   };
 
 
-  const handleEnviar = () => {
-    setIsProcessing(true);
-    setTimeout(()=>{
-      setIsProcessing(false);
-      setIsModalOpen(true);
-    }, 2500);
+  const handleEnviar = async () => {
+    try {
+      setIsModalOpen(false);
+      setIsProcessing(true);
+
+      const data = JSON.parse(localStorage.getItem("optionData")|| "{}");
+      const user = JSON.parse(localStorage.getItem("auth_user")|| "{}");
+
+      const storeRoom = {
+        landlord_id: user?.landlord?.id||"",
+        room_type: data.step1Data?.selectedOption || "",
+        storage_type: data.step2Data?.selectedOption || "",
+        direction: data.location?.direction || "",
+        city: data.location?.city || "",
+        geographical_zone: data.location?.geographical_zone || "",
+        size: data.priceData?.tamano || "",
+        title: data.titleData?.titulo || "",
+        description: data.titleData?.descripcion || "",
+        security: JSON.stringify(data.step7Data?.seguridad || {}),
+        publication_status: "pending",
+        publication_date: new Date().toISOString(),
+      };
+
+      const response = await api.post("/storeRooms", storeRoom);
+
+      if(response.status === 201 || response.status === 200){
+        setTimeout(() => {
+          setIsProcessing(false);
+          setIsModalOpen(true);
+          // Limpiar datos, pero mejor no porque falta poner las instancias de las otras tablas 
+          localStorage.removeItem("optionData");
+        }, 1500);
+      }
+    }catch(error){
+      console.error("Error al crear la bodega:", error);
+      alert("Error al enviar la solicitud, vuelve a intentar");
+      setIsProcessing(false)
+
+    }
   };
 
   const handleConfirm = () => {
     setIsModalOpen(false);
-    navigate('/bodegas');
+    navigate("/bodegas");
   };
 
   return (
