@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import api from "../api/axios";
+import { useNavigate } from 'react-router-dom';
 
 interface Bodega {
     id: number;
@@ -22,8 +23,8 @@ const Bodegas = () => {
 
     const user = JSON.parse(localStorage.getItem("auth_user") || "{}");
     const landlordId = user?.landlord?.id || "";
-        const totalPages = 5;
-
+    const totalPages = 5;
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchStore = async () => {
             try {
@@ -143,7 +144,8 @@ const Bodegas = () => {
                         </button>
                     </div>
 
-                    <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">
+                    <button onClick={() => navigate('/PreguntaInicio1')}
+                        className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">
                         Añadir Nueva Bodega
                     </button>
                 </div>
