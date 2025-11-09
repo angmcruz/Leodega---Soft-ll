@@ -1,181 +1,243 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
-import api from "../api/axios";
-
-interface Bodega {
-    id: number;
-    title: string;
-    direction: string;
-    city: string;
-    size: string;
-    publication_status: string;
-    storage_type: string;
-    room_type: string;
-}
+import BodegaDetalle from './BodegaDetalle';
+import type { Bodega } from './Interfaces/SolicitudesData';
 
 
 const Bodegas = () => {
-    const [bodegas, setBodegas] = useState<Bodega[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [sortBy, setSortBy] = useState('Newest');
+    const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name'>('newest');
+    const [mostrarMenuOrden, setMostrarMenuOrden] = useState(false);
+    const [bodegaSeleccionada, setBodegaSeleccionada] = useState<Bodega | null>(null);
+    const [mostrarDetalle, setMostrarDetalle] = useState(false);
 
-    const user = JSON.parse(localStorage.getItem("auth_user") || "{}");
-    const landlordId = user?.landlord?.id || "";
-        const totalPages = 5;
+    const bodegas: Bodega[] = [
+        { id: 1, nameBodega: 'Bodega1', bodega: 1, phoneNumber: '(225) 555-0118', email: 'jane@microsoft.com', country: 'United States', status: 'Active' },
+        { id: 2, nameBodega: 'Bodega1', bodega: 2, phoneNumber: '(205) 555-0100', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
+        { id: 3, nameBodega: 'Bodega1', bodega: 3, phoneNumber: '(302) 555-0107', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
+        { id: 4, nameBodega: 'Bodega1', bodega: 4, phoneNumber: '(252) 555-0126', email: 'jane@microsoft.com', country: 'Iran', status: 'Active' },
+        { id: 5, nameBodega: 'Bodega1', bodega: 5, phoneNumber: '(629) 555-0129', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
+        { id: 6, nameBodega: 'Bodega1', bodega: 6, phoneNumber: '(406) 555-0120', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
+        { id: 7, nameBodega: 'Bodega1', bodega: 7, phoneNumber: '(208) 555-0112', email: 'jane@microsoft.com', country: 'Brazil', status: 'Active' },
+        { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' },
+    ];
 
-    useEffect(() => {
-        const fetchStore = async () => {
-            try {
-                const response = await api.get(`landlords/${landlordId}/storeRooms`);
-                setBodegas(response.data);
-            } catch (error) {
-                console.error("Error al obtener bodegas:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        if (landlordId) fetchStore();
-    }, [landlordId]);
+    const totalPages = 40;
+    const bodegasFiltradas = bodegas.filter((bodega) => {
+        const coincideBusqueda = 
+            bodega.nameBodega.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            bodega.bodega.toString().includes(searchTerm) ||
+            bodega.phoneNumber.includes(searchTerm) ||
+            bodega.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            bodega.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            bodega.status.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        return coincideBusqueda;
+    });
 
-    const filterStore = bodegas.filter((bodega) =>
-        bodega.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const bodegasOrdenadas = [...bodegasFiltradas].sort((a, b) => {
+        if (sortBy === 'newest') {
+            return b.id - a.id;
+        } else if (sortBy === 'oldest') {
+            return a.id - b.id;
+        } else if (sortBy === 'name') {
+            return a.nameBodega.localeCompare(b.nameBodega);
+        }
+        return 0;
+    });
 
-    const getStatusClass = (status: string) => {
-        switch (status) {
-            case 'approved':
-                return 'bg-green-100 text-green-700';
-            case 'pending':
-                return 'bg-yellow-100 text-yellow-700';
-            case 'rejected':
-                return 'bg-red-100 text-red-700';
+    const getSortLabel = () => {
+        switch (sortBy) {
+            case 'newest':
+                return 'Newest';
+            case 'oldest':
+                return 'Oldest';
+            case 'name':
+                return 'Name A-Z';
             default:
-                return 'bg-gray-100 text-gray-700';
+                return 'Newest';
         }
     };
 
-    const getStatusLabel = (status: string) => {
-        switch (status) {
-            case 'approved':
-                return 'Aprobado';
-            case 'pending':
-                return 'Pendiente';
-            case 'rejected':
-                return 'Rechazado';
-            default:
-                return 'Desconocido';
-        }
+    const handleBodegaClick = (bodega: Bodega) => {
+        setBodegaSeleccionada(bodega);
+        setMostrarDetalle(true);
     };
 
+    const handleVolverABodegas = () => {
+        setMostrarDetalle(false);
+        setBodegaSeleccionada(null);
+    };
 
-    let content;
-
-    if (loading) {
-        content = <div className="p-6 text-center text-gray-500">Cargando bodegas...</div>;
-    } else if (filterStore.length === 0) {
-        content = <div className="p-6 text-center text-gray-500">No se encontraron bodegas.</div>;
-    } else {
-        content = (
-            <table className="w-full">
-                <thead className="bg-white border-b border-gray-200">
-                    <tr>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Título</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Ciudad</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Dirección</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tamaño</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tipo de Bodega</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tipo de Habitación</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                    {filterStore.map((bodega) => (
-                        <tr key={bodega.id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 text-sm text-gray-900">{bodega.id}</td>
-                            <td className="px-6 py-4 text-sm text-gray-900">{bodega.title}</td>
-                            <td className="px-6 py-4 text-sm text-gray-900">{bodega.city}</td>
-                            <td className="px-6 py-4 text-sm text-gray-900">{bodega.direction}</td>
-                            <td className="px-6 py-4 text-sm text-gray-900">{bodega.size}</td>
-                            <td className="px-6 py-4 text-sm text-gray-900">{bodega.storage_type}</td>
-                            <td className="px-6 py-4 text-sm text-gray-900">{bodega.room_type}</td>
-                            <td className="px-6 py-4">
-                                <span
-                                    className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${getStatusClass(bodega.publication_status)}`}
-                                >
-                                    {getStatusLabel(bodega.publication_status)}
-                                </span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
+    if (mostrarDetalle && bodegaSeleccionada) {
+        return (
+            <BodegaDetalle 
+                bodega={bodegaSeleccionada}
+                onVolver={handleVolverABodegas}
+            />
         );
     }
 
     return (
-        <div className="pl-8 pt-5 pr-8">
-            <div className="mb-2">
-                <h1 className="text-2xl font-bold text-gray-900">Bodegas</h1>
-            </div>
-
-            {/* Barra superior */}
-            <div className="flex items-center justify-between mb-6">
-                <div className="relative w-80">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                        type="text"
-                        placeholder="Buscar bodega"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    />
-                </div>
-
+        <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
+            <div className="mb-6 mt-3 flex flex-row justify-between">
+                <h1 className="text-2xl font-semibold text-gray-900 pt-3">Bodegas</h1>
                 <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-600">Sort by:</span>
-                        <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                            <span className="text-sm font-medium">{sortBy}</span>
-                            <ChevronDown className="w-4 h-4" />
-                        </button>
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white w-80 text-sm"
+                        />
                     </div>
 
-                    <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">
+                    <div className="relative">
+                        <button
+                            onClick={() => setMostrarMenuOrden(!mostrarMenuOrden)}
+                            className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 bg-white transition-colors"
+                        >
+                            <span className="text-sm text-gray-600">Short by:</span>
+                            <span className="text-sm font-medium text-gray-900">{getSortLabel()}</span>
+                            <ChevronDown className="w-4 h-4 text-gray-400" />
+                        </button>
+
+                        {mostrarMenuOrden && (
+                            <>
+                                <div 
+                                    className="fixed inset-0 z-10" 
+                                    onClick={() => setMostrarMenuOrden(false)}
+                                ></div>
+                                
+                                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                                    <button
+                                        onClick={() => {
+                                            setSortBy('newest');
+                                            setMostrarMenuOrden(false);
+                                        }}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${
+                                            sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                        }`}
+                                    >
+                                        Newest
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setSortBy('oldest');
+                                            setMostrarMenuOrden(false);
+                                        }}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
+                                            sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                        }`}
+                                    >
+                                        Oldest
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setSortBy('name');
+                                            setMostrarMenuOrden(false);
+                                        }}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${
+                                            sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                        }`}
+                                    >
+                                        Name A-Z
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+
+                    <button className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
                         Añadir Nueva Bodega
                     </button>
                 </div>
             </div>
 
-            {/* Contenido principal renderizado según el estado */}
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                {content}
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden border-xl border-gray-200">
+                <table className="w-full">
+                    <thead className=" border-b border-gray-200">
+                        <tr>
+                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                Name Bodega
+                            </th>
+                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                Bodega
+                            </th>
+                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                Phone Number
+                            </th>
+                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                Email
+                            </th>
+                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                Country
+                            </th>
+                            <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 bg-white">
+                        {bodegasOrdenadas.length > 0 ? (
+                            bodegasOrdenadas.map((bodega) => (
+                                <tr 
+                                    key={bodega.id} 
+                                    className="hover:bg-gray-50 transition-colors cursor-pointer"
+                                    onClick={() => handleBodegaClick(bodega)}
+                                >
+                                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{bodega.nameBodega}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-900">{bodega.bodega}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-900">{bodega.phoneNumber}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-900">{bodega.email}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-900">{bodega.country}</td>
+                                    <td className="px-6 py-4">
+                                        <span
+                                            className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${
+                                                bodega.status === 'Active'
+                                                    ? 'bg-teal-100 text-teal-700'
+                                                    : 'bg-red-100 text-red-700'
+                                            }`}
+                                        >
+                                            {bodega.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={6} className="px-6 py-12 text-center text-sm text-gray-500">
+                                    No se encontraron bodegas
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
 
-                {filterStore.length > 0 && (
-                    <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
-                        <div className="text-sm text-gray-500">
-                            Mostrando {filterStore.length > 8 ? "1 a 8" : `1 a ${filterStore.length}`} de {filterStore.length} bodegas
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <button className="px-3 py-1 rounded hover:bg-gray-100">&lt;</button>
-                            <button className="px-3 py-1 bg-purple-600 text-white rounded">1</button>
-                            <button className="px-3 py-1 rounded hover:bg-gray-100">2</button>
-                            <button className="px-3 py-1 rounded hover:bg-gray-100">3</button>
-                            <button className="px-3 py-1 rounded hover:bg-gray-100">4</button>
-                            <span className="px-2">...</span>
-                            <button className="px-3 py-1 rounded hover:bg-gray-100">{totalPages}</button>
-                            <button className="px-3 py-1 rounded hover:bg-gray-100">&gt;</button>
-                        </div>
+                <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-white">
+                    <div className="text-sm text-gray-400">
+                        Showing data 1 to 8 of 256K entries
                     </div>
-                )}
+                    <div className="flex items-center gap-2">
+                        <button className="px-3 py-1.5 rounded hover:bg-gray-100 text-gray-600 transition-colors">
+                            &lt;
+                        </button>
+                        <button className="px-3 py-1.5 bg-purple-600 text-white rounded font-medium">1</button>
+                        <button className="px-3 py-1.5 rounded hover:bg-gray-100 text-gray-600 transition-colors">2</button>
+                        <button className="px-3 py-1.5 rounded hover:bg-gray-100 text-gray-600 transition-colors">3</button>
+                        <button className="px-3 py-1.5 rounded hover:bg-gray-100 text-gray-600 transition-colors">4</button>
+                        <span className="px-2 text-gray-400">...</span>
+                        <button className="px-3 py-1.5 rounded hover:bg-gray-100 text-gray-600 transition-colors">{totalPages}</button>
+                        <button className="px-3 py-1.5 rounded hover:bg-gray-100 text-gray-600 transition-colors">
+                            &gt;
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
-
-
 };
 
 export default Bodegas;
