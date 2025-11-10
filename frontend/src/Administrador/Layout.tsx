@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutRouteProps> = ({ children }) => {
             <SidebarAdmin activeItem={activeItem} setActiveItem={setActiveItem} />
             <div className="flex-1 flex flex-col overflow-hidden min-w-0">
                 <HeaderArrendador />
-                <main className="flex-1 overflow-auto bg-gray-50">
+                <main className="flex-1 overflow-auto bg-gray-50 relative z-30">
                     {children}
                 </main>
             </div>

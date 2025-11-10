@@ -2,36 +2,40 @@ import { useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import BodegaDetalle from './BodegaDetalle';
 import type { Bodega } from './Interfaces/SolicitudesData';
+import { useNavigate } from 'react-router-dom';
 
 
 const Bodegas = () => {
+    //const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name'>('newest');
     const [mostrarMenuOrden, setMostrarMenuOrden] = useState(false);
     const [bodegaSeleccionada, setBodegaSeleccionada] = useState<Bodega | null>(null);
     const [mostrarDetalle, setMostrarDetalle] = useState(false);
+    const [mostrarCrear, setMostrarCrear] = useState(false);
+
 
     const bodegas: Bodega[] = [
         { id: 1, nameBodega: 'Bodega1', bodega: 1, phoneNumber: '(225) 555-0118', email: 'jane@microsoft.com', country: 'United States', status: 'Active' },
         { id: 2, nameBodega: 'Bodega1', bodega: 2, phoneNumber: '(205) 555-0100', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
         { id: 3, nameBodega: 'Bodega1', bodega: 3, phoneNumber: '(302) 555-0107', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
         { id: 4, nameBodega: 'Bodega1', bodega: 4, phoneNumber: '(252) 555-0126', email: 'jane@microsoft.com', country: 'Iran', status: 'Active' },
-        { id: 5, nameBodega: 'Bodega1', bodega: 5, phoneNumber: '(629) 555-0129', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
-        { id: 6, nameBodega: 'Bodega1', bodega: 6, phoneNumber: '(406) 555-0120', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
-        { id: 7, nameBodega: 'Bodega1', bodega: 7, phoneNumber: '(208) 555-0112', email: 'jane@microsoft.com', country: 'Brazil', status: 'Active' },
-        { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' },
+        /* { id: 5, nameBodega: 'Bodega1', bodega: 5, phoneNumber: '(629) 555-0129', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
+         { id: 6, nameBodega: 'Bodega1', bodega: 6, phoneNumber: '(406) 555-0120', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
+         { id: 7, nameBodega: 'Bodega1', bodega: 7, phoneNumber: '(208) 555-0112', email: 'jane@microsoft.com', country: 'Brazil', status: 'Active' },
+         { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' }, */
     ];
 
     const totalPages = 40;
     const bodegasFiltradas = bodegas.filter((bodega) => {
-        const coincideBusqueda = 
+        const coincideBusqueda =
             bodega.nameBodega.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bodega.bodega.toString().includes(searchTerm) ||
             bodega.phoneNumber.includes(searchTerm) ||
             bodega.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bodega.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bodega.status.toLowerCase().includes(searchTerm.toLowerCase());
-        
+
         return coincideBusqueda;
     });
 
@@ -71,7 +75,7 @@ const Bodegas = () => {
 
     if (mostrarDetalle && bodegaSeleccionada) {
         return (
-            <BodegaDetalle 
+            <BodegaDetalle
                 bodega={bodegaSeleccionada}
                 onVolver={handleVolverABodegas}
             />
@@ -79,6 +83,7 @@ const Bodegas = () => {
     }
 
     return (
+
         <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
             <div className="mb-6 mt-3 flex flex-row justify-between">
                 <h1 className="text-2xl font-semibold text-gray-900 pt-3">Bodegas</h1>
@@ -106,20 +111,19 @@ const Bodegas = () => {
 
                         {mostrarMenuOrden && (
                             <>
-                                <div 
-                                    className="fixed inset-0 z-10" 
+                                <div
+                                    className="fixed inset-0 z-10"
                                     onClick={() => setMostrarMenuOrden(false)}
                                 ></div>
-                                
+
                                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
                                     <button
                                         onClick={() => {
                                             setSortBy('newest');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${
-                                            sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Newest
                                     </button>
@@ -128,9 +132,8 @@ const Bodegas = () => {
                                             setSortBy('oldest');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
-                                            sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Oldest
                                     </button>
@@ -139,9 +142,8 @@ const Bodegas = () => {
                                             setSortBy('name');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${
-                                            sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Name A-Z
                                     </button>
@@ -150,7 +152,7 @@ const Bodegas = () => {
                         )}
                     </div>
 
-                    <button className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
+                    <button onClick={() => setMostrarCrear(true)} className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
                         Añadir Nueva Bodega
                     </button>
                 </div>
@@ -183,8 +185,8 @@ const Bodegas = () => {
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {bodegasOrdenadas.length > 0 ? (
                             bodegasOrdenadas.map((bodega) => (
-                                <tr 
-                                    key={bodega.id} 
+                                <tr
+                                    key={bodega.id}
                                     className="hover:bg-gray-50 transition-colors cursor-pointer"
                                     onClick={() => handleBodegaClick(bodega)}
                                 >
@@ -195,11 +197,10 @@ const Bodegas = () => {
                                     <td className="px-6 py-4 text-sm text-gray-900">{bodega.country}</td>
                                     <td className="px-6 py-4">
                                         <span
-                                            className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${
-                                                bodega.status === 'Active'
+                                            className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${bodega.status === 'Active'
                                                     ? 'bg-teal-100 text-teal-700'
                                                     : 'bg-red-100 text-red-700'
-                                            }`}
+                                                }`}
                                         >
                                             {bodega.status}
                                         </span>
@@ -215,6 +216,39 @@ const Bodegas = () => {
                         )}
                     </tbody>
                 </table>
+                {mostrarCrear && (
+                    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-[9999]">
+                        <div className="bg-white p-6 rounded-xl shadow-lg w-[450px]">
+                            <h2 className="text-lg font-semibold mb-4">Nueva Bodega</h2>
+
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    alert("Bodega Creada");
+                                    setMostrarCrear(false);
+                                }}
+                                className="space-y-3"
+                            >
+                                {/* CAMBIAR LOS CAMPOS Y AñADIR IMAGEN*/}
+                                <input className="w-full border rounded-lg px-3 py-2" placeholder="Nombre de la bodega" required />
+                                <input className="w-full border rounded-lg px-3 py-2" placeholder="Teléfono" required />
+                                <select className="w-full border rounded-lg px-3 py-2">
+                                    <option value="Active">Activo</option>
+                                    <option value="Inactive">Inactivo</option>
+                                </select>
+
+                                <div className="flex justify-end gap-3 pt-4">
+                                    <button type="button" onClick={() => setMostrarCrear(false)} className="px-4 py-2 border rounded-lg hover:bg-gray-100">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
 
                 <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-white">
                     <div className="text-sm text-gray-400">
@@ -237,7 +271,12 @@ const Bodegas = () => {
                 </div>
             </div>
         </div>
+
+
+
+
     );
+
 };
 
 export default Bodegas;
