@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import api from '../api/axios';
+
 
 
 
@@ -52,19 +52,7 @@ const Register = () => {
         }
 
         try {
-            const response = await api.post('/register', {
-                name,
-                lastName,
-                phone,
-                email,
-                password,
-
-            });
-
-            if (response.status === 201 || response.status === 200) {
-                alert("Cuenta creada exitosamente");
-                navigate('/login'); //TENEMOS Q PASAR A PAGINA DE ELEGIR TIPO
-            }
+            
             const userData = {
                 name,
                 lastName,
