@@ -50,6 +50,22 @@ const Register: React.FC = () => {
             return;
         }
 
+        try {
+             const a = "hola";
+
+            const response = await api.post('/register', {
+                name,
+                lastName,
+                phone,
+                email,
+                password,
+
+            });
+
+            if (response.status === 201 || response.status === 200) {
+                alert("Cuenta creada exitosamente");
+                navigate('/login'); //TENEMOS Q PASAR A PAGINA DE ELEGIR TIPO
+            }
         const userData = {
             name,
             lastName,
