@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const Login: React.FC = () => {
 
     const navigate = useNavigate();
-    const [email, setEmail] = useState("user@gmail.com");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -24,7 +24,13 @@ const Login: React.FC = () => {
 
             localStorage.setItem("auth_user", JSON.stringify(data.user));
 
-            navigate("/dashboard"); //dashboard es prueba
+            if(data.user.role === "landlord"){
+                navigate("/bodegas");
+            }else if(data.user.role === "tenant"){
+                navigate("/");
+            }else{
+                navigate("/");
+            }
 
         } catch (error: any) {
             const msg =
@@ -60,7 +66,7 @@ const Login: React.FC = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full text-base focus:outline-none px-2 py-1"
                                     placeholder="user@gmail.com"
-                                    defaultValue="user@gmail.com"
+                                    required
                                 />
                             </fieldset>
                         </div>
@@ -70,9 +76,9 @@ const Login: React.FC = () => {
                                 <input
                                     type="password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => setPassword(e.target.value)} required
                                     className="w-full text-base focus:outline-none px-2 py-1"
-                                    placeholder="***************************"
+                                    placeholder="************"
                                 />
                             </fieldset>
                         </div>
@@ -82,12 +88,11 @@ const Login: React.FC = () => {
                         <div className="flex items-center justify-between mb-6">
                             <label className="flex items-center gap-2 text-sm">
                                 <input type="checkbox" className="w-5 h-5 border-2 border-gray-400 rounded" />
-                                Recuérdame
+                                Recuérdame**
                             </label>
                             <Link to= "/ResetPassword"className="text-sm text-[#ff8682]">Olvidé mi contraseña</Link>
                         </div>
                         <button type="submit" disabled={loading} 
-                          onClick={()=>navigate('/VerifyCode')}
                           className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-6">
                             {loading ? "Ingresando..." : "Iniciar Sesión"}
                         </button>

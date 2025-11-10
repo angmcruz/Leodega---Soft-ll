@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
+import api from "../../api/axios";
 import ModalConfirmacion from "../../Components/ModalConfirmacion";
 
 const PreguntaInicio7 = () => {
@@ -18,6 +19,29 @@ const PreguntaInicio7 = () => {
     objetos: false,
   });
   const [politica, setPolitica] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(()=>{
+    const storedData = localStorage.getItem("optionData");
+    if(storedData){
+      const parsed =JSON.parse(storedData);
+      if(parsed.step7Data?.seguridad && parsed.step7Data?.politica){
+        setSeguridad(parsed.step7Data.seguridad)
+        setPolitica(parsed.step7Data?.politica)
+      }
+    }
+  },[]);
+
+  useEffect(() => {
+    const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
+    const updatedData = {
+      ...existingData,
+      step7Data: { seguridad, politica },
+    };
+    localStorage.setItem("optionData", JSON.stringify(updatedData));
+  }, [seguridad, politica]);
+
 
   type SeguridadKey = keyof typeof seguridad;
 
@@ -25,15 +49,54 @@ const PreguntaInicio7 = () => {
     setSeguridad((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleEnviar = () => {
-    setIsModalOpen(true);
+  const handleEnviar = async () => {
+    try {
+      setIsModalOpen(false);
+      setIsProcessing(true);
+
+      const data = JSON.parse(localStorage.getItem("optionData")|| "{}");
+      const user = JSON.parse(localStorage.getItem("auth_user")|| "{}");
+
+      const storeRoom = {
+        landlord_id: user?.landlord?.id|| "",
+        room_type: data.step1Data?.selectedOption || "",
+        storage_type: data.step2Data?.selectedOption || "",
+        direction: data.location?.direction || "",
+        city: data.location?.city || "",
+        geographical_zone: data.location?.geographical_zone || "",
+        size: Number(data.priceData?.tamano) || 0,
+        title: data.titleData?.titulo || "",
+        description: data.titleData?.descripcion || "",
+        security: JSON.stringify(data.step7Data?.seguridad || {}),
+        publication_status: "pending",
+        publication_date: new Date().toISOString(),
+      };
+
+      console.log("Datos enviados:", storeRoom);
+
+
+      const response = await api.post("/storeRooms", storeRoom);
+
+      if(response.status === 201 || response.status === 200){
+        setTimeout(() => {
+          setIsProcessing(false);
+          setIsModalOpen(true);
+          // Limpiar datos, pero mejor no porque falta poner las instancias de las otras tablas 
+          localStorage.removeItem("optionData");
+        }, 1500);
+      }
+    }catch(error){
+      console.error("Error al crear la bodega:", error);
+      alert("Error al enviar la solicitud, vuelve a intentar");
+      setIsProcessing(false)
+
+    }
   };
 
   const handleConfirm = () => {
     setIsModalOpen(false);
-    navigate('/bodegas');
+    navigate("/bodegas");
   };
 
   return (
@@ -148,6 +211,13 @@ const PreguntaInicio7 = () => {
           />
         </div>
       </main>
+
+      {isProcessing && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm z-50">
+          <div className="w-10 h-10 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-lg font-medium text-gray-700">Procesando solicitud...</p>
+        </div>
+      )}
     </div>
   );
 };

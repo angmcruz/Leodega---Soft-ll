@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
@@ -7,6 +7,37 @@ const PreguntaInicio5 = () => {
   const navigate = useNavigate();
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("optionData");
+    if (storedData) {
+      const parsed = JSON.parse(storedData);
+      if (parsed.titleData) {
+        setTitulo(parsed.titleData.titulo || "");
+        setDescripcion(parsed.titleData.descripcion || "");
+      }
+    }
+  }, []);
+
+  const handleDescription = () => {
+      const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
+
+    const updatedData = {
+      ...existingData,
+      titleData: {
+        titulo,
+        descripcion
+      }
+    }
+
+    localStorage.setItem("optionData", JSON.stringify(updatedData));
+  }
+
+  useEffect(()=> {
+    if(titulo || descripcion){
+      handleDescription();
+    }
+  }, [titulo, descripcion]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -68,7 +99,9 @@ const PreguntaInicio5 = () => {
 
           <FooterNav
             onBack={() => navigate('/PreguntaInicio4')}
-            onNext={() => navigate('/PreguntaInicio6')}
+            onNext={() => {
+              handleDescription();
+              navigate('/PreguntaInicio6')}}
             nextDisabled={!titulo || !descripcion}
           />
         </div>

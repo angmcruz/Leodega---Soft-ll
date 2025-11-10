@@ -11,11 +11,15 @@ class StoreRooms extends Model
     protected $table = 'storeRooms';
     protected $fillable = [
         'landlord_id',
+        'room_type',
+        'storage_type',
         'direction',
         'city',
         'geographical_zone',
         'size',
+        'title',
         'description',
+        'security',
         'publication_status',
         'publication_date'
     ];
@@ -49,6 +53,8 @@ class StoreRooms extends Model
     {
         return $this->hasMany(Reservations::class, 'store_room_id');
     }
+
+     
 
 }
 

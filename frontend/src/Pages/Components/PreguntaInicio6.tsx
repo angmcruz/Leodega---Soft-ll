@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
@@ -11,6 +11,39 @@ const PreguntaInicio6 = () => {
   const precioBase = precio ? Number.parseFloat(precio) : 0;
   const tarifaServicio = precioBase * 0.1; // 10% ejemplo
   const ganancia = precioBase - tarifaServicio;
+
+
+  useEffect(()=>{
+    const storedData = localStorage.getItem("optionData");
+    if(storedData){
+      const parsed = JSON.parse(storedData);
+      if(parsed.priceData){
+        setPrecio(parsed.priceData.precio || "");
+        setTamano(parsed.priceData.tamano || "");
+      }
+    }
+  }, []);
+
+
+  const handlePrice = () => {
+    const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
+
+    const updatedData = {
+      ...existingData,
+      priceData : {
+        precio,
+        tamano
+      }
+    }
+
+    localStorage.setItem("optionData", JSON.stringify(updatedData));
+  }
+
+  useEffect (()=>{
+    if(precio||tamano){
+      handlePrice();
+    }
+  }, [precio, tamano]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -85,7 +118,9 @@ const PreguntaInicio6 = () => {
 
           <FooterNav
             onBack={() => navigate('/PreguntaInicio5')}
-            onNext={() => navigate('/PreguntaInicio7')}
+            onNext={() =>{ 
+              handlePrice();
+              navigate('/PreguntaInicio7')}}
             nextDisabled={!precio || !tamano}
           />
         </div>

@@ -10,12 +10,10 @@ import Testimonial from './Components/Testimonial'
 import Footer from './Components/Footer'
 import Login from './Components/login'
 import Register from './Components/Register'
-import PreguntaIncio1 from './Pages/Components/PreguntaInicio1'
 import PreguntaInicio2 from './Pages/Components/PreguntaInicio2'
 import PreguntaInicio3 from './Pages/Components/PreguntaInicio3'
 import NewPassword from "./Pages/NewPassword";
 
-import Dashboard from "./Pages/Dashboard/Dashboard";
 import PreguntaInicio4 from './Pages/Components/PreguntaInicio4'
 import PreguntaInicio5 from './Pages/Components/PreguntaInicio5'
 import PreguntaInicio6 from './Pages/Components/PreguntaInicio6'
@@ -23,12 +21,13 @@ import PreguntaInicio7 from './Pages/Components/PreguntaInicio7'
 import VerifyCode from './Components/VerifyCode'
 import ResetPassword from './Pages/ResetPassword'
 import Decision from './Components/Decision'
-import Bodegas from './Administrador/Bodegas'
-import Layout from './Administrador/Layout'
-import Mensajes from './Administrador/Mensajes'
-import Solicitudes from './Administrador/Solicitudes'
-import Calendario from './Administrador/Calendario'
-import Settings from './Administrador/Settings'
+import Bodegas from './Arrendador/Bodegas'
+import Layout from './Arrendador/Layout'
+import Mensajes from './Arrendador/Mensajes'
+import Solicitudes from './Arrendador/Solicitudes'
+import Calendario from './Arrendador/Calendario'
+import Settings from './Arrendador/Settings'
+import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
 
 
 function App() {
@@ -38,11 +37,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/verifyCode" element={<VerifyCode />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/preguntainicio1" element={<PreguntaIncio1 />} />
+        <Route path="/preguntainicio1" element={<PreguntaInicio1 />} />
         <Route path="/preguntainicio2" element={<PreguntaInicio2 />} />
         <Route path="/preguntainicio3" element={<PreguntaInicio3 />} />
         <Route path="/decision" element={<Decision />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/reset-password" element={<NewPassword />} />
         <Route path="/preguntainicio4" element={<PreguntaInicio4 />} />
@@ -54,6 +52,7 @@ function App() {
         <Route path="/solicitudes" element={<Layout><Solicitudes/></Layout>} />
         <Route path="/calendario" element={<Layout><Calendario/></Layout>} />
         <Route path="/settings" element={<Layout><Settings/></Layout>} />
+        
         <Route path="/" element={
           <>
             <Header />

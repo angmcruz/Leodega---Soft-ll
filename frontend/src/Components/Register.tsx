@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -36,7 +35,7 @@ const Register: React.FC = () => {
             hasError = true;
         }
 
-        if (password.length < 6) {
+        if (password.length < 8) {
             newError.pass1 = "La contraseña debe tener al menos 6 caracteres";
             hasError = true;
         }
@@ -67,11 +66,17 @@ const Register: React.FC = () => {
                 alert("Cuenta creada exitosamente");
                 navigate('/login'); //TENEMOS Q PASAR A PAGINA DE ELEGIR TIPO
             }
-
-        } catch (error) {
-            console.error(error);
-
+        const userData = {
+            name,
+            lastName,
+            phone,
+            email,
+            password,
         }
+
+        localStorage.setItem('tempUser', JSON.stringify(userData))
+
+        navigate('/decision')
 
 
     };
