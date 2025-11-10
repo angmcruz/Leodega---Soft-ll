@@ -17,6 +17,7 @@ const LogoutButton: React.FC = () => {
       localStorage.removeItem("auth_token");
       localStorage.removeItem("auth_user");
       navigate("/login");
+      
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
