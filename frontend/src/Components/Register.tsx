@@ -52,6 +52,7 @@ const Register: React.FC = () => {
         }
 
         try {
+             const a = "hola";
 
             const response = await api.post('/register', {
                 name,
