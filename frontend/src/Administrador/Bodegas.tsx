@@ -2,24 +2,26 @@ import { useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import BodegaDetalle from './BodegaDetalle';
 import type { Bodega } from './Interfaces/SolicitudesData';
-
+import { useNavigate } from 'react-router-dom';
 
 const Bodegas = () => {
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name'>('newest');
     const [mostrarMenuOrden, setMostrarMenuOrden] = useState(false);
     const [bodegaSeleccionada, setBodegaSeleccionada] = useState<Bodega | null>(null);
     const [mostrarDetalle, setMostrarDetalle] = useState(false);
+    
 
     const bodegas: Bodega[] = [
         { id: 1, nameBodega: 'Bodega1', bodega: 1, phoneNumber: '(225) 555-0118', email: 'jane@microsoft.com', country: 'United States', status: 'Active' },
         { id: 2, nameBodega: 'Bodega1', bodega: 2, phoneNumber: '(205) 555-0100', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
         { id: 3, nameBodega: 'Bodega1', bodega: 3, phoneNumber: '(302) 555-0107', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
-        { id: 4, nameBodega: 'Bodega1', bodega: 4, phoneNumber: '(252) 555-0126', email: 'jane@microsoft.com', country: 'Iran', status: 'Active' },
+       /* { id: 4, nameBodega: 'Bodega1', bodega: 4, phoneNumber: '(252) 555-0126', email: 'jane@microsoft.com', country: 'Iran', status: 'Active' },
         { id: 5, nameBodega: 'Bodega1', bodega: 5, phoneNumber: '(629) 555-0129', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
         { id: 6, nameBodega: 'Bodega1', bodega: 6, phoneNumber: '(406) 555-0120', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
         { id: 7, nameBodega: 'Bodega1', bodega: 7, phoneNumber: '(208) 555-0112', email: 'jane@microsoft.com', country: 'Brazil', status: 'Active' },
-        { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' },
+        { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' },*/
     ];
 
     const totalPages = 40;
@@ -107,11 +109,11 @@ const Bodegas = () => {
                         {mostrarMenuOrden && (
                             <>
                                 <div 
-                                    className="fixed inset-0 z-10" 
+                                    className="fixed inset-0 z-[1]" 
                                     onClick={() => setMostrarMenuOrden(false)}
                                 ></div>
                                 
-                                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-[2]">
                                     <button
                                         onClick={() => {
                                             setSortBy('newest');
@@ -150,7 +152,8 @@ const Bodegas = () => {
                         )}
                     </div>
 
-                    <button className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
+                    <button 
+                    onClick={() => navigate("/preguntainicio1")} className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
                         Añadir Nueva Bodega
                     </button>
                 </div>
