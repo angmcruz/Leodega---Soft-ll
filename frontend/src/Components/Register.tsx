@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import api from '../api/axios';
 
 
 
-const Register: React.FC = () => {
+const Register = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -51,8 +52,6 @@ const Register: React.FC = () => {
         }
 
         try {
-             const a = "hola";
-
             const response = await api.post('/register', {
                 name,
                 lastName,
@@ -66,19 +65,22 @@ const Register: React.FC = () => {
                 alert("Cuenta creada exitosamente");
                 navigate('/login'); //TENEMOS Q PASAR A PAGINA DE ELEGIR TIPO
             }
-        const userData = {
-            name,
-            lastName,
-            phone,
-            email,
-            password,
+            const userData = {
+                name,
+                lastName,
+                phone,
+                email,
+                password,
+            }
+
+            localStorage.setItem('tempUser', JSON.stringify(userData))
+
+            navigate('/decision')
+
+
+        } catch (error) {
+            console.log("Error paso: ", error);
         }
-
-        localStorage.setItem('tempUser', JSON.stringify(userData))
-
-        navigate('/decision')
-
-
     };
 
     return (
