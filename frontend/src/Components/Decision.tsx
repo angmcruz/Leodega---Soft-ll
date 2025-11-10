@@ -24,9 +24,12 @@ const Decision = () => {
 
         };
         delete finalUser.lastName;
-        
+
 
         try {
+            console.log({
+                userData,role
+            });
             setLoading(true);
             const responser = await api.post('/user', finalUser);
             if (responser.status === 201 || responser.status === 200) {
@@ -34,11 +37,8 @@ const Decision = () => {
                     setLoading(false);
                     alert("Cuenta creada exitosamente");
                     localStorage.removeItem('tempUser');
-                    if (role === "landlord") {
-                        navigate('/preguntainicio1');
-                    } else {
-                        navigate('/');
-                    }
+                    navigate('/login');
+
                 }, 1000);
             }
         } catch (error) {

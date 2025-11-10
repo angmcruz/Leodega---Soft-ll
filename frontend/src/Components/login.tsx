@@ -18,17 +18,20 @@ const Login: React.FC = () => {
         setLoading(true);
 
         try {
+            // limpiamos nuevamente para que no sobreescriba
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("auth_user");
             const { data } = await api.post("/login", { email, password });
 
             localStorage.setItem("auth_token", data.token);
 
             localStorage.setItem("auth_user", JSON.stringify(data.user));
 
-            if(data.user.role === "landlord"){
+            if (data.user.role === "landlord") {
                 navigate("/bodegas");
-            }else if(data.user.role === "tenant"){
+            } else if (data.user.role === "tenant") {
                 navigate("/");
-            }else{
+            } else {
                 navigate("/");
             }
 
@@ -90,10 +93,10 @@ const Login: React.FC = () => {
                                 <input type="checkbox" className="w-5 h-5 border-2 border-gray-400 rounded" />
                                 Recuérdame**
                             </label>
-                            <Link to= "/ResetPassword"className="text-sm text-[#ff8682]">Olvidé mi contraseña</Link>
+                            <Link to="/ResetPassword" className="text-sm text-[#ff8682]">Olvidé mi contraseña</Link>
                         </div>
-                        <button type="submit" disabled={loading} 
-                          className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-6">
+                        <button type="submit" disabled={loading}
+                            className="w-full bg-[#8b5cf6] text-white py-4 rounded-lg font-medium text-sm mb-6">
                             {loading ? "Ingresando..." : "Iniciar Sesión"}
                         </button>
                         <p className="text-center text-gray-700 mb-6 text-sm ">
@@ -120,9 +123,9 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className="mt-[-40px] hidden lg:flex w-full lg:w-1/2 justify-center items-center">
-                    <img 
-                        src="/src/img/logimage.png" 
-                        alt="Login" 
+                    <img
+                        src="/src/img/logimage.png"
+                        alt="Login"
                         className="w-[550px] h-[600px] object-cover rounded-xl"
                     />
                 </div>
