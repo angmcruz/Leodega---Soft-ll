@@ -64,7 +64,6 @@ const PreguntaInicio7 = () => {
         storage_type: data.step2Data?.selectedOption || "",
         direction: data.location?.direction || "",
         city: data.location?.city || "",
-        geographical_zone: data.location?.geographical_zone || "",
         size: Number(data.priceData?.tamano) || 0,
         title: data.titleData?.titulo || "",
         description: data.titleData?.descripcion || "",

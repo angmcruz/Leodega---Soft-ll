@@ -15,7 +15,6 @@ class StoreRooms extends Model
         'storage_type',
         'direction',
         'city',
-        'geographical_zone',
         'size',
         'title',
         'description',

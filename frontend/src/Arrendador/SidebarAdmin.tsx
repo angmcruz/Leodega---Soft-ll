@@ -53,7 +53,11 @@ export default function SidebarAdmin({ activeItem, setActiveItem }: SidebarAdmin
                 <SidebarItem
                     label="Logout"
                     active={activeItem === 'logout'}
-                    onClick={() => { setActiveItem('logout'); navigate('/login'); }}
+                    onClick={() => { 
+                        localStorage.removeItem('auth_user');
+                        localStorage.removeItem('auth_token');
+                        setActiveItem('logout'); 
+                        navigate('/login'); }}
                 />
             </nav>
         </aside>

@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('storeRooms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('landlord_id')->constrained('landlords')->onDelete('cascade');
-            $table->enum('room_type', ['habitacion','garaje','contenedor', 'sotano','atico, bodega'])->nullable(false);
+            $table->enum('room_type', ['habitacion','garaje','contenedor', 'sotano','atico', 'bodega'])->nullable(false);
             $table->enum('storage_type', ['completa','privado','compartido'])->nullable(false);
             $table->string('direction')->nullable(false);
             $table->string('city')->nullable(false);
-            $table->string('geographical_zone')->nullable(false);
             $table->decimal('size', 10, 2)->nullable(false);
             $table->string('title')->nullable(false);
             $table->string('description')->nullable(false);
