@@ -4,7 +4,7 @@
     disponibility: boolean;
     }
 
-
+    
     interface BodegaCardProps {
     id: number;
     title: string;
@@ -15,6 +15,7 @@
     storage_type: string;
     room_type: string;
     image?: string;
+    storePrices?: StorePrice[]; 
     }
 
     const BodegaCard = ({
