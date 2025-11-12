@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -26,25 +27,48 @@ class ApiController extends Controller
 
     protected function storeModel(Request $request, string $modelClass, array $rules){
         $validator = Validator::make($request->all(), $rules);
-
         if($validator->fails()){
-            $data=[
-                'message'=>'Validation Error',
-                'errors'=>$validator->errors(),
-                'status'=>400
-            ];
-            return response()->json($data, 400);
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ], 400);
         }
 
-        $item = $modelClass::create($request->all());
+        $validated = $validator->validated();
 
-        if(!$item){
-            return response()->json(['message' => 'Item not created', "status"=>500], 500);
-        }
-        $data = ['item'=>$item,
+        try{
+            $item = DB::transaction(function () use ($modelClass, $validated, $request){
+                $mainItem = $modelClass::create($validated);
+
+                $possibleRelations = collect($request -> all())
+                ->filter(fn($v) => is_array($v))
+                ->keys();
+
+                foreach($possibleRelations as $relationName){
+                    if(method_exists($mainItem, $relationName)){
+                        $relation = $mainItem->$relationName();
+
+                        if(method_exists($relation, 'createMany')){
+                            $relation->createMany($request->get($relationName));
+                        }
+                    }
+                }
+                return $mainItem->load($possibleRelations->toArray());
+            });
+            return response()->json([
+                'item'=>$item,
                 'message'=>'Item created successfully',
-                'status'=>201];
-        return response()->json($data, 201);
+                'status'=>201
+            ], 201);
+        }catch(\Exception $e){
+            return response()->json([
+                'message'=>'Error creating item',
+                'error' => $e->getMessage(),
+                'status' => 500
+            ], 500);
+        }
+       
     }
 
     protected function updateModel(Request $request, string $modelClass, $id, array $rules)
@@ -54,7 +78,7 @@ class ApiController extends Controller
             return response()->json(['message' => 'Not found', 'status' => 404], 404);
         }
 
-        // Asegurar "sometimes" para reglas cuando se usan en update
+        // Agregar "sometimes" automáticamente
         $rules = array_map(function ($r) {
             if (stripos($r, 'sometimes') === false && stripos($r, 'required') === false) {
                 return 'sometimes|' . $r;
@@ -64,11 +88,43 @@ class ApiController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
-            return response()->json(['message' => 'Validation Error', 'errors' => $validator->errors(), 'status' => 400], 400);
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ], 400);
         }
 
-        $item->update($validator->validated());
-        return response()->json(['data' => $item, 'message' => 'Updated', 'status' => 200], 200);
+        $validated = $validator->validated();
+
+        try {
+            DB::transaction(function () use ($item, $validated, $request) {
+                $item->update($validated);
+
+                // Si vienen relaciones, actualizarlas (borra previos y los reemplaza)
+                foreach ($request->all() as $key => $value) {
+                    if (is_array($value) && method_exists($item, $key)) {
+                        $relation = $item->$key();
+                        if (method_exists($relation, 'delete') && method_exists($relation, 'createMany')) {
+                            $relation->delete();
+                            $relation->createMany($value);
+                        }
+                    }
+                }
+            });
+
+            return response()->json([
+                'data' => $item->fresh(),
+                'message' => 'Updated successfully',
+                'status' => 200
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error updating item',
+                'error' => $e->getMessage(),
+                'status' => 500
+            ], 500);
+        }
     }
 
     protected function destroyModel(string $modelClass, $id){

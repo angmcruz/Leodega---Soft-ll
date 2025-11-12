@@ -8,33 +8,36 @@ use App\Models\StoreRooms;
 
 class storeRoomsController extends ApiController
 {
-    public function index(){
+    public function index()
+    {
         return $this->indexModel(StoreRooms::class);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return $this->showModel(StoreRooms::class, $id);
     }
+
 
     public function store(Request $request){
         $rules = [
             'landlord_id' => 'required|exists:landlords,id',
-            'room_type' => 'required|in:habitacion,garaje,contenedor,sotano,atico, bodega',
-            'storage_type'=> 'required|in:completa,privado,compartido',
+            'room_type' => 'required|in:habitacion,garaje,contenedor,sotano,atico,bodega',
+            'storage_type' => 'required|in:completa,privado,compartido',
             'direction' => 'required|string',
             'city' => 'required|string',
             'size' => 'required|numeric',
-            'title'=> 'required|string',
+            'title' => 'required|string',
             'description' => 'required|string',
-            'security'=>'required|string',
+            'security' => 'required|string',
             'publication_status' => 'in:pending,approved,rejected',
             'publication_date' => 'date',
         ];
         return $this->storeModel($request, StoreRooms::class, $rules);
     }
 
-
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $rules = [
             'landlord_id' => 'exists:landlords,id',
             'room_type' => 'in:habitacion,garaje,contenedor,sotano,atico, bodega',
@@ -42,27 +45,38 @@ class storeRoomsController extends ApiController
             'direction' => 'string',
             'city' => 'string',
             'size' => 'numeric',
-            'title'=> 'string',
+            'title' => 'string',
             'description' => 'string',
-            'security'=>'string',
+            'security' => 'string',
             'publication_status' => 'in:pending,approved,rejected',
             'publication_date' => 'date',
         ];
         return $this->updateModel($request, StoreRooms::class, $id, $rules);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->destroyModel(StoreRooms::class, $id);
     }
 
     public function getByLandlord($landlordId)
-    {
-        $landlord = Landlords::with('storeRooms')->find($landlordId);
-
-        if (!$landlord) {
-            return response()->json(['message' => 'Landlord no encontrado'], 404);
-        }
-
-        return response()->json($landlord->storeRooms, 200);
+{
+    // Verificar si existe el landlord
+    $landlord = Landlords::find($landlordId);
+    if (!$landlord) {
+        return response()->json(['message' => 'Landlord no encontrado'], 404);
     }
+
+    // Obtener las bodegas con sus relaciones
+    $storeRooms = StoreRooms::with(['storePrices', 'storePhotos', 'storeDisponibility'])
+        ->where('landlord_id', $landlordId)
+        ->get();
+
+    if ($storeRooms->isEmpty()) {
+        return response()->json(['message' => 'No se encontraron bodegas para este landlord'], 404);
+    }
+
+    return response()->json($storeRooms, 200);
+}
+
 }

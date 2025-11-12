@@ -22,16 +22,16 @@ const PreguntaInicio7 = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     const storedData = localStorage.getItem("optionData");
-    if(storedData){
-      const parsed =JSON.parse(storedData);
-      if(parsed.step7Data?.seguridad && parsed.step7Data?.politica){
+    if (storedData) {
+      const parsed = JSON.parse(storedData);
+      if (parsed.step7Data?.seguridad && parsed.step7Data?.politica) {
         setSeguridad(parsed.step7Data.seguridad)
         setPolitica(parsed.step7Data?.politica)
       }
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
@@ -55,11 +55,11 @@ const PreguntaInicio7 = () => {
       setIsModalOpen(false);
       setIsProcessing(true);
 
-      const data = JSON.parse(localStorage.getItem("optionData")|| "{}");
-      const user = JSON.parse(localStorage.getItem("auth_user")|| "{}");
+      const data = JSON.parse(localStorage.getItem("optionData") || "{}");
+      const user = JSON.parse(localStorage.getItem("auth_user") || "{}");
 
       const storeRoom = {
-        landlord_id: user?.landlord?.id|| "",
+        landlord_id: user?.landlord?.id || "",
         room_type: data.step1Data?.selectedOption || "",
         storage_type: data.step2Data?.selectedOption || "",
         direction: data.location?.direction || "",
@@ -70,14 +70,25 @@ const PreguntaInicio7 = () => {
         security: JSON.stringify(data.step7Data?.seguridad || {}),
         publication_status: "pending",
         publication_date: new Date().toISOString(),
+
+        storePrices: [
+          {
+            mode: data.priceData?.mode || "month",
+            price: Number(data.priceData?.precio) || 0,
+            disponibility: true
+          }
+        ]
+
       };
 
       console.log("Datos enviados:", storeRoom);
 
 
       const response = await api.post("/storeRooms", storeRoom);
+      console.log("🧱 Respuesta cruda del backend:", response.data);
 
-      if(response.status === 201 || response.status === 200){
+
+      if (response.status === 201 || response.status === 200) {
         setTimeout(() => {
           setIsProcessing(false);
           setIsModalOpen(true);
@@ -85,7 +96,7 @@ const PreguntaInicio7 = () => {
           localStorage.removeItem("optionData");
         }, 1500);
       }
-    }catch(error){
+    } catch (error) {
       console.error("Error al crear la bodega:", error);
       alert("Error al enviar la solicitud, vuelve a intentar");
       setIsProcessing(false)
