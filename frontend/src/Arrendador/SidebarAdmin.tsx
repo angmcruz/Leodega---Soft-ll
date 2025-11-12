@@ -33,6 +33,7 @@ export default function SidebarAdmin({ activeItem, setActiveItem }: SidebarAdmin
                     active={activeItem === 'solicitudes'}
                     onClick={() => { setActiveItem('solicitudes'); navigate('/solicitudes'); }}
                 />
+                
 
                 <div className="mt-8 mb-3 px-6">
                     <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">

@@ -50,11 +50,12 @@ const Bodegas = () => {
     const fetchStore = async () => {
       try {
         const response = await api.get(`landlords/${landlordId}/storeRooms`);
+        console.log("Respuesta del backend:", response.data);
         const data = response.data.map((b: any) => ({
           ...b,
           storePrices: b.store_prices,
         }));
-        console.log("📦 Bodegas cargadas:", data); // 👈 agrega esto para verificar
+        console.log("Bodegas cargadas:", data); 
 
         setBodegas(data);
       } catch (error) {

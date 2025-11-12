@@ -85,8 +85,7 @@ const PreguntaInicio7 = () => {
 
 
       const response = await api.post("/storeRooms", storeRoom);
-      console.log("🧱 Respuesta cruda del backend:", response.data);
-
+      
 
       if (response.status === 201 || response.status === 200) {
         setTimeout(() => {
@@ -106,7 +105,7 @@ const PreguntaInicio7 = () => {
 
   const handleConfirm = () => {
     setIsModalOpen(false);
-    navigate("/bodegas");
+    navigate("/arrendador/bodegas");
   };
 
   return (
