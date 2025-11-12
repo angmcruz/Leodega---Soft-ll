@@ -21,13 +21,13 @@ import PreguntaInicio7 from './Pages/Components/PreguntaInicio7'
 import VerifyCode from './Components/VerifyCode'
 import ResetPassword from './Pages/ResetPassword'
 import Decision from './Components/Decision'
-import BodegasAdmin from "./Administrador/Bodegas";
-import BodegasLandlord from "./Arrendador/Bodegas";
-import Layout from './Arrendador/Layout'
-import Mensajes from './Arrendador/Mensajes'
-import Solicitudes from './Arrendador/Solicitudes'
-import Calendario from './Arrendador/Calendario'
-import Settings from './Arrendador/Settings'
+import BodegasAdmin from "./Dashboard/BodegasAdmin";
+import BodegasArrendador from "./Dashboard/BodegasArrendador";
+import Layout from './Dashboard/Layout'
+import Mensajes from './Dashboard/Mensajes'
+import Solicitudes from './Dashboard/Solicitudes'
+import Calendario from './Dashboard/Calendario'
+import Settings from './Dashboard/Settings'
 import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
 
 
@@ -48,21 +48,21 @@ function App() {
         <Route path="/preguntainicio5" element={<PreguntaInicio5 />} />
         <Route path="/preguntainicio6" element={<PreguntaInicio6 />} />
         <Route path="/preguntainicio7" element={<PreguntaInicio7 />} />
-        
-        <Route path="/landlord/bodegas" element={<BodegasLandlord />} />
-        <Route path="/admin/bodegas" element={<BodegasAdmin />} />
-        <Route path="/mensajes" element={<Layout><Mensajes/></Layout>} />
-        <Route path="/solicitudes" element={<Layout><Solicitudes/></Layout>} />
-        <Route path="/calendario" element={<Layout><Calendario/></Layout>} />
-        <Route path="/settings" element={<Layout><Settings/></Layout>} />
-        
+
+        <Route path="/arrendador/bodegas" element={<Layout><BodegasArrendador /></Layout>} />
+        <Route path="/admin/bodegas" element={<Layout role="admin"><BodegasAdmin /></Layout>} />
+        <Route path="/mensajes" element={<Layout><Mensajes /></Layout>} />
+        <Route path="/solicitudes" element={<Layout><Solicitudes /></Layout>} />
+        <Route path="/calendario" element={<Layout><Calendario /></Layout>} />
+        <Route path="/settings" element={<Layout><Settings /></Layout>} />
+
         <Route path="/" element={
           <>
             <Header />
             <Hero />
             <SearchBar />
             <Work />
-            <Choose/>
+            <Choose />
             <PopularStorage />
             <Testimonial />
             <Footer />
