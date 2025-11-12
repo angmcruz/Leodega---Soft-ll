@@ -21,7 +21,8 @@ import PreguntaInicio7 from './Pages/Components/PreguntaInicio7'
 import VerifyCode from './Components/VerifyCode'
 import ResetPassword from './Pages/ResetPassword'
 import Decision from './Components/Decision'
-import Bodegas from './Arrendador/Bodegas'
+import BodegasAdmin from "./Administrador/Bodegas";
+import BodegasLandlord from "./Arrendador/Bodegas";
 import Layout from './Arrendador/Layout'
 import Mensajes from './Arrendador/Mensajes'
 import Solicitudes from './Arrendador/Solicitudes'
@@ -47,7 +48,9 @@ function App() {
         <Route path="/preguntainicio5" element={<PreguntaInicio5 />} />
         <Route path="/preguntainicio6" element={<PreguntaInicio6 />} />
         <Route path="/preguntainicio7" element={<PreguntaInicio7 />} />
-        <Route path="/bodegas" element={<Layout><Bodegas/></Layout>} />
+        
+        <Route path="/landlord/bodegas" element={<BodegasLandlord />} />
+        <Route path="/admin/bodegas" element={<BodegasAdmin />} />
         <Route path="/mensajes" element={<Layout><Mensajes/></Layout>} />
         <Route path="/solicitudes" element={<Layout><Solicitudes/></Layout>} />
         <Route path="/calendario" element={<Layout><Calendario/></Layout>} />
