@@ -28,9 +28,11 @@ const Login: React.FC = () => {
             localStorage.setItem("auth_user", JSON.stringify(data.user));
 
             if (data.user.role === "landlord") {
-                navigate("/bodegas");
+                navigate("/arrendador/bodegas");
+            } else if (data.user.role === "admin") {
+                navigate("/admin/bodegas");
             } else if (data.user.role === "tenant") {
-                navigate("/");
+                navigate("/"); //FALTA AGG CLIENTE
             } else {
                 navigate("/");
             }
