@@ -9,6 +9,7 @@ class Payments extends Model
 {
     //
     use HasFactory;
+
     protected $table = 'payments';
     protected $fillable = [
         'reservation_id',
@@ -17,7 +18,8 @@ class Payments extends Model
         'payment_date',
     ];
 
-    public function reservation(){
+    public function reservation()
+    {
         return $this->belongsTo(Reservations::class, 'reservation_id');
     }
 }

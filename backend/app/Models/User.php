@@ -8,11 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-
-
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+
     protected $table = 'user';
     protected $fillable = [
         'name',
@@ -50,30 +51,33 @@ class User extends Authenticatable
         return $this->hasOne(Landlords::class, 'user_id');
     }
 
-    public function tenant(){
+    public function tenant()
+    {
         return $this->hasOne(Tenants::class, 'user_id');
     }
 
-    public function sendNotifications(){
+    public function sendNotifications()
+    {
         return $this->hasMany(Notifications::class, 'emisor_id');
     }
 
-    public function receivedNotifications(){
+    public function receivedNotifications()
+    {
         return $this->hasMany(Notifications::class, 'receptor_id');
     }
 
-    public function ratings(){
+    public function ratings()
+    {
         return $this->hasMany(Ratings::class, 'user_id');
     }
 
-    public function reports(){
+    public function reports()
+    {
         return $this->hasMany(Reports::class, 'user_id');
     }
 
-    public function admin(){
+    public function admin()
+    {
         return $this->hasOne(Admin::class, 'user_id');
     }
-
-    
-
 }

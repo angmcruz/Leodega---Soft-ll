@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tenants extends Model
 {
     use HasFactory;
+
     protected $table = 'tenants';
     protected $fillable = [
         'user_id',
@@ -15,12 +16,13 @@ class Tenants extends Model
     ];
     //
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-     public function reservations(){
+    public function reservations()
+    {
         return $this->hasMany(Reservations::class, 'tenant_id');
     }
-
 }

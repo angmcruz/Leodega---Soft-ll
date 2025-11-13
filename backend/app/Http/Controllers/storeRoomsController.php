@@ -6,7 +6,7 @@ use App\Models\Landlords;
 use Illuminate\Http\Request;
 use App\Models\StoreRooms;
 
-class storeRoomsController extends ApiController
+class StoreRoomsController extends ApiController
 {
     public function index()
     {
@@ -19,7 +19,8 @@ class storeRoomsController extends ApiController
     }
 
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
             'landlord_id' => 'required|exists:landlords,id',
             'room_type' => 'required|in:habitacion,garaje,contenedor,sotano,atico,bodega',
@@ -60,23 +61,22 @@ class storeRoomsController extends ApiController
     }
 
     public function getByLandlord($landlordId)
-{
+    {
     // Verificar si existe el landlord
-    $landlord = Landlords::find($landlordId);
-    if (!$landlord) {
-        return response()->json(['message' => 'Landlord no encontrado'], 404);
-    }
+        $landlord = Landlords::find($landlordId);
+        if (!$landlord) {
+            return response()->json(['message' => 'Landlord no encontrado'], 404);
+        }
 
     // Obtener las bodegas con sus relaciones
-    $storeRooms = StoreRooms::with(['storePrices', 'storePhotos', 'storeDisponibility'])
+        $storeRooms = StoreRooms::with(['storePrices', 'storePhotos', 'storeDisponibility'])
         ->where('landlord_id', $landlordId)
         ->get();
 
-    if ($storeRooms->isEmpty()) {
-        return response()->json(['message' => 'No se encontraron bodegas para este landlord'], 404);
+        if ($storeRooms->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron bodegas para este landlord'], 404);
+        }
+
+        return response()->json($storeRooms, 200);
     }
-
-    return response()->json($storeRooms, 200);
-}
-
 }

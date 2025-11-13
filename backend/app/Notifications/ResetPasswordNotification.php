@@ -14,9 +14,9 @@ class ResetPasswordNotification extends Notification
     protected $url;
 
     public function __construct($token, $email)
-{
-    $this->url = 'http://localhost:5173/reset-password?token=' . $token . '&email=' . $email;
-}
+    {
+        $this->url = 'http://localhost:5173/reset-password?token=' . $token . '&email=' . $email;
+    }
 
     public function via($notifiable)
     {
@@ -25,7 +25,7 @@ class ResetPasswordNotification extends Notification
 
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Restablecer contraseña - Leodega')
             ->line('Recibiste este correo porque solicitaste restablecer tu contraseña.')
             ->action('Restablecer contraseña', $this->url)

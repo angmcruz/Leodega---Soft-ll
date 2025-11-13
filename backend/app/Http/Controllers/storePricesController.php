@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\StorePrices;
 
-class storePricesController extends ApiController
+class StorePricesController extends ApiController
 {
-    public function index(){
+    public function index()
+    {
         return $this->indexModel(StorePrices::class);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return $this->showModel(StorePrices::class, $id);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
             'store_room_id' => 'required|exists:storeRooms,id',
             'mode' => 'required|in:day,month,year',
@@ -26,7 +29,8 @@ class storePricesController extends ApiController
     }
 
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $rules = [
             'store_room_id' => 'exists:storeRooms,id',
             'mode' => 'in:day,month,year',
@@ -36,8 +40,8 @@ class storePricesController extends ApiController
         return $this->updateModel($request, StorePrices::class, $id, $rules);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->destroyModel(StorePrices::class, $id);
     }
-    
 }

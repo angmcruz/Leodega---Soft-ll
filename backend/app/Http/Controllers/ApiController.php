@@ -9,25 +9,28 @@ use Illuminate\Support\Facades\DB;
 class ApiController extends Controller
 {
     //
-    protected function indexModel(string $modelClass){
+    protected function indexModel(string $modelClass)
+    {
         $items = $modelClass::all();
-        if($items->isEmpty()){
-            return response()->json(['message' => 'No items found', "status"=>404], 404);
+        if ($items->isEmpty()) {
+            return response()->json(['message' => 'No items found', "status" => 404], 404);
         }
         return response()->json($items, 200);
     }
 
-    protected function showModel(string $modelClass, $id){
+    protected function showModel(string $modelClass, $id)
+    {
         $item = $modelClass::find($id);
-        if(!$item){
-            return response()->json(['message' => 'Item not found', "status"=>404], 404);
+        if (!$item) {
+            return response()->json(['message' => 'Item not found', "status" => 404], 404);
         }
         return response()->json($item, 200);
     }
 
-    protected function storeModel(Request $request, string $modelClass, array $rules){
+    protected function storeModel(Request $request, string $modelClass, array $rules)
+    {
         $validator = Validator::make($request->all(), $rules);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation Error',
                 'errors' => $validator->errors(),
@@ -37,19 +40,19 @@ class ApiController extends Controller
 
         $validated = $validator->validated();
 
-        try{
-            $item = DB::transaction(function () use ($modelClass, $validated, $request){
+        try {
+            $item = DB::transaction(function () use ($modelClass, $validated, $request) {
                 $mainItem = $modelClass::create($validated);
 
                 $possibleRelations = collect($request -> all())
                 ->filter(fn($v) => is_array($v))
                 ->keys();
 
-                foreach($possibleRelations as $relationName){
-                    if(method_exists($mainItem, $relationName)){
+                foreach ($possibleRelations as $relationName) {
+                    if (method_exists($mainItem, $relationName)) {
                         $relation = $mainItem->$relationName();
 
-                        if(method_exists($relation, 'createMany')){
+                        if (method_exists($relation, 'createMany')) {
                             $relation->createMany($request->get($relationName));
                         }
                     }
@@ -57,18 +60,17 @@ class ApiController extends Controller
                 return $mainItem->load($possibleRelations->toArray());
             });
             return response()->json([
-                'item'=>$item,
-                'message'=>'Item created successfully',
-                'status'=>201
+                'item' => $item,
+                'message' => 'Item created successfully',
+                'status' => 201
             ], 201);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
-                'message'=>'Error creating item',
+                'message' => 'Error creating item',
                 'error' => $e->getMessage(),
                 'status' => 500
             ], 500);
         }
-       
     }
 
     protected function updateModel(Request $request, string $modelClass, $id, array $rules)
@@ -127,13 +129,13 @@ class ApiController extends Controller
         }
     }
 
-    protected function destroyModel(string $modelClass, $id){
+    protected function destroyModel(string $modelClass, $id)
+    {
         $item = $modelClass::find($id);
-        if(!$item){
-            return response()->json(['message' => 'Item not found', "status"=>404], 404);
+        if (!$item) {
+            return response()->json(['message' => 'Item not found', "status" => 404], 404);
         }
         $item->delete();
-        return response()->json(['message' => 'Item deleted successfully', "status"=>200], 200);
+        return response()->json(['message' => 'Item deleted successfully', "status" => 200], 200);
     }
-
 }

@@ -8,16 +8,19 @@ use App\Models\StoreModeration;
 class StoreModerationController extends ApiController
 {
     //
-    public function index(){
+    public function index()
+    {
         return $this->indexModel(StoreModeration::class);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return $this->showModel(StoreModeration::class, $id);
     }
 
-    public function store(Request $request){
-        $rules =[
+    public function store(Request $request)
+    {
+        $rules = [
             'store_id' => 'required|exists:storeRooms,id',
             'status' => 'required|in:pending,approved,rejected',
             'reason_rejected' => 'required|string',
@@ -27,8 +30,9 @@ class StoreModerationController extends ApiController
     }
 
 
-    public function update(Request $request, $id){
-        $rules =[
+    public function update(Request $request, $id)
+    {
+        $rules = [
             'store_id' => 'sometimes|exists:storeRooms,id',
             'status' => 'sometimes|in:pending,approved,rejected',
             'reason_rejected' => 'required|string',
@@ -37,7 +41,8 @@ class StoreModerationController extends ApiController
         return $this->updateModel($request, StoreModeration::class, $id, $rules);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->destroyModel(StoreModeration::class, $id);
     }
 }

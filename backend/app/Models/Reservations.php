@@ -9,6 +9,7 @@ class Reservations extends Model
 {
     //
     use HasFactory;
+
     protected $table = 'reservations';
     protected $fillable = [
         'store_room_id',
@@ -21,15 +22,18 @@ class Reservations extends Model
         'creation_date'
     ];
 
-    public function storeRooms(){
+    public function storeRooms()
+    {
         return $this->belongsTo(StoreRooms::class, 'store_room_id');
     }
 
-    public function tenants(){
+    public function tenants()
+    {
         return $this->belongsTo(Tenants::class, 'tenant_id');
     }
 
-    public function payments(){
+    public function payments()
+    {
         return $this->hasMany(Payments::class, 'reservation_id');
     }
 }

@@ -10,20 +10,23 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends ApiController
 {
-    public function index(){
+    public function index()
+    {
         return $this->indexModel(User::class);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return $this->showModel(User::class, $id);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:user',
-            'phone'=> 'required|string|unique:user|max:10',
+            'phone' => 'required|string|unique:user|max:10',
             'password' => 'required|string|min:8',
             'role' => 'in:admin,landlord,tenant',
             'start_date' => 'date|default:now()',
@@ -56,12 +59,13 @@ class UserController extends ApiController
     }
 
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $rules = [
             'name' => 'sometimes|required|string|max:255',
             'lastname' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:user,email,'.$id,
-            'phone'=> 'sometimes|required|string|unique:user,phone,'.$id.'|max:10',
+            'email' => 'sometimes|required|string|email|max:255|unique:user,email,' . $id,
+            'phone' => 'sometimes|required|string|unique:user,phone,' . $id . '|max:10',
             'password' => 'sometimes|required|string|min:8',
             'role' => 'sometimes|in:admin,landlord,tenant',
             'start_date' => 'sometimes|date|nullable',
@@ -71,7 +75,8 @@ class UserController extends ApiController
         return $this->updateModel($request, User::class, $id, $rules);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->destroyModel(User::class, $id);
     }
 

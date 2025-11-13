@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ratings extends Model
 {
-
     use HasFactory;
+
     protected $table = 'ratings';
     protected $fillable = [
         'store_id',
@@ -17,13 +17,13 @@ class Ratings extends Model
         'comment',
     ];
 
-    public function storeRooms(){
+    public function storeRooms()
+    {
         return $this->belongsTo(StoreRooms::class, 'store_id');
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-    
 }

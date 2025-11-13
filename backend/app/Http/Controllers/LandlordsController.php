@@ -9,31 +9,36 @@ use Illuminate\Support\Facades\Validator;
 class LandlordsController extends ApiController
 {
     //
-    public function index(){
+    public function index()
+    {
         return $this->indexModel(Landlords::class);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return $this->showModel(Landlords::class, $id);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
-            'user_id'=>'required|exists:user,id',
-            'optional_company'=>'sometimes|string|max:500|nullable',
+            'user_id' => 'required|exists:user,id',
+            'optional_company' => 'sometimes|string|max:500|nullable',
         ];
         return $this->storeModel($request, Landlords::class, $rules);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $rules = [
-            'user_id'=>'sometimes|required|exists:user,id',
-            'optional_company'=>'sometimes|required|string|max:500|nullable',
+            'user_id' => 'sometimes|required|exists:user,id',
+            'optional_company' => 'sometimes|required|string|max:500|nullable',
         ];
         return $this->updateModel($request, Landlords::class, $id, $rules);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->destroyModel(Landlords::class, $id);
     }
 }

@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 
 class PasswordResetController extends Controller
 {
-    
     public function sendResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -25,7 +24,7 @@ class PasswordResetController extends Controller
         return response()->json(['message' => __($status)], 400);
     }
 
-    
+
     public function resetPassword(Request $request)
     {
         $request->validate([

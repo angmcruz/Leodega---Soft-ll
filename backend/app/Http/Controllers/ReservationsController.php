@@ -8,15 +8,18 @@ use App\Models\Reservations;
 class ReservationsController extends ApiController
 {
     //
-    public function index(){
+    public function index()
+    {
         return $this->indexModel(Reservations::class);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return $this->showModel(Reservations::class, $id);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
             'store_room_id' => 'required|exists:storeRooms,id',
             'tenant_id' => 'required|exists:tenants,id',
@@ -31,7 +34,8 @@ class ReservationsController extends ApiController
     }
 
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $rules = [
             'store_room_id' => 'sometimes|exists:storeRooms,id',
             'tenant_id' => 'sometimes|exists:tenants,id',
@@ -45,7 +49,8 @@ class ReservationsController extends ApiController
         return $this->updateModel($request, Reservations::class, $id, $rules);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->destroyModel(Reservations::class, $id);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StorePrices extends Model
 {
     use HasFactory;
+
     protected $table = 'store_prices';
     protected $fillable = [
         'store_room_id',
@@ -15,9 +16,9 @@ class StorePrices extends Model
         'price',
         'disponibility'
     ];
-    
-    public function storeRooms(){
+
+    public function storeRooms()
+    {
         return $this->belongsTo(StoreRooms::class, 'store_room_id');
     }
-
 }

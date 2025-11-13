@@ -9,12 +9,12 @@ class StorePhoto extends Model
 {
     //
     use HasFactory;
+
     protected $table = 'store_photo';
     protected $fillable = ['store_room_id', 'photo_url'];
-    
-    public function storeRooms(){
+
+    public function storeRooms()
+    {
         return $this->belongsTo(StoreRooms::class, 'store_room_id');
     }
-    
-
 }

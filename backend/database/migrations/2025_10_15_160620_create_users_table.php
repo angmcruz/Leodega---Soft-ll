@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'landlord', 'tenant'])->default('landlord');
             $table->date('start_date')->nullable();
-            $table->enum('state',['active','blocked','pending'])->default('active');
+            $table->enum('state', ['active','blocked','pending'])->default('active');
             $table->boolean('enable_messages')->default(true);
             $table->timestamps();
         });

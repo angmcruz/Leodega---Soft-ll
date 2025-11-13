@@ -1,21 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Tenants;
 use Illuminate\Http\Request;
 
 class TenantsController extends ApiController
 {
     //
-    public function index(){
+    public function index()
+    {
         return $this->indexModel(Tenants::class);
     }
 
-    public function show($id){
+    public function show($id)
+    {
         return $this->showModel(Tenants::class, $id);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $rules = [
             'search_preference' => 'required|string',
             'user_id' => 'required|exists:users,id',
@@ -24,7 +28,8 @@ class TenantsController extends ApiController
     }
 
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $rules = [
             'search_preference' => 'sometimes|required|string',
             'user_id' => 'sometimes|required|exists:users,id',
@@ -32,7 +37,8 @@ class TenantsController extends ApiController
         return $this->updateModel($request, Tenants::class, $id, $rules);
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         return $this->destroyModel(Tenants::class, $id);
     }
 }
