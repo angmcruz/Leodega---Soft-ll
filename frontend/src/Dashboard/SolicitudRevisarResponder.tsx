@@ -1,3 +1,5 @@
+
+/* eslint-disable sonarjs/cognitive-complexity */
 import React, { useState } from 'react';
 import { Check, X, AlertTriangle, MessageSquare } from 'lucide-react';
 import type { Solicitud } from './Interfaces/SolicitudesData';
@@ -15,7 +17,7 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
     onVolver, 
     onRevisarDetalles,
     onRechazar 
-}) => {
+}) =>  {
     const [mostrarConfirmarAceptar, setMostrarConfirmarAceptar] = useState(false);
     const [razonRechazo, setRazonRechazo] = useState('');
     const [opcionSeleccionada, setOpcionSeleccionada] = useState<'aceptar' | 'rechazar' | null>(null);
@@ -85,7 +87,7 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
-                        <div 
+                        <button type="button"
                             onClick={handleSeleccionarAceptar}
                             className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${
                                 opcionSeleccionada === 'aceptar' 
@@ -128,9 +130,9 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
                                     <span>Periodo de gracia de 48h para pago</span>
                                 </div>
                             </div>
-                        </div>
+                        </button>
 
-                        <div 
+                        <button type="button" 
                             onClick={handleSeleccionarRechazar}
                             className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${
                                 opcionSeleccionada === 'rechazar' 
@@ -173,7 +175,7 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
                                     <span>No afecta tu calificación</span>
                                 </div>
                             </div>
-                        </div>
+                        </button>
                     </div>
                 </div>
 

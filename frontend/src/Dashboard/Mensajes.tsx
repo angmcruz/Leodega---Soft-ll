@@ -100,7 +100,7 @@ const Mensajes: React.FC = () => {
         },
     ];
 
-    const mensajesFiltrados = todosMensajes.filter(mensaje => 
+    const mensajesFiltrados = todosMensajes.filter(mensaje =>
         mensaje.categorias.includes(categoriaActiva)
     );
 
@@ -143,19 +143,17 @@ const Mensajes: React.FC = () => {
                                     <button
                                         key={cat.id}
                                         onClick={() => handleCategoriaClick(cat.id)}
-                                        className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors ${
-                                            categoriaActiva === cat.id
+                                        className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors ${categoriaActiva === cat.id
                                                 ? 'bg-blue-50 text-blue-600'
                                                 : 'hover:bg-gray-50 text-gray-700'
-                                        }`}
+                                            }`}
                                     >
                                         <div className="flex items-center gap-2">
                                             <Icon size={16} />
                                             <span>{cat.nombre}</span>
                                         </div>
-                                        <span className={`text-xs ${
-                                            categoriaActiva === cat.id ? 'text-blue-600' : 'text-gray-500'
-                                        }`}>
+                                        <span className={`text-xs ${categoriaActiva === cat.id ? 'text-blue-600' : 'text-gray-500'
+                                            }`}>
                                             {cat.count}
                                         </span>
                                     </button>
@@ -204,39 +202,36 @@ const Mensajes: React.FC = () => {
                     <div className="flex-1 overflow-y-auto">
                         {mensajesFiltrados.length > 0 ? (
                             mensajesFiltrados.map((mensaje) => (
-                                <div
+                                <button
+                                    type="button"
                                     key={mensaje.id}
                                     onClick={() => setMensajeSeleccionado(mensaje.id)}
-                                    className={`p-4 border-b cursor-pointer transition-colors ${
-                                        mensajeSeleccionado === mensaje.id
+                                    className={`w-full text-left p-4 border-b cursor-pointer transition-colors ${mensajeSeleccionado === mensaje.id
                                             ? 'bg-blue-50 border-l-4 border-l-blue-500'
                                             : 'hover:bg-gray-50'
-                                    }`}
+                                        }`}
                                 >
                                     <div className="flex items-start gap-3">
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${
-                                            mensaje.leido ? 'bg-gray-400' : 'bg-blue-500'
-                                        }`}>
+                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${mensaje.leido ? 'bg-gray-400' : 'bg-blue-500'
+                                            }`}>
                                             {mensaje.avatar}
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between mb-1">
-                                                <h3 className={`font-semibold text-sm ${
-                                                    mensaje.leido ? 'text-gray-700' : 'text-gray-900'
-                                                }`}>
+                                                <h3 className={`font-semibold text-sm ${mensaje.leido ? 'text-gray-700' : 'text-gray-900'
+                                                    }`}>
                                                     {mensaje.nombre}
                                                 </h3>
                                                 <span className="text-xs text-gray-500">{mensaje.tiempo}</span>
                                             </div>
-                                            <p className={`text-sm mb-1 ${
-                                                mensaje.leido ? 'text-gray-600' : 'text-gray-900 font-medium'
-                                            }`}>
+                                            <p className={`text-sm mb-1 ${mensaje.leido ? 'text-gray-600' : 'text-gray-900 font-medium'
+                                                }`}>
                                                 {mensaje.asunto}
                                             </p>
                                             <p className="text-xs text-gray-500 truncate">{mensaje.preview}</p>
                                         </div>
                                     </div>
-                                </div>
+                                </button>
                             ))
                         ) : (
                             <div className="flex items-center justify-center h-full text-gray-400">

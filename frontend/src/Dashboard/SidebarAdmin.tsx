@@ -8,9 +8,12 @@ interface SidebarAdminProps {
     role?: "admin" | "arrendador";
 }
 
-export default function SidebarAdmin({ activeItem, setActiveItem, role }: SidebarAdminProps) {
-    const navigate = useNavigate();
+export default function SidebarAdmin(
+    props: Readonly<SidebarAdminProps>
+) {
+    const { activeItem, setActiveItem, role } = props;
 
+    const navigate = useNavigate();
     const basePath = role === "admin" ? "/admin" : "/arrendador";
 
     return (
@@ -28,18 +31,17 @@ export default function SidebarAdmin({ activeItem, setActiveItem, role }: Sideba
                     onClick={() => { setActiveItem('bodegas'); navigate(`${basePath}/bodegas`); }}
                 />
 
-                 <SidebarItem
+                <SidebarItem
                     label="Solicitudes"
                     active={activeItem === 'solicitudes'}
                     onClick={() => { setActiveItem('solicitudes'); navigate('/solicitudes'); }}
                 />
-                
+
                 <SidebarItem
                     label="Mensajes"
-                    active={activeItem === 'mensajes'} // cuando sean diferentes tvm 
+                    active={activeItem === 'mensajes'}
                     onClick={() => { setActiveItem('mensajes'); navigate('/mensajes'); }}
                 />
-               
 
                 <div className="mt-8 mb-3 px-6">
                     <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
@@ -57,11 +59,13 @@ export default function SidebarAdmin({ activeItem, setActiveItem, role }: Sideba
                         }}
                     />
                 )}
+
                 <SidebarItem
                     label="Settings"
                     active={activeItem === 'settings'}
                     onClick={() => { setActiveItem('settings'); navigate('/settings'); }}
                 />
+
                 <SidebarItem
                     label="Logout"
                     active={activeItem === 'logout'}

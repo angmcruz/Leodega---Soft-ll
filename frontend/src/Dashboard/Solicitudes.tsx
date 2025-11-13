@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Filter, RotateCcw } from 'lucide-react';
+import { Filter, RotateCcw } from 'lucide-react';
 import SolicitudNueva from './SolicitudNueva';
 import SolicitudRevisarResponder from './SolicitudRevisarResponder';
 import SolicitudRechazada from './SolicitudRechazada';
@@ -7,7 +7,6 @@ import type { Solicitud } from './Interfaces/SolicitudesData';
 
 const Solicitudes: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [sortBy, setSortBy] = useState('Newest');
     const [filtroFecha, setFiltroFecha] = useState('');
     const [filtroTipo, setFiltroTipo] = useState('');
     const [filtroEstado, setFiltroEstado] = useState('');
@@ -34,13 +33,27 @@ const Solicitudes: React.FC = () => {
 
     const solicitudesFiltradas = solicitudes.filter((solicitud) => {
         const coincideBusqueda = solicitud.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                solicitud.direccion.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                solicitud.tipo.toLowerCase().includes(searchTerm.toLowerCase());
+            solicitud.direccion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            solicitud.tipo.toLowerCase().includes(searchTerm.toLowerCase());
         const coincideFecha = filtroFecha === '' || solicitud.fecha.includes(filtroFecha);
         const coincideTipo = filtroTipo === '' || solicitud.tipo === filtroTipo;
         const coincideEstado = filtroEstado === '' || solicitud.estado === filtroEstado;
         return coincideBusqueda && coincideFecha && coincideTipo && coincideEstado;
     });
+
+
+    const obtenerClaseEstado = (estado: string): string => {
+        switch (estado) {
+            case 'Completada':
+                return 'bg-green-100 text-green-700';
+            case 'En proceso':
+                return 'bg-yellow-100 text-yellow-700';
+            case 'Rechazada':
+                return 'bg-red-100 text-red-700';
+            default:
+                return 'bg-gray-100 text-gray-700';
+        }
+    };
 
     const reiniciarFiltros = () => {
         setFiltroFecha('');
@@ -103,7 +116,7 @@ const Solicitudes: React.FC = () => {
 
     if (mostrarSolicitudNueva && solicitudSeleccionada) {
         return (
-            <SolicitudNueva 
+            <SolicitudNueva
                 solicitud={solicitudSeleccionada}
                 onVolver={handleVolverASolicitudes}
                 onRevisarResponder={handleRevisarResponder}
@@ -112,7 +125,7 @@ const Solicitudes: React.FC = () => {
     }
 
     return (
-        
+
         <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
             <div className="mb-6 mt-3">
                 <h1 className="text-2xl font-semibold text-gray-900">Solicitudes</h1>
@@ -129,10 +142,10 @@ const Solicitudes: React.FC = () => {
                     <option value="2019">2019</option>
                     <option value="2020">2020</option>
                 </select>
-                
+
                 <div className="h-[65px] w-px bg-gray-300"></div>
 
-                <select 
+                <select
                     value={filtroTipo}
                     onChange={(e) => setFiltroTipo(e.target.value)}
                     className="px-4 py-2 bg-white border-0 text-sm font-medium text-gray-700 focus:outline-none cursor-pointer hover:text-gray-900"
@@ -146,7 +159,7 @@ const Solicitudes: React.FC = () => {
 
                 <div className="h-[65px] w-px bg-gray-300"></div>
 
-                <select 
+                <select
                     value={filtroEstado}
                     onChange={(e) => setFiltroEstado(e.target.value)}
                     className="px-4 py-2 bg-white border-0 text-sm font-medium text-gray-700 focus:outline-none cursor-pointer hover:text-gray-900"
@@ -192,23 +205,34 @@ const Solicitudes: React.FC = () => {
                     <tbody className="divide-y divide-gray-200">
                         {solicitudesFiltradas.length > 0 ? (
                             solicitudesFiltradas.map((solicitud) => (
-                                <tr key={solicitud.id}  className="hover:bg-gray-50 cursor-pointer transition-colors duration-150" onClick={() => handleRowClick(solicitud)} >
-                                    <td className="px-6 py-4 text-sm text-gray-900">{solicitud.id.toString().padStart(5, '0')}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-900">{solicitud.nombre}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-900">{solicitud.direccion}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-900">{solicitud.fecha}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-900">{solicitud.tipo}</td>
+                                <tr
+                                    key={solicitud.id}
+                                    className="hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+                                    onClick={() => handleRowClick(solicitud)}
+                                >
+                                    <td className="px-6 py-4 text-sm text-gray-900">
+                                        {solicitud.id.toString().padStart(5, '0')}
+                                    </td>
+
+                                    <td className="px-6 py-4 text-sm text-gray-900">
+                                        {solicitud.nombre}
+                                    </td>
+
+                                    <td className="px-6 py-4 text-sm text-gray-900">
+                                        {solicitud.direccion}
+                                    </td>
+
+                                    <td className="px-6 py-4 text-sm text-gray-900">
+                                        {solicitud.fecha}
+                                    </td>
+
+                                    <td className="px-6 py-4 text-sm text-gray-900">
+                                        {solicitud.tipo}
+                                    </td>
+
                                     <td className="px-6 py-4">
                                         <span
-                                            className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${
-                                                solicitud.estado === 'Completada'
-                                                    ? 'bg-green-100 text-green-700'
-                                                    : solicitud.estado === 'En proceso'
-                                                    ? 'bg-yellow-100 text-yellow-700'
-                                                    : solicitud.estado === 'Rechazada'
-                                                    ? 'bg-red-100 text-red-700'
-                                                    : 'bg-gray-100 text-gray-700'
-                                            }`}
+                                            className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${obtenerClaseEstado(solicitud.estado)}`}
                                         >
                                             {solicitud.estado}
                                         </span>

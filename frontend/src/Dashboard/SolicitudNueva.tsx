@@ -15,7 +15,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
         fecha: solicitud.fecha,
         tipo: solicitud.tipo,
         estado: solicitud.estado,
-        email: `${solicitud.nombre.toLowerCase().replace(/ /g, '.')}@email.com`,
+        email: `${solicitud.nombre.toLowerCase().replaceAll(' ', '.')}@email.com`,
         telefono: '+57 300 123 4567',
         bodega: 'Bodega Centro Logístico Norte',
         ubicacion: 'Bogotá, Zona Industrial',

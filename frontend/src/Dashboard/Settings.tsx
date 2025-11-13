@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/label-has-for */
 import React, { useState } from 'react';
 import { User, Bell, Lock, CreditCard, Globe, Shield, Mail, Phone, MapPin, Camera } from 'lucide-react';
 
@@ -74,7 +76,7 @@ const Settings: React.FC = () => {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
                                             Nombre
                                         </label>
                                         <input
@@ -84,7 +86,7 @@ const Settings: React.FC = () => {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label htmlFor="apellido" className="block text-sm font-medium text-gray-700 mb-2">
                                             Apellido
                                         </label>
                                         <input

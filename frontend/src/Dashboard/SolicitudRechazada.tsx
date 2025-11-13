@@ -6,13 +6,12 @@ interface SolicitudRechazadaProps {
         id: number;
         nombre: string;
     };
-    razonRechazo: string;
+    
     onVolverDashboard: () => void;
 }
 
 const SolicitudRechazada: React.FC<SolicitudRechazadaProps> = ({ 
-    solicitud, 
-    razonRechazo,
+    solicitud,
     onVolverDashboard 
 }) => {
     const fechaActual = new Date().toLocaleDateString('es-ES', {
