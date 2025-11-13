@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Reports;
+use Illuminate\Http\Request;
 
 class ReportsController extends ApiController
 {
@@ -27,9 +27,9 @@ class ReportsController extends ApiController
             'report_date' => 'sometimes|date',
             'status' => 'sometimes|in:pending,in_review,resolved',
         ];
+
         return $this->storeModel($request, Reports::class, $rules);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -40,6 +40,7 @@ class ReportsController extends ApiController
             'report_date' => 'sometimes|date',
             'status' => 'sometimes|in:pending,in_review,resolved',
         ];
+
         return $this->updateModel($request, Reports::class, $id, $rules);
     }
 

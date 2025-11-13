@@ -11,6 +11,7 @@ class Reservations extends Model
     use HasFactory;
 
     protected $table = 'reservations';
+
     protected $fillable = [
         'store_room_id',
         'tenant_id',
@@ -19,7 +20,7 @@ class Reservations extends Model
         'status',
         'total_mount',
         'cancelation_reason',
-        'creation_date'
+        'creation_date',
     ];
 
     public function storeRooms()

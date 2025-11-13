@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class AdminController extends ApiController
 {
@@ -23,8 +22,9 @@ class AdminController extends ApiController
     {
         $rules = [
             'user_id' => 'required|exists:user,id',
-            'admin_level' => 'required|integer|min:1|max:2'
+            'admin_level' => 'required|integer|min:1|max:2',
         ];
+
         return $this->storeModel($request, Admin::class, $rules);
     }
 
@@ -32,8 +32,9 @@ class AdminController extends ApiController
     {
         $rules = [
             'user_id' => 'sometimes|required|exists:user,id',
-            'admin_level' => 'sometimes|required|integer|min:1|max:2'
+            'admin_level' => 'sometimes|required|integer|min:1|max:2',
         ];
+
         return $this->updateModel($request, Admin::class, $id, $rules);
     }
 

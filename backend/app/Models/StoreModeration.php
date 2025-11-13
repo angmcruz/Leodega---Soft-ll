@@ -11,6 +11,7 @@ class StoreModeration extends Model
     use HasFactory;
 
     protected $table = 'store_moderation';
+
     protected $fillable = [
         'store_id',
         'status',

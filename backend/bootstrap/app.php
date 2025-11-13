@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Middleware\ApiAuthenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\ApiAuthenticate;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,11 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.api' => ApiAuthenticate::class,
         ]);
-        $middleware->trustHosts([ //se cambia a hosting cuando haya dominio real 
-        '127\.0\.0\.1', 
-        'localhost',    
-    ]);
-        
+        $middleware->trustHosts([ // se cambia a hosting cuando haya dominio real
+            '127\.0\.0\.1',
+            'localhost',
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

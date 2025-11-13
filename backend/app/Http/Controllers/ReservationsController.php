@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Reservations;
+use Illuminate\Http\Request;
 
 class ReservationsController extends ApiController
 {
@@ -28,11 +28,11 @@ class ReservationsController extends ApiController
             'status' => 'in:pending,confirmed,canceled',
             'total_mount' => 'numeric|min:0',
             'cancelation_reason' => 'required|string',
-            'creation_date' => 'date'
+            'creation_date' => 'date',
         ];
+
         return $this->storeModel($request, Reservations::class, $rules);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -44,8 +44,9 @@ class ReservationsController extends ApiController
             'status' => 'sometimes|in:pending,confirmed,canceled',
             'total_mount' => 'sometimes|numeric',
             'cancelation_reason' => 'sometimes|string',
-            'creation_date' => 'date'
+            'creation_date' => 'date',
         ];
+
         return $this->updateModel($request, Reservations::class, $id, $rules);
     }
 

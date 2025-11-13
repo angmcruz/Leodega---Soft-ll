@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Favorites;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class FavoritesController extends ApiController
 {
@@ -24,19 +23,21 @@ class FavoritesController extends ApiController
         $rules = [
             'user_id' => 'required|exists:user,id',
             'store_id' => 'required|exists:storeRooms,id',
-            'save_date' => 'date'
+            'save_date' => 'date',
         ];
+
         return $this->storeModel($request, Favorites::class, $rules);
     }
 
     public function update(Request $request, $id)
     {
-         $rules = [
-                'user_id' => 'sometimes|required|exists:user,id',
-                'store_id' => 'sometimes|required|exists:storeRooms,id',
-                'save_date' => 'sometimes|required|date'
-          ];
-          return $this->updateModel($request, Favorites::class, $id, $rules);
+        $rules = [
+            'user_id' => 'sometimes|required|exists:user,id',
+            'store_id' => 'sometimes|required|exists:storeRooms,id',
+            'save_date' => 'sometimes|required|date',
+        ];
+
+        return $this->updateModel($request, Favorites::class, $id, $rules);
     }
 
     public function destroy($id)

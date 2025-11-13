@@ -10,6 +10,7 @@ class Notifications extends Model
     use HasFactory;
 
     protected $table = 'notifications';
+
     protected $fillable = [
         'reservation_id',
         'emisor_id',

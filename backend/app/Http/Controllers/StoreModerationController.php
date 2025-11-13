@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\StoreModeration;
+use Illuminate\Http\Request;
 
 class StoreModerationController extends ApiController
 {
@@ -26,9 +26,9 @@ class StoreModerationController extends ApiController
             'reason_rejected' => 'required|string',
             'moderation_date' => 'sometimes|date',
         ];
+
         return $this->storeModel($request, StoreModeration::class, $rules);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -38,6 +38,7 @@ class StoreModerationController extends ApiController
             'reason_rejected' => 'required|string',
             'moderation_date' => 'sometimes|date',
         ];
+
         return $this->updateModel($request, StoreModeration::class, $id, $rules);
     }
 

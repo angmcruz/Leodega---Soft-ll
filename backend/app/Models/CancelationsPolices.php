@@ -11,6 +11,7 @@ class CancelationsPolices extends Model
     use HasFactory;
 
     protected $table = 'cancelations_polices';
+
     protected $fillable = [
         'landlord_id',
         'policy_name',

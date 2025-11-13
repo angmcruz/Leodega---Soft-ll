@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class StoreRooms extends Model
 {
     use HasFactory;
 
     protected $table = 'storeRooms';
+
     protected $fillable = [
         'landlord_id',
         'room_type',
@@ -21,7 +22,7 @@ class StoreRooms extends Model
         'description',
         'security',
         'publication_status',
-        'publication_date'
+        'publication_date',
     ];
 
     public function landlord()

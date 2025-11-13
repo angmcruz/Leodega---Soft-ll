@@ -10,11 +10,12 @@ class StorePrices extends Model
     use HasFactory;
 
     protected $table = 'store_prices';
+
     protected $fillable = [
         'store_room_id',
         'mode',
         'price',
-        'disponibility'
+        'disponibility',
     ];
 
     public function storeRooms()

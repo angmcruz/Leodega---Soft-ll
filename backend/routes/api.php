@@ -4,13 +4,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\cancelations_policesController;
 use App\Http\Controllers\FavoritesController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
-
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\LandlordsController;
 use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\RatingsController;
 use App\Http\Controllers\ReportsController;
@@ -20,8 +16,8 @@ use App\Http\Controllers\StorePhotoController;
 use App\Http\Controllers\storePricesController;
 use App\Http\Controllers\storeRoomsController;
 use App\Http\Controllers\TenantsController;
-use App\Http\Controllers\PasswordResetController;
-
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -37,7 +33,7 @@ Route::middleware('auth.api:sanctum')->group(function () {
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 Route::post('/user', [UserController::class, 'store']);
-Route::put('/user/{id}', [UserController::class, 'update']); 
+Route::put('/user/{id}', [UserController::class, 'update']);
 Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
 Route::get('/landlords', [LandlordsController::class, 'index']);
@@ -46,7 +42,6 @@ Route::post('/landlords', [LandlordsController::class, 'store']);
 Route::put('/landlords/{id}', [LandlordsController::class, 'update']);
 Route::delete('/landlords/{id}', [LandlordsController::class, 'destroy']);
 Route::get('/landlords/{id}/storeRooms', [storeRoomsController::class, 'getByLandlord']);
-
 
 Route::get('/admin', [AdminController::class, 'index']);
 Route::get('/admin/{id}', [AdminController::class, 'show']);
@@ -89,7 +84,6 @@ Route::get('/storeDisponibility/{id}', [StoreDisponibilityController::class, 'sh
 Route::post('/storeDisponibility', [StoreDisponibilityController::class, 'store']);
 Route::put('/storeDisponibility/{id}', [StoreDisponibilityController::class, 'update']);
 Route::delete('/storeDisponibility/{id}', [StoreDisponibilityController::class, 'destroy']);
-
 
 Route::get('/reservations', [StoreDisponibilityController::class, 'index']);
 Route::get('/reservations/{id}', [StoreDisponibilityController::class, 'show']);

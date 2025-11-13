@@ -24,9 +24,9 @@ class TenantsController extends ApiController
             'search_preference' => 'required|string',
             'user_id' => 'required|exists:users,id',
         ];
+
         return $this->storeModel($request, Tenants::class, $rules);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -34,6 +34,7 @@ class TenantsController extends ApiController
             'search_preference' => 'sometimes|required|string',
             'user_id' => 'sometimes|required|exists:users,id',
         ];
+
         return $this->updateModel($request, Tenants::class, $id, $rules);
     }
 

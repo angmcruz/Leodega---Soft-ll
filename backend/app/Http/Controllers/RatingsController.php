@@ -25,6 +25,7 @@ class RatingsController extends ApiController
             'stars' => 'required|integer|between:1,5',
             'comment' => 'required|string',
         ];
+
         return $this->storeModel($request, Ratings::class, $rules);
     }
 
@@ -36,6 +37,7 @@ class RatingsController extends ApiController
             'stars' => 'sometimes|integer|between:1,5',
             'comment' => 'sometimes|string',
         ];
+
         return $this->updateModel($request, Ratings::class, $id, $rules);
     }
 

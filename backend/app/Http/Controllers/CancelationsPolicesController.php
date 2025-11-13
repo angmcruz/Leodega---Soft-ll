@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\cancelations_polices;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CancelationsPolicesController extends ApiController
 {
@@ -27,9 +26,9 @@ class CancelationsPolicesController extends ApiController
             'description' => 'required|string|max:1000',
             'is_default' => 'required|boolean',
         ];
+
         return $this->storeModel($request, cancelations_polices::class, $rules);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -39,6 +38,7 @@ class CancelationsPolicesController extends ApiController
             'description' => 'sometimes|required|string|max:1000',
             'is_default' => 'sometimes|required|boolean',
         ];
+
         return $this->updateModel($request, cancelations_polices::class, $id, $rules);
     }
 

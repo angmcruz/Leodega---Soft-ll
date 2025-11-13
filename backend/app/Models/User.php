@@ -15,6 +15,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $table = 'user';
+
     protected $fillable = [
         'name',
         'lastname',
@@ -24,22 +25,23 @@ class User extends Authenticatable
         'role',
         'start_date',
         'state',
-        'enable_messages'
+        'enable_messages',
     ];
 
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
     ];
 
     public function setPasswordAttribute($value)
     {
-        if ($value && (strlen($value) !== 60 || !preg_match('/^\$2y\$/', $value))) {
+        if ($value && (strlen($value) !== 60 || ! preg_match('/^\$2y\$/', $value))) {
             $this->attributes['password'] = bcrypt($value);
         } else {
             $this->attributes['password'] = $value;
         }
     }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token, $this->email));

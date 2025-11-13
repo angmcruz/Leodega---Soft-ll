@@ -10,9 +10,10 @@ class Landlords extends Model
     use HasFactory;
 
     protected $table = 'landlords';
+
     protected $fillable = [
         'user_id',
-        'optional_company'
+        'optional_company',
     ];
 
     // Relation with User

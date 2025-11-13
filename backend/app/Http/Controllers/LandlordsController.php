@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Landlords;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class LandlordsController extends ApiController
 {
@@ -25,6 +24,7 @@ class LandlordsController extends ApiController
             'user_id' => 'required|exists:user,id',
             'optional_company' => 'sometimes|string|max:500|nullable',
         ];
+
         return $this->storeModel($request, Landlords::class, $rules);
     }
 
@@ -34,6 +34,7 @@ class LandlordsController extends ApiController
             'user_id' => 'sometimes|required|exists:user,id',
             'optional_company' => 'sometimes|required|string|max:500|nullable',
         ];
+
         return $this->updateModel($request, Landlords::class, $id, $rules);
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\StoreDisponibility;
+use Illuminate\Http\Request;
 
 class StoreDisponibilityController extends ApiController
 {
@@ -24,9 +24,9 @@ class StoreDisponibilityController extends ApiController
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
         ];
+
         return $this->storeModel($request, StoreDisponibility::class, $rules);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -35,6 +35,7 @@ class StoreDisponibilityController extends ApiController
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
         ];
+
         return $this->updateModel($request, StoreDisponibility::class, $id, $rules);
     }
 

@@ -11,7 +11,8 @@ class Favorites extends Model
     use HasFactory;
 
     protected $table = 'favorites';
-    protected $fillable = ['user_id', 'store_room_id','save_date'];
+
+    protected $fillable = ['user_id', 'store_room_id', 'save_date'];
 
     public function user()
     {

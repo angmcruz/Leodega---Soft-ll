@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Notifications;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class NotificationsController extends ApiController
 {
@@ -27,9 +26,9 @@ class NotificationsController extends ApiController
             'receptor_id' => 'required|exists:user,id',
             'message' => 'required|string|max:500',
         ];
+
         return $this->storeModel($request, Notifications::class, $rules);
     }
-
 
     public function update(Request $request, $id)
     {
@@ -39,6 +38,7 @@ class NotificationsController extends ApiController
             'receptor_id' => 'sometimes|exists:user,id',
             'message' => 'sometimes|string|max:500',
         ];
+
         return $this->updateModel($request, Notifications::class, $id, $rules);
     }
 

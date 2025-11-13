@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -13,17 +13,19 @@ class ApiController extends Controller
     {
         $items = $modelClass::all();
         if ($items->isEmpty()) {
-            return response()->json(['message' => 'No items found', "status" => 404], 404);
+            return response()->json(['message' => 'No items found', 'status' => 404], 404);
         }
+
         return response()->json($items, 200);
     }
 
     protected function showModel(string $modelClass, $id)
     {
         $item = $modelClass::find($id);
-        if (!$item) {
-            return response()->json(['message' => 'Item not found', "status" => 404], 404);
+        if (! $item) {
+            return response()->json(['message' => 'Item not found', 'status' => 404], 404);
         }
+
         return response()->json($item, 200);
     }
 
@@ -34,7 +36,7 @@ class ApiController extends Controller
             return response()->json([
                 'message' => 'Validation Error',
                 'errors' => $validator->errors(),
-                'status' => 400
+                'status' => 400,
             ], 400);
         }
 
@@ -44,9 +46,9 @@ class ApiController extends Controller
             $item = DB::transaction(function () use ($modelClass, $validated, $request) {
                 $mainItem = $modelClass::create($validated);
 
-                $possibleRelations = collect($request -> all())
-                ->filter(fn($v) => is_array($v))
-                ->keys();
+                $possibleRelations = collect($request->all())
+                    ->filter(fn ($v) => is_array($v))
+                    ->keys();
 
                 foreach ($possibleRelations as $relationName) {
                     if (method_exists($mainItem, $relationName)) {
@@ -57,18 +59,20 @@ class ApiController extends Controller
                         }
                     }
                 }
+
                 return $mainItem->load($possibleRelations->toArray());
             });
+
             return response()->json([
                 'item' => $item,
                 'message' => 'Item created successfully',
-                'status' => 201
+                'status' => 201,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error creating item',
                 'error' => $e->getMessage(),
-                'status' => 500
+                'status' => 500,
             ], 500);
         }
     }
@@ -76,15 +80,16 @@ class ApiController extends Controller
     protected function updateModel(Request $request, string $modelClass, $id, array $rules)
     {
         $item = $modelClass::find($id);
-        if (!$item) {
+        if (! $item) {
             return response()->json(['message' => 'Not found', 'status' => 404], 404);
         }
 
         // Agregar "sometimes" automáticamente
         $rules = array_map(function ($r) {
             if (stripos($r, 'sometimes') === false && stripos($r, 'required') === false) {
-                return 'sometimes|' . $r;
+                return 'sometimes|'.$r;
             }
+
             return $r;
         }, $rules);
 
@@ -93,7 +98,7 @@ class ApiController extends Controller
             return response()->json([
                 'message' => 'Validation Error',
                 'errors' => $validator->errors(),
-                'status' => 400
+                'status' => 400,
             ], 400);
         }
 
@@ -118,13 +123,13 @@ class ApiController extends Controller
             return response()->json([
                 'data' => $item->fresh(),
                 'message' => 'Updated successfully',
-                'status' => 200
+                'status' => 200,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error updating item',
                 'error' => $e->getMessage(),
-                'status' => 500
+                'status' => 500,
             ], 500);
         }
     }
@@ -132,10 +137,11 @@ class ApiController extends Controller
     protected function destroyModel(string $modelClass, $id)
     {
         $item = $modelClass::find($id);
-        if (!$item) {
-            return response()->json(['message' => 'Item not found', "status" => 404], 404);
+        if (! $item) {
+            return response()->json(['message' => 'Item not found', 'status' => 404], 404);
         }
         $item->delete();
-        return response()->json(['message' => 'Item deleted successfully', "status" => 200], 200);
+
+        return response()->json(['message' => 'Item deleted successfully', 'status' => 200], 200);
     }
 }

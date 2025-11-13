@@ -10,9 +10,10 @@ class Tenants extends Model
     use HasFactory;
 
     protected $table = 'tenants';
+
     protected $fillable = [
         'user_id',
-        'search_preference'
+        'search_preference',
     ];
     //
 

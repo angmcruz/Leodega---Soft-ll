@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Models\Landlords;
 use App\Models\Tenants;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends ApiController
@@ -31,7 +31,7 @@ class UserController extends ApiController
             'role' => 'in:admin,landlord,tenant',
             'start_date' => 'date|default:now()',
             'state' => 'in:active,blocked,pending',
-            'enable_messages' => 'required|boolean'
+            'enable_messages' => 'required|boolean',
         ];
 
         return DB::transaction(function () use ($request, $rules) {
@@ -58,20 +58,20 @@ class UserController extends ApiController
         });
     }
 
-
     public function update(Request $request, $id)
     {
         $rules = [
             'name' => 'sometimes|required|string|max:255',
             'lastname' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|string|email|max:255|unique:user,email,' . $id,
-            'phone' => 'sometimes|required|string|unique:user,phone,' . $id . '|max:10',
+            'email' => 'sometimes|required|string|email|max:255|unique:user,email,'.$id,
+            'phone' => 'sometimes|required|string|unique:user,phone,'.$id.'|max:10',
             'password' => 'sometimes|required|string|min:8',
             'role' => 'sometimes|in:admin,landlord,tenant',
             'start_date' => 'sometimes|date|nullable',
             'state' => 'sometimes|in:active,blocked,pending',
-            'enable_messages' => 'sometimes|boolean'
+            'enable_messages' => 'sometimes|boolean',
         ];
+
         return $this->updateModel($request, User::class, $id, $rules);
     }
 
@@ -79,7 +79,6 @@ class UserController extends ApiController
     {
         return $this->destroyModel(User::class, $id);
     }
-
 
     //
 }

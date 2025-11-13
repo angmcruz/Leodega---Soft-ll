@@ -10,6 +10,7 @@ class StoreDisponibility extends Model
     use HasFactory;
 
     protected $table = 'store_disponibility';
+
     protected $fillable = [
         'store_room_id',
         'start_date',
