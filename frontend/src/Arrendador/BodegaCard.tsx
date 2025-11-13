@@ -4,7 +4,6 @@
     disponibility: boolean;
     }
 
-    
     interface BodegaCardProps {
     id: number;
     title: string;
