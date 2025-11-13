@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Calendario = () => {
@@ -82,6 +82,7 @@ const Calendario = () => {
         }
         return `${currentDate.getDate()} ${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
     };
+    
     const DayView = () => (
         <div className="border border-gray-200 rounded-lg overflow-hidden">
             <div className="bg-gray-50 p-3 border-b border-gray-200 text-center">

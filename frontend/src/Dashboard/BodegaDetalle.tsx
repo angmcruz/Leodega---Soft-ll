@@ -14,7 +14,7 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
     const [mostrarMenuOrden, setMostrarMenuOrden] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [mostrarModal, setMostrarModal] = useState(false);
-    
+
     const getSortLabel = () => {
         switch (sortBy) {
             case 'newest':
@@ -54,20 +54,23 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
 
                         {mostrarMenuOrden && (
                             <>
-                                <div 
-                                    className="fixed inset-0 z-10" 
+                                <button
+                                    type="button"
+                                    aria-label="Close sort menu"
+                                    className="fixed inset-0 z-10 cursor-default bg-transparent"
                                     onClick={() => setMostrarMenuOrden(false)}
-                                ></div>
-                                
+                                >
+                                </button>
+
+
                                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
                                     <button
                                         onClick={() => {
                                             setSortBy('newest');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${
-                                            sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Newest
                                     </button>
@@ -76,9 +79,8 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                                             setSortBy('oldest');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
-                                            sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Oldest
                                     </button>
@@ -87,9 +89,8 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                                             setSortBy('name');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${
-                                            sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Name A-Z
                                     </button>
@@ -103,129 +104,129 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                     </button>
                 </div>
             </div>
-                <div className='flex flex-col'>
-                    <div className='bg-white h-[470px]'>
-                        <div className='flex flex-row justify-between items-center px-4 pt-5 pb-4'>
-                            <div className='flex flex-row items-center gap-3 ml-2'>
-                                <button 
-                                    onClick={onVolver}
-                                    className='hover:bg-gray-100 p-2 rounded-lg transition-colors'
-                                >
-                                    <MoveLeft className='text-gray-700' size={24} />
-                                </button>
-                                <div className='bg-[#9441d8] h-10 w-10 rounded-lg flex items-center justify-center'>
-                                    <h3 className='text-white font-semibold text-lg'>L</h3>
-                                </div>
-                                <span className='text-lg font-medium'>leodega</span>
+            <div className='flex flex-col'>
+                <div className='bg-white h-[470px]'>
+                    <div className='flex flex-row justify-between items-center px-4 pt-5 pb-4'>
+                        <div className='flex flex-row items-center gap-3 ml-2'>
+                            <button
+                                onClick={onVolver}
+                                className='hover:bg-gray-100 p-2 rounded-lg transition-colors'
+                            >
+                                <MoveLeft className='text-gray-700' size={24} />
+                            </button>
+                            <div className='bg-[#9441d8] h-10 w-10 rounded-lg flex items-center justify-center'>
+                                <h3 className='text-white font-semibold text-lg'>L</h3>
                             </div>
-                            <div className='flex flex-row items-center gap-4 mr-3'>
-                                <Share2 className='text-gray-700' size={24} />
-                                <Heart className='text-gray-700' size={24} />
-                            </div>
+                            <span className='text-lg font-medium'>leodega</span>
                         </div>
-                        <div className='relative h-[400px] w-full'>
-                            <img 
-                                src="/src/img/Bodega1.jpg" 
-                                alt="Bodega"
-                                className='w-full h-full object-cover'
-                            />
-                            <div className='absolute inset-0 bg-black bg-opacity-30'></div>
-                            <div className='absolute bottom-0 left-0 right-0 p-6 text-white'>
-                                <div className='flex flex-row gap-2 mb-3'>
-                                    <span className='bg-orange-500 text-white text-sm font-medium px-3 py-1 rounded-full'>
-                                        Espacio en Alquiler
-                                    </span>
-                                    <span className='bg-green-500 text-white text-sm font-medium px-3 py-1 rounded-full'>
-                                        Disponible
-                                    </span>
-                                </div>
-                                <h1 className='text-2xl font-bold mb-2'>
-                                    Bodega Doble Almacenaje (Centro de la Ciudad)
-                                </h1>
-                                <div className='flex flex-row items-center gap-4 text-sm'>
-                                    <div className='flex items-center gap-1'>
-                                        <MapPin size={16} />
-                                        <span>Martha de Roldos Mx-18 Y2</span>
-                                    </div>
-                                    <div className='flex items-center gap-1'>
-                                        <span className='text-yellow-400'>⭐</span>
-                                        <span className='font-semibold'>4.8</span>
-                                        <span className='text-gray-200'>(24 reseñas)</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className='flex flex-row items-center gap-4 mr-3'>
+                            <Share2 className='text-gray-700' size={24} />
+                            <Heart className='text-gray-700' size={24} />
                         </div>
                     </div>
-                    <div className='bg-white mt-6 mb-6'>
-                        <div className='flex flex-row justify-between items-start p-6 border-b border-gray-200'>
-                            <div>
-                                <div className='flex items-baseline gap-2 mb-3'>
-                                    <h2 className='text-4xl font-bold text-purple-600'>$425</h2>
-                                    <span className='text-gray-500 text-lg'>/USD mensual</span>
-                                </div>
-                                <div className='flex flex-row gap-4 text-gray-600'>
-                                    <div className='flex items-center gap-2'>
-                                        <input type='checkbox' checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}
-                                            className='w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer'/>
-                                        <span>300 m²</span>
-                                    </div>
-                                    <div className='flex items-center gap-2'>
-                                        <span>Altura: 6 metros</span>
-                                    </div>
-                                </div>
+                    <div className='relative h-[400px] w-full'>
+                        <img
+                            src="/src/img/Bodega1.jpg"
+                            alt="Bodega"
+                            className='w-full h-full object-cover'
+                        />
+                        <div className='absolute inset-0 bg-black bg-opacity-30'></div>
+                        <div className='absolute bottom-0 left-0 right-0 p-6 text-white'>
+                            <div className='flex flex-row gap-2 mb-3'>
+                                <span className='bg-orange-500 text-white text-sm font-medium px-3 py-1 rounded-full'>
+                                    Espacio en Alquiler
+                                </span>
+                                <span className='bg-green-500 text-white text-sm font-medium px-3 py-1 rounded-full'>
+                                    Disponible
+                                </span>
                             </div>
-                            <button 
-                                onClick={() => setMostrarModal(true)}
-                                className='bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors'
-                            >
-                                Reservar
-                            </button>
-                        </div>
-                        <div className='p-6'>
-                            <h3 className='text-2xl font-bold text-gray-800 mb-4'>Descripción</h3>
-                            <p className='text-gray-600 leading-relaxed'>
-                                Amplia bodega con excelentes 24/7 buena seguridad excelente sector industrial, centro de la ciudad.
-                            </p>
-                        </div>
-                        <div className='p-6 border-t border-gray-200'>
-                            <h3 className='text-2xl font-bold text-gray-800 mb-4'>Características</h3>
-                            <div className='grid grid-cols-2 gap-4'>
-                                <div className='flex items-center gap-2 text-gray-700'>
-                                    <span className='text-green-500'>✓</span>
-                                    <span>Seguridad 24/7</span>
+                            <h1 className='text-2xl font-bold mb-2'>
+                                Bodega Doble Almacenaje (Centro de la Ciudad)
+                            </h1>
+                            <div className='flex flex-row items-center gap-4 text-sm'>
+                                <div className='flex items-center gap-1'>
+                                    <MapPin size={16} />
+                                    <span>Martha de Roldos Mx-18 Y2</span>
                                 </div>
-                                <div className='flex items-center gap-2 text-gray-700'>
-                                    <span className='text-green-500'>✓</span>
-                                    <span>Zona Industrial</span>
-                                </div>
-                                <div className='flex items-center gap-2 text-gray-700'>
-                                    <span className='text-green-500'>✓</span>
-                                    <span>Centro de la Ciudad</span>
-                                </div>
-                                <div className='flex items-center gap-2 text-gray-700'>
-                                    <span className='text-green-500'>✓</span>
-                                    <span>Amplio Espacio</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='p-6 border-t border-gray-200'>
-                            <h3 className='text-2xl font-bold text-gray-800 mb-4'>Ubicación</h3>
-                            <div className='flex items-start gap-2 text-gray-700'>
-                                <MapPin size={20} className='mt-1' color='#9333ea'/>
-                                <div>
-                                    <p className='font-medium'>Martha de Roldos Mx-18 Y2</p>
-                                    <p className='text-gray-500 text-sm'>Centro de la Ciudad</p>
+                                <div className='flex items-center gap-1'>
+                                    <span className='text-yellow-400'>⭐</span>
+                                    <span className='font-semibold'>4.8</span>
+                                    <span className='text-gray-200'>(24 reseñas)</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <BodegaModal 
-                    isOpen={mostrarModal}
-                    onClose={() => setMostrarModal(false)}
-                />
+                <div className='bg-white mt-6 mb-6'>
+                    <div className='flex flex-row justify-between items-start p-6 border-b border-gray-200'>
+                        <div>
+                            <div className='flex items-baseline gap-2 mb-3'>
+                                <h2 className='text-4xl font-bold text-purple-600'>$425</h2>
+                                <span className='text-gray-500 text-lg'>/USD mensual</span>
+                            </div>
+                            <div className='flex flex-row gap-4 text-gray-600'>
+                                <div className='flex items-center gap-2'>
+                                    <input type='checkbox' checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)}
+                                        className='w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer' />
+                                    <span>300 m²</span>
+                                </div>
+                                <div className='flex items-center gap-2'>
+                                    <span>Altura: 6 metros</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setMostrarModal(true)}
+                            className='bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors'
+                        >
+                            Reservar
+                        </button>
+                    </div>
+                    <div className='p-6'>
+                        <h3 className='text-2xl font-bold text-gray-800 mb-4'>Descripción</h3>
+                        <p className='text-gray-600 leading-relaxed'>
+                            Amplia bodega con excelentes 24/7 buena seguridad excelente sector industrial, centro de la ciudad.
+                        </p>
+                    </div>
+                    <div className='p-6 border-t border-gray-200'>
+                        <h3 className='text-2xl font-bold text-gray-800 mb-4'>Características</h3>
+                        <div className='grid grid-cols-2 gap-4'>
+                            <div className='flex items-center gap-2 text-gray-700'>
+                                <span className='text-green-500'>✓</span>
+                                <span>Seguridad 24/7</span>
+                            </div>
+                            <div className='flex items-center gap-2 text-gray-700'>
+                                <span className='text-green-500'>✓</span>
+                                <span>Zona Industrial</span>
+                            </div>
+                            <div className='flex items-center gap-2 text-gray-700'>
+                                <span className='text-green-500'>✓</span>
+                                <span>Centro de la Ciudad</span>
+                            </div>
+                            <div className='flex items-center gap-2 text-gray-700'>
+                                <span className='text-green-500'>✓</span>
+                                <span>Amplio Espacio</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='p-6 border-t border-gray-200'>
+                        <h3 className='text-2xl font-bold text-gray-800 mb-4'>Ubicación</h3>
+                        <div className='flex items-start gap-2 text-gray-700'>
+                            <MapPin size={20} className='mt-1' color='#9333ea' />
+                            <div>
+                                <p className='font-medium'>Martha de Roldos Mx-18 Y2</p>
+                                <p className='text-gray-500 text-sm'>Centro de la Ciudad</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        
+            <BodegaModal
+                isOpen={mostrarModal}
+                onClose={() => setMostrarModal(false)}
+            />
+        </div>
+
     );
 };
 

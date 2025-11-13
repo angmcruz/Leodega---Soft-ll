@@ -11,29 +11,29 @@ const BodegasAdmin = () => {
     const [mostrarMenuOrden, setMostrarMenuOrden] = useState(false);
     const [bodegaSeleccionada, setBodegaSeleccionada] = useState<Bodega | null>(null);
     const [mostrarDetalle, setMostrarDetalle] = useState(false);
-    
+
 
     const bodegas: Bodega[] = [
         { id: 1, nameBodega: 'Bodega1', bodega: 1, phoneNumber: '(225) 555-0118', email: 'jane@microsoft.com', country: 'United States', status: 'Active' },
         { id: 2, nameBodega: 'Bodega1', bodega: 2, phoneNumber: '(205) 555-0100', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
         { id: 3, nameBodega: 'Bodega1', bodega: 3, phoneNumber: '(302) 555-0107', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
-       /* { id: 4, nameBodega: 'Bodega1', bodega: 4, phoneNumber: '(252) 555-0126', email: 'jane@microsoft.com', country: 'Iran', status: 'Active' },
-        { id: 5, nameBodega: 'Bodega1', bodega: 5, phoneNumber: '(629) 555-0129', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
-        { id: 6, nameBodega: 'Bodega1', bodega: 6, phoneNumber: '(406) 555-0120', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
-        { id: 7, nameBodega: 'Bodega1', bodega: 7, phoneNumber: '(208) 555-0112', email: 'jane@microsoft.com', country: 'Brazil', status: 'Active' },
-        { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' },*/
+        /* { id: 4, nameBodega: 'Bodega1', bodega: 4, phoneNumber: '(252) 555-0126', email: 'jane@microsoft.com', country: 'Iran', status: 'Active' },
+         { id: 5, nameBodega: 'Bodega1', bodega: 5, phoneNumber: '(629) 555-0129', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
+         { id: 6, nameBodega: 'Bodega1', bodega: 6, phoneNumber: '(406) 555-0120', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
+         { id: 7, nameBodega: 'Bodega1', bodega: 7, phoneNumber: '(208) 555-0112', email: 'jane@microsoft.com', country: 'Brazil', status: 'Active' },
+         { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' },*/
     ];
 
     const totalPages = 40;
     const bodegasFiltradas = bodegas.filter((bodega) => {
-        const coincideBusqueda = 
+        const coincideBusqueda =
             bodega.nameBodega.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bodega.bodega.toString().includes(searchTerm) ||
             bodega.phoneNumber.includes(searchTerm) ||
             bodega.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bodega.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
             bodega.status.toLowerCase().includes(searchTerm.toLowerCase());
-        
+
         return coincideBusqueda;
     });
 
@@ -73,7 +73,7 @@ const BodegasAdmin = () => {
 
     if (mostrarDetalle && bodegaSeleccionada) {
         return (
-            <BodegaDetalle 
+            <BodegaDetalle
                 bodega={bodegaSeleccionada}
                 onVolver={handleVolverABodegas}
             />
@@ -108,20 +108,21 @@ const BodegasAdmin = () => {
 
                         {mostrarMenuOrden && (
                             <>
-                                <div 
-                                    className="fixed inset-0 z-[1]" 
+                                <button
+                                    type="button"
+                                    aria-label="Cerrar menú de orden"
+                                    className="fixed inset-0 z-[1] cursor-default bg-transparent"
                                     onClick={() => setMostrarMenuOrden(false)}
-                                ></div>
-                                
+                                ></button>
+
                                 <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-[2]">
                                     <button
                                         onClick={() => {
                                             setSortBy('newest');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${
-                                            sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Newest
                                     </button>
@@ -130,9 +131,8 @@ const BodegasAdmin = () => {
                                             setSortBy('oldest');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
-                                            sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Oldest
                                     </button>
@@ -141,9 +141,8 @@ const BodegasAdmin = () => {
                                             setSortBy('name');
                                             setMostrarMenuOrden(false);
                                         }}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${
-                                            sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
-                                        }`}
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                                            }`}
                                     >
                                         Name A-Z
                                     </button>
@@ -152,8 +151,8 @@ const BodegasAdmin = () => {
                         )}
                     </div>
 
-                    <button 
-                    onClick={() => navigate("/preguntainicio1")} className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
+                    <button
+                        onClick={() => navigate("/preguntainicio1")} className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
                         Añadir Nueva Bodega
                     </button>
                 </div>
@@ -186,8 +185,8 @@ const BodegasAdmin = () => {
                     <tbody className="divide-y divide-gray-200 bg-white">
                         {bodegasOrdenadas.length > 0 ? (
                             bodegasOrdenadas.map((bodega) => (
-                                <tr 
-                                    key={bodega.id} 
+                                <tr
+                                    key={bodega.id}
                                     className="hover:bg-gray-50 transition-colors cursor-pointer"
                                     onClick={() => handleBodegaClick(bodega)}
                                 >
@@ -198,11 +197,10 @@ const BodegasAdmin = () => {
                                     <td className="px-6 py-4 text-sm text-gray-900">{bodega.country}</td>
                                     <td className="px-6 py-4">
                                         <span
-                                            className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${
-                                                bodega.status === 'Active'
+                                            className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${bodega.status === 'Active'
                                                     ? 'bg-teal-100 text-teal-700'
                                                     : 'bg-red-100 text-red-700'
-                                            }`}
+                                                }`}
                                         >
                                             {bodega.status}
                                         </span>

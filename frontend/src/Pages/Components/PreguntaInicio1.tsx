@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
-import api from "../../api/axios";
+
 
 const PreguntaInicio1: React.FC = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const storedUser = localStorage.getItem("auth_user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
-  const landlordID = user?.landlord?.id;
 
-
-
+  
   const options = [
     { id: "habitacion", name: "Habitación", image: "/src/img/habitacionLogo.png" },
     { id: "garaje", name: "Garaje/Parqueadero", image: "/src/img/garajeLogo.png" },

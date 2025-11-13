@@ -59,7 +59,7 @@ const PreguntaInicio4: React.FC = () => {
     if (storedData) {
       const parsed = JSON.parse(storedData);
       if (parsed.location) {
-        const { direction, city, geographical_zone } = parsed.location;
+        const { direction} = parsed.location;
         setSearch(direction || "");
         if (parsed.location.position) {
           setPosition(parsed.location.position);
@@ -108,7 +108,7 @@ const PreguntaInicio4: React.FC = () => {
     const latNum = Number.parseFloat(lat);
     const lonNum = Number.parseFloat(lon);
 
-    if (isNaN(latNum) || isNaN(lonNum)) {
+    if (Number.isNaN(latNum) || Number.isNaN(lonNum)) {
       console.error("Coordenadas inválidas:", { lat, lon });
       return;
     }
@@ -119,7 +119,7 @@ const PreguntaInicio4: React.FC = () => {
 
     const selected = suggestions.find((s) => s.lat === lat && s.lon === lon);
 
-    if (selected && selected.address) {
+    if (selected?.address) {
       const address = selected.address;
       const direction = name || "";
       const city =

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
-import BodegaDetalle from './BodegaDetalle';
 import { useNavigate } from 'react-router-dom';
 
 import api from "../api/axios";
@@ -35,15 +34,11 @@ const BodegasArrendador = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name'>('newest');
   const [mostrarMenuOrden, setMostrarMenuOrden] = useState(false);
-  const [bodegaSeleccionada, setBodegaSeleccionada] = useState<Bodega | null>(null);
-  const [mostrarDetalle, setMostrarDetalle] = useState(false);
   const [loading, setLoading] = useState(true);
 
 
   const user = JSON.parse(localStorage.getItem("auth_user") || "{}");
   const landlordId = user?.landlord?.id || "";
-  const totalPages = 40;
-
 
   useEffect(() => {
     const fetchStore = async () => {
@@ -86,24 +81,24 @@ const BodegasArrendador = () => {
     }
   };
 
-  // const handleBodegaClick = (bodega: Bodega) => {
-  //     setBodegaSeleccionada(bodega);
-  //     setMostrarDetalle(true);
-  // };
+  const renderContent = () => {
+    if (loading) {
+      return <div className="text-center py-10 text-gray-500">Cargando bodegas...</div>;
+    }
 
-  // const handleVolverABodegas = () => {
-  //     setMostrarDetalle(false);
-  //     setBodegaSeleccionada(null);
-  // };
+    if (bodegasOrdenadas.length === 0) {
+      return <div className="text-center py-10 text-gray-500">No se encontraron bodegas</div>;
+    }
 
-  // if (mostrarDetalle && bodegaSeleccionada) {
-  //     return (
-  //         <BodegaDetalle
-  //             bodega={bodegaSeleccionada}
-  //             onVolver={handleVolverABodegas}
-  //         />
-  //     );
-  // }
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {bodegasOrdenadas.map((bodega) => (
+          <BodegaCard key={bodega.id} {...bodega} storePrices={bodega.storePrices} />
+        ))}
+      </div>
+    );
+  };
+
 
   return (
     <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
@@ -134,8 +129,12 @@ const BodegasArrendador = () => {
 
             {mostrarMenuOrden && (
               <>
-                <div className="fixed inset-0 z-[1]" onClick={() => setMostrarMenuOrden(false)}></div>
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-[2]">
+                <button
+                  type="button"
+                  aria-label="Cerrar menú de ordenamiento"
+                  className="fixed inset-0 z-[1] cursor-default bg-transparent"
+                  onClick={() => setMostrarMenuOrden(false)}
+                />                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-[2]">
                   {['newest', 'oldest', 'name'].map((type) => (
                     <button
                       key={type}
@@ -163,18 +162,7 @@ const BodegasArrendador = () => {
         </div>
       </div>
 
-      {loading ? (
-        <div className="text-center py-10 text-gray-500">Cargando bodegas...</div>
-      ) : bodegasOrdenadas.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {bodegasOrdenadas.map((bodega) => (
-            <BodegaCard key={bodega.id} {...bodega}
-            storePrices={bodega.storePrices}/>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-10 text-gray-500">No se encontraron bodegas</div>
-      )}
+      {renderContent()}
     </div>
   );
 };
