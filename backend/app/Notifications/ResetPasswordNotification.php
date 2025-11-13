@@ -19,6 +19,7 @@ class ResetPasswordNotification extends Notification
 
     public function via($notifiable)
     {
+        unset($notifiable);
         return ['mail'];
     }
 
@@ -26,8 +27,21 @@ class ResetPasswordNotification extends Notification
     {
         return (new MailMessage)
             ->subject('Restablecer contraseña - Leodega')
+            ->greeting('¡Hola ' . $notifiable->name . '!')
             ->line('Recibiste este correo porque solicitaste restablecer tu contraseña.')
             ->action('Restablecer contraseña', $this->url)
-            ->line('Si no solicitaste este cambio, puedes ignorar este mensaje.');
+            ->line('Si no solicitaste este cambio, puedes ignorar este mensaje.')
+            ->line('Gracias por usar Leodega.');
+    }
+
+    public function toArray($notifiable)
+    {
+        return [
+            'user_id' => $notifiable->id,
+            'user_name' => $notifiable->name,
+            'user_email' => $notifiable->email,
+            'message' => 'Solicitud de restablecimiento de contraseña',
+            'url' => $this->url,
+        ];
     }
 }
