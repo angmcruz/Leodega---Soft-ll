@@ -28,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->dropForeign(['reservation_id']);
+            $table->dropConstrainedForeignId('reservation_id');
         });
 
         Schema::dropIfExists('payments');
