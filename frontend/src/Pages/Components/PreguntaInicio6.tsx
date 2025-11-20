@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
-
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 const PreguntaInicio6 = () => {
   const navigate = useNavigate();
   const [precio, setPrecio] = useState("");
@@ -50,12 +51,12 @@ const PreguntaInicio6 = () => {
       {/* Header */}
       <header className="flex justify-end items-center gap-3 p-6">
         <img
-          src="/src/img/LOGO_LEODEGA ISO.png"
+          src={leodegalogo}
           alt="Logo Leodega"
           className="h-10"
         />
         <img
-          src="/src/img/LOGO_LEODEGA TEXTO-19.png"
+          src={leodega}
           alt="Leodega"
           className="h-8"
         />
