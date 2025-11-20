@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import api from "../api/axios";
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
+import arrendador from '../img/arrendador.png';
+import arrendatario from '../img/arrendatario.png';
 
 const Decision = () => {
     const navigate = useNavigate();
@@ -52,8 +56,8 @@ const Decision = () => {
         <div className="min-h-screen flex flex-col">
             <header className="pt-[40px] mb-[10px] pl-[30px] lg:pt-[80px] lg:pl-[60px] lg:mb-[2px]">
                 <div className="flex items-center gap-3">
-                    <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className="h-10 md:h-12" />
-                    <img src="/src/img/LOGO_LEODEGA TEXTO-19.png" alt="Leodega" className="h-8 md:h-10" />
+                    <img src={leodegalogo} alt="Logo Leodega" className="h-10 md:h-12" />
+                    <img src={leodega} alt="Leodega" className="h-8 md:h-10" />
                 </div>
             </header>
 
@@ -75,7 +79,7 @@ const Decision = () => {
                                 className="flex flex-col lg:flex-row items-center gap-4 cursor-pointer hover:scale-105 transition-transform duration-200 p-6 rounded-xl hover:bg-gray-50"
                             >
                                 <div className="bg-gray-100 rounded-lg p-4 lg:p-6 flex items-center justify-center h-32 w-32 lg:h-40 lg:w-40">
-                                    <img src="/src/img/arrendador.png" alt="Arrendador" className="max-h-20 lg:max-h-24 object-contain" />
+                                    <img src={arrendador} alt="Arrendador" className="max-h-20 lg:max-h-24 object-contain" />
                                 </div>
                                 <span className="text-[#313131] font-medium text-[25px]">Arrendador</span>
                             </button>
@@ -85,7 +89,7 @@ const Decision = () => {
                                 className="flex flex-col lg:flex-row items-center gap-4 cursor-pointer hover:scale-105 transition-transform duration-200 p-6 rounded-xl hover:bg-gray-50"
                             >
                                 <div className="bg-gray-100 rounded-lg p-4 lg:p-6 flex items-center justify-center h-32 w-32 lg:h-40 lg:w-40">
-                                    <img src="/src/img/arrendatario.png" alt="Arrendatario" className="max-h-20 lg:max-h-24 object-contain" />
+                                    <img src={arrendatario} alt="Arrendatario" className="max-h-20 lg:max-h-24 object-contain" />
                                 </div>
                                 <span className="text-[#313131] font-medium text-[25px]">Arrendatario</span>
                             </button>
