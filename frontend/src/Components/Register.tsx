@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
-
-
+import reimage from '../img/reimage.png';
+import facebook from '../img/facebook.png';
+import google from '../img/google.png';
+import apple from '../img/apple.png';
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -75,15 +78,15 @@ const Register = () => {
         <div className="min-h-screen flex flex-col">
             <header className="pt-[30px] mb-[10px] pr-[30px] lg:pt-[50px] lg:pb-10 lg:pr-[60px] lg:mb-[2px]">
                 <div className="flex items-center gap-3 justify-end">
-                    <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className="h-10 md:h-12" />
-                    <img src="/src/img/LOGO_LEODEGA TEXTO-19.png" alt="Leodega" className="h-8 md:h-10" />
+                    <img src={leodegalogo} alt="Logo Leodega" className="h-10 md:h-12" />
+                    <img src={leodega} alt="Leodega" className="h-8 md:h-10" />
                 </div>
             </header>
 
             <div className="flex-1 flex flex-col lg:flex-row items-center justify-center pl-[30px] lg:pl-[110px] pr-[30px] lg:pr-[80px] mt-[-40px]">
                 <div className="mt-[-100px] hidden lg:flex w-full lg:w-1/2 justify-center items-center lg:pr-[60px]">
                     <img
-                        src="/src/img/reimage.png"
+                        src={reimage}
                         alt="Register"
                         className="w-[400px] h-[640px] object-cover rounded-xl"
                     />
@@ -213,15 +216,15 @@ const Register = () => {
 
                             <div className="grid grid-cols-3 gap-4">
                                 <button className="border-2 border-gray-300 rounded-lg py-2 flex items-center justify-center hover:bg-blue-50">
-                                    <img src="/src/img/facebook.png" alt="Facebook" className="w-8 h-8" />
+                                    <img src={facebook} alt="Facebook" className="w-8 h-8" />
                                 </button>
 
                                 <button className="border-2 border-gray-300 rounded-lg py-2 flex items-center justify-center hover:bg-gray-50">
-                                    <img src="/src/img/google.png" alt="Google" className="w-[60px] h-[30px]" />
+                                    <img src={google} alt="Google" className="w-[60px] h-[30px]" />
                                 </button>
 
                                 <button className="border-2 border-gray-300 rounded-lg py-2 flex items-center justify-center hover:bg-gray-50">
-                                    <img src="/src/img/apple.png" alt="Apple" className="w-[70px] h-[40px]" />
+                                    <img src={apple} alt="Apple" className="w-[70px] h-[40px]" />
                                 </button>
                             </div>
                         </div>
