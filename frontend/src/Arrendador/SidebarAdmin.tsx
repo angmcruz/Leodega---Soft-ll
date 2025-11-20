@@ -1,6 +1,7 @@
 import React from "react";
 import { SidebarItem } from "./SidebarItem";
 import { useNavigate } from 'react-router-dom';
+import logoh1 from "../img/LOGO_H_1.png";
 
 interface SidebarAdminProps {
     readonly activeItem: string;
@@ -13,7 +14,7 @@ export default function SidebarAdmin({ activeItem, setActiveItem }: SidebarAdmin
         <aside className="w-[270px] bg-white border-r border-gray-200 flex flex-col flex-shrink-0 min-h-screen">
             <div className="px-6 py-6 border-b border-gray-100">
                 <div className="flex items-center gap-2.5">
-                    <img src="/src/img/LOGO_H_1.png" alt="Logo" className="h-12" />
+                    <img src={logoh1} alt="Logo" className="h-12" />
                 </div>
             </div>
 
