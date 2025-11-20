@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import logoh1 from '../img/LOGO_H_1.png'
+import logimage from '../img/logimage.png'
 
 const VerifyCode = () => {
     const navigate = useNavigate();
@@ -20,7 +22,7 @@ const VerifyCode = () => {
     return (
         <div className="min-h-screen flex flex-col bg-white">
            <header className="pt-[40px] mb-[10px] pl-[30px] lg:pt-[80px] lg:pl-[60px] lg:mb-[2px]"><div className="flex items-center gap-3">
-                    <img src="/src/img/LOGO_H_1.png" alt="Logo Leodega" className=" h-10 md:h-12" />
+                    <img src={logoh1} alt="Logo Leodega" className=" h-10 md:h-12" />
                     
                 </div>
             </header>
@@ -67,7 +69,7 @@ const VerifyCode = () => {
 
                  <div className="mt-[-40px] hidden lg:flex w-full lg:w-1/2 justify-center items-center">
                     <img 
-                        src="/src/img/logimage.png" 
+                        src={logimage}
                         alt="Login" 
                         className="w-[550px] h-[600px] object-cover rounded-xl"
                     />
