@@ -1,5 +1,6 @@
 import { Bell, ChevronDown } from "lucide-react";
-
+import bandera from '../img/bandera.jpg';
+import perfil from '../img/perfil.jpg';
 interface HeaderArrendadorProps {
   role?: "admin" | "arrendador";
 }
@@ -29,7 +30,7 @@ export const HeaderArrendador: React.FC<HeaderArrendadorProps> = ({ role }) => {
 
             <button className="flex items-center gap-2 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors">
             <img
-                src="/src/img/bandera.jpg"
+                src={bandera}
                 alt="Spanish"
                 className="w-7 h-5 rounded object-cover"
             />
@@ -39,7 +40,7 @@ export const HeaderArrendador: React.FC<HeaderArrendadorProps> = ({ role }) => {
 
             <button className="flex items-center gap-3 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors">
             <img
-                src="/src/img/perfil.jpg"
+                src={perfil}
                 className="w-9 h-9 rounded-full object-cover"
             />
             <div className="text-left">
