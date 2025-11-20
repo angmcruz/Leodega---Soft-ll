@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { Link } from 'react-router-dom';
+import facebook from '../img/facebook.png';
 
 
 const Login: React.FC = () => {
@@ -110,7 +111,7 @@ const Login: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-3 gap-4">
                             <button className="border-2 border-gray-300 rounded-lg py-3 flex items-center justify-center hover:bg-blue-50">
-                                <img src="public/facebook.png" alt="Facebook" className="w-8 h-8" />
+                                <img src={facebook} alt="Facebook" className="w-8 h-8" />
                             </button>
 
                             <button className="border-2 border-gray-300 rounded-lg py-3 flex items-center justify-center hover:bg-gray-50">
