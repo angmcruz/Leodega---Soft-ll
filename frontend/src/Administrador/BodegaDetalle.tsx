@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { Bodega } from './Interfaces/SolicitudesData';
 import { ChevronDown, Heart, MapPin, MoveLeft, Search, Share2 } from 'lucide-react';
 import BodegaModal from './BodegaModal';
-
+import bodega1 from '../img/Bodega1.jpg';
 interface BodegaDetalleProps {
     bodega: Bodega;
     onVolver: () => void;
@@ -125,7 +125,7 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                         </div>
                         <div className='relative h-[400px] w-full'>
                             <img 
-                                src="/src/img/Bodega1.jpg" 
+                                src={bodega1} 
                                 alt="Bodega"
                                 className='w-full h-full object-cover'
                             />
