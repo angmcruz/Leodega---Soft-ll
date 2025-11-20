@@ -115,7 +115,7 @@ const Login: React.FC = () => {
                             </button>
 
                             <button className="border-2 border-gray-300 rounded-lg py-3 flex items-center justify-center hover:bg-gray-50">
-                                <img src="public/google.png" alt="Google" className="w-[60px] h-[30px]" />
+                                <img src="/google.png" alt="Google" className="w-[60px] h-[30px]" />
                             </button>
 
                             <button className="border-2 border-gray-300 rounded-lg py-3 flex items-center justify-center hover:bg-gray-50">
