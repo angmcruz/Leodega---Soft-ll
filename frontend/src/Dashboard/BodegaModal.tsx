@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, CheckCircle, MapPin, Calendar, Building } from 'lucide-react';
-
+import bodega1 from '../img/Bodega1.jpg';
 interface BodegaModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -53,7 +53,7 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose }) => {
                             </div>
 
                             <div className="flex gap-4">
-                                <img src="/src/img/Bodega1.jpg" alt="Bodega" className="w-24 h-24 rounded-lg object-cover" />
+                                <img src={bodega1} alt="Bodega" className="w-24 h-24 rounded-lg object-cover" />
 
                                 <div className="flex-1">
                                     <h4 className="font-semibold text-lg text-gray-900 mb-2">
