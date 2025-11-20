@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
-import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
 import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 const PreguntaInicio5 = () => {
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ const PreguntaInicio5 = () => {
           className="h-10"
         />
         <img
-          src={leodega}
+          src='/LOGO_LEODEGA TEXTO-19.png'
           alt="Leodega"
           className="h-8"
         />

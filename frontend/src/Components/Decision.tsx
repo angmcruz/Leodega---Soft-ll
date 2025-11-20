@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import api from "../api/axios";
-import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import api from "../api/axios"
 import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 import arrendador from '../img/arrendador.png';
 import arrendatario from '../img/arrendatario.png';
@@ -57,7 +56,7 @@ const Decision = () => {
             <header className="pt-[40px] mb-[10px] pl-[30px] lg:pt-[80px] lg:pl-[60px] lg:mb-[2px]">
                 <div className="flex items-center gap-3">
                     <img src={leodegalogo} alt="Logo Leodega" className="h-10 md:h-12" />
-                    <img src={leodega} alt="Leodega" className="h-8 md:h-10" />
+                    <img src='/LOGO_LEODEGA TEXTO-19.png' alt="Leodega" className="h-8 md:h-10" />
                 </div>
             </header>
 

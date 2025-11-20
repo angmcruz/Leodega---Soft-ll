@@ -7,7 +7,6 @@ import "leaflet/dist/leaflet.css";
 // @ts-ignore
 import L from "leaflet";
 import axios from "axios";
-import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
 import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 
 const AnyMapContainer = MapContainer as any;
@@ -163,7 +162,7 @@ const PreguntaInicio4: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-white">
       <header className="flex justify-end items-center gap-3 p-6">
         <img src={leodegalogo} alt="Logo Leodega" className="h-10" />
-        <img src={leodega} alt="Leodega" className="h-8" />
+        <img src='/LOGO_LEODEGA TEXTO-19.png' alt="Leodega" className="h-8" />
       </header>
 
       <main className="flex flex-col items-center flex-1 px-6 pb-10">

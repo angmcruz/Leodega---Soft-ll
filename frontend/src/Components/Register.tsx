@@ -6,7 +6,6 @@ import reimage from '../img/reimage.png';
 import facebook from '../img/facebook.png';
 import google from '../img/google.png';
 import apple from '../img/apple.png';
-import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
 import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 
 const Register = () => {
@@ -79,7 +78,7 @@ const Register = () => {
             <header className="pt-[30px] mb-[10px] pr-[30px] lg:pt-[50px] lg:pb-10 lg:pr-[60px] lg:mb-[2px]">
                 <div className="flex items-center gap-3 justify-end">
                     <img src={leodegalogo} alt="Logo Leodega" className="h-10 md:h-12" />
-                    <img src={leodega} alt="Leodega" className="h-8 md:h-10" />
+                    <img src='/LOGO_LEODEGA TEXTO-19.png' alt="Leodega" className="h-8 md:h-10" />
                 </div>
             </header>
 
