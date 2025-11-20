@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
 import FooterNav from './FooterNav';
 import { Building2, Lock, Users } from 'lucide-react';
-
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 const PreguntaInicio2: React.FC = () => {
     const navigate = useNavigate();
     const [selectedOption, setSelectedOption] = useState<string>('');
@@ -57,8 +58,8 @@ const PreguntaInicio2: React.FC = () => {
         <div className="min-h-screen flex flex-col">
             <header className="pt-[30px] mb-[10px] px-[30px] lg:pt-[50px] lg:pb-10 lg:pr-[60px] lg:mb-[2px]">
                 <div className="flex items-center gap-3 justify-end">
-                    <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className="h-8 md:h-10 lg:h-12" />
-                    <img src="/src/img/LOGO_LEODEGA TEXTO-19.png" alt="Leodega" className="h-6 md:h-8 lg:h-10" />
+                    <img src={leodegalogo} alt="Logo Leodega" className="h-8 md:h-10 lg:h-12" />
+                    <img src={leodega} alt="Leodega" className="h-6 md:h-8 lg:h-10" />
                 </div>
             </header>
 
