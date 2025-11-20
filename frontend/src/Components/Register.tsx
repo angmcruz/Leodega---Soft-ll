@@ -6,7 +6,7 @@ import reimage from '../img/reimage.png';
 import facebook from '../img/facebook.png';
 import google from '../img/google.png';
 import apple from '../img/apple.png';
-import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import leodega from '../img/LOGO_LEODEGA19.png';
 import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 
 const Register = () => {
