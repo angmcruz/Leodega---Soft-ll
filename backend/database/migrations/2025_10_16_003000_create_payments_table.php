@@ -25,8 +25,12 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
+        Schema::table('payments', function (Blueprint $table) {
+            $table->dropForeign(['reservation_id']);
+        });
+
         Schema::dropIfExists('payments');
     }
 };
