@@ -6,7 +6,7 @@ import facebook from '../img/facebook.png';
 import google from '../img/google.png';
 import apple from '../img/apple.png';
 import logimage from '../img/logimage.png';
-import leodega from '../img/LOGO_LEODEGA19.png';
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
 import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 
 const Login: React.FC = () => {

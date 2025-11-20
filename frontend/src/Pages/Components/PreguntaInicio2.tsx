@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
 import FooterNav from './FooterNav';
 import { Building2, Lock, Users } from 'lucide-react';
-import leodega from '../img/LOGO_LEODEGA19.png';
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
 import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 const PreguntaInicio2: React.FC = () => {
     const navigate = useNavigate();
