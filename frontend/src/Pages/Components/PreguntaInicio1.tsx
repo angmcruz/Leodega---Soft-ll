@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
-
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
+import habitacionLogo from '../img/habitacionLogo.png';
+import garajeLogo from '../img/garajeLogo.png';
+import contenedorLogo from '../img/contenedorLogo.png';
+import sotanoLogo from '../img/sotanoLogo.png';
+import aticoLogo from '../img/aticoLogo.png';
+import bodegaLogo from '../img/bodegaLogo.png';
 
 const PreguntaInicio1: React.FC = () => {
   const navigate = useNavigate();
@@ -10,12 +17,12 @@ const PreguntaInicio1: React.FC = () => {
 
   
   const options = [
-    { id: "habitacion", name: "Habitación", image: "/src/img/habitacionLogo.png" },
-    { id: "garaje", name: "Garaje/Parqueadero", image: "/src/img/garajeLogo.png" },
-    { id: "contenedor", name: "Contenedor", image: "/src/img/contenedorLogo.png" },
-    { id: "sotano", name: "Sótano", image: "/src/img/sotanoLogo.png" },
-    { id: "atico", name: "Ático", image: "/src/img/aticoLogo.png" },
-    { id: "bodega", name: "Bodega Indep.", image: "/src/img/bodegaLogo.png" },
+    { id: "habitacion", name: "Habitación", image: {habitacionLogo} },
+    { id: "garaje", name: "Garaje/Parqueadero", image: {garajeLogo} },
+    { id: "contenedor", name: "Contenedor", image: {contenedorLogo} },
+    { id: "sotano", name: "Sótano", image: {sotanoLogo} },
+    { id: "atico", name: "Ático", image: {aticoLogo} },
+    { id: "bodega", name: "Bodega Indep.", image: {bodegaLogo} },
   ];
 
   useEffect(() => {
@@ -43,8 +50,8 @@ const PreguntaInicio1: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <header className="flex justify-end items-center gap-3 p-6">
-        <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className="h-10" />
-        <img src="/src/img/LOGO_LEODEGA TEXTO-19.png" alt="Leodega" className="h-8" />
+        <img src={leodegalogo} alt="Logo Leodega" className="h-10" />
+        <img src={leodega} alt="Leodega" className="h-8" />
       </header>
 
       <main className="flex flex-col justify-center items-center flex-1 px-6">
