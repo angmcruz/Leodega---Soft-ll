@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { Link } from 'react-router-dom';
 import facebook from '../img/facebook.png';
-
+import google from '../img/google.png';
+import apple from '../img/apple.png';
+import logimage from '../img/logimage.png';
+import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
+import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
 
 const Login: React.FC = () => {
 
@@ -53,8 +57,8 @@ const Login: React.FC = () => {
     return (
         <div className="min-h-screen flex flex-col">
             <header className="pt-[40px] mb-[10px] pl-[30px] lg:pt-[80px] lg:pl-[60px] lg:mb-[2px]"><div className="flex items-center gap-3">
-                <img src="/src/img/LOGO_LEODEGA ISO.png" alt="Logo Leodega" className=" h-10 md:h-12" />
-                <img src="/src/img/LOGO_LEODEGA TEXTO-19.png" alt="Leodega" className=" h-8 md:h-10" />
+                <img src= {leodegalogo}  alt="Logo Leodega" className=" h-10 md:h-12" />
+                <img src={leodega}  alt="Leodega" className=" h-8 md:h-10" />
             </div>
             </header>
 
@@ -115,11 +119,11 @@ const Login: React.FC = () => {
                             </button>
 
                             <button className="border-2 border-gray-300 rounded-lg py-3 flex items-center justify-center hover:bg-gray-50">
-                                <img src="/google.png" alt="Google" className="w-[60px] h-[30px]" />
+                                <img src={google} alt="Google" className="w-[60px] h-[30px]" />
                             </button>
 
                             <button className="border-2 border-gray-300 rounded-lg py-3 flex items-center justify-center hover:bg-gray-50">
-                                <img src="public/apple.png" alt="Apple" className="w-[70px] h-[40px]" />
+                                <img src={apple} alt="Apple" className="w-[70px] h-[40px]" />
                             </button>
                         </div>
                     </form>
@@ -127,7 +131,7 @@ const Login: React.FC = () => {
 
                 <div className="mt-[-40px] hidden lg:flex w-full lg:w-1/2 justify-center items-center">
                     <img
-                        src="/src/img/logimage.png"
+                        src={logimage}
                         alt="Login"
                         className="w-[550px] h-[600px] object-cover rounded-xl"
                     />
