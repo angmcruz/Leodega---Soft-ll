@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
 import FooterNav from './FooterNav';
 import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
-import agregarFotos from '../img/agregarFotos.png';
+import agregarFotos from '../../img/agregarFotos.png';
 const PreguntaInicio3: React.FC = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);

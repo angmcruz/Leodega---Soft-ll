@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
-import leodegalogo from '../img/LOGO_LEODEGAISO.png';
-import habitacionLogo from '../img/habitacionLogo.png';
-import garajeLogo from '../img/garajeLogo.png';
-import contenedorLogo from '../img/contenedorLogo.png';
-import sotanoLogo from '../img/sotanoLogo.png';
-import aticoLogo from '../img/aticoLogo.png';
-import bodegaLogo from '../img/bodegaLogo.png';
+import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
+import habitacionLogo from '../../img/habitacionLogo.png';
+import garajeLogo from '../../img/garajeLogo.png';
+import contenedorLogo from '../../img/contenedorLogo.png';
+import sotanoLogo from '../../img/sotanoLogo.png';
+import aticoLogo from '../../img/aticoLogo.png';
+import bodegaLogo from '../../img/bodegaLogo.png';
 
 const PreguntaInicio1: React.FC = () => {
   const navigate = useNavigate();
