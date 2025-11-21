@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained('reservations')->onDelete('cascade');
             $table->enum('payment_method', ['credit card', 'debit card'])->nullable(false);
             $table->enum('payment_state', ['paid', 'pending', 'failed'])->default('pending');
             $table->date('payment_date')->default(DB::raw('CURRENT_DATE'));
