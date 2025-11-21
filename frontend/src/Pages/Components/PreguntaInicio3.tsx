@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
 import FooterNav from './FooterNav';
-import leodegalogo from '../img/LOGO_LEODEGAISO.png';
+import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
 import agregarFotos from '../img/agregarFotos.png';
 const PreguntaInicio3: React.FC = () => {
   const navigate = useNavigate();

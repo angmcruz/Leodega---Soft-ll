@@ -4,7 +4,7 @@ import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
 import api from "../../api/axios";
 import ModalConfirmacion from "../../Components/ModalConfirmacion";
-import leodegalogo from '../img/LOGO_LEODEGAISO.png';
+import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
 
 const PreguntaInicio7 = () => {
   const navigate = useNavigate();

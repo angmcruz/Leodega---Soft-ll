@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
 import FooterNav from './FooterNav';
 import { Building2, Lock, Users } from 'lucide-react';
-import leodegalogo from '../img/LOGO_LEODEGAISO.png';
+import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
+
 const PreguntaInicio2: React.FC = () => {
     const navigate = useNavigate();
     const [selectedOption, setSelectedOption] = useState<string>('');
