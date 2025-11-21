@@ -1,4 +1,5 @@
 # --- 1. Imagen base de PHP ---
+    #fozar
 FROM php:8.2-fpm
 
 # --- 2. Instalar extensiones necesarias ---
