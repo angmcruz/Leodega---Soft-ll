@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 // @ts-ignore
 import L from "leaflet";
 import axios from "axios";
-import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
+import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
 
 const AnyMapContainer = MapContainer as any;
 const AnyTileLayer = TileLayer as any;

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
 import leodega from '../img/LOGO_LEODEGA TEXTO-19.png';
-import leodegalogo from '../img/LOGO_LEODEGAISO.png';
+import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
 const PreguntaInicio6 = () => {
   const navigate = useNavigate();
   const [precio, setPrecio] = useState("");
