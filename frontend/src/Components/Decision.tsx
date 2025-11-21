@@ -69,7 +69,7 @@ const Decision = () => {
                 ) : (
                     <>
                         <h2 className="md:text-[35px] text-[28px] text-[#313131] font-semibold text-center">
-                            ¿Cuál es su rol en la plataforma?
+                            ¿Cuál es su rol en la plataformaa?
                         </h2>
 
                         <div className="flex flex-col lg:flex-row gap-8 lg:gap-32 justify-center items-stretch w-full max-w-4xl">
