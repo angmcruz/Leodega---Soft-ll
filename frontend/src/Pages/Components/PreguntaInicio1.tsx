@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
-import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
+import leodegalogo from '../img/LOGO_LEODEGAISO.png';
 import habitacionLogo from '../img/habitacionLogo.png';
 import garajeLogo from '../img/garajeLogo.png';
 import contenedorLogo from '../img/contenedorLogo.png';

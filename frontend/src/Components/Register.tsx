@@ -6,7 +6,7 @@ import reimage from '../img/reimage.png';
 import facebook from '../img/facebook.png';
 import google from '../img/google.png';
 import apple from '../img/apple.png';
-import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
+import leodegalogo from '../img/LOGO_LEODEGAISO.png';
 
 const Register = () => {
     const navigate = useNavigate();

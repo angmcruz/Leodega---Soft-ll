@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
-import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
+import leodegalogo from '../img/LOGO_LEODEGAISO.png';
 const PreguntaInicio5 = () => {
   const navigate = useNavigate();
   const [titulo, setTitulo] = useState("");

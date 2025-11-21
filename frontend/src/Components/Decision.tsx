@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import api from "../api/axios"
-import leodegalogo from '../img/LOGO_LEODEGA ISO.png';
+import leodegalogo from '../img/LOGO_LEODEGAISO.png';
 import arrendador from '../img/arrendador.png';
 import arrendatario from '../img/arrendatario.png';
 

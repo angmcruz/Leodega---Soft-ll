@@ -1,6 +1,6 @@
 // src/components/Choose.tsx
 import { DollarSign, User, Clock, MessageSquare } from "lucide-react";
-import backgroundShapes from "../img/LOGO_LEODEGA ISO.png"
+import backgroundShapes from "../img/LOGO_LEODEGAISO.png"
 import bodegaImage from "../img/bodegaa.webp"
 
 const Choose = () => {
