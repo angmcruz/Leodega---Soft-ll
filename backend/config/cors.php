@@ -3,7 +3,7 @@
 return [
     // La clave 'paths' define qué rutas de la API deben pasar por el middleware CORS.
     // 'api/*' aplica a todas tus rutas de API.
-    'paths' => ['api/*', 'sanctum/csrf-cookie', '*'], 
+    'paths' => ['api/*', 'sanctum/csrf-cookie'], 
 
     // Los métodos permitidos: generalmente todos.
     'allowed_methods' => ['*'], 
