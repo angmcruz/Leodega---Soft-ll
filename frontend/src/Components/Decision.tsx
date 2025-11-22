@@ -34,7 +34,7 @@ const Decision = () => {
                 userData,role
             });
             setLoading(true);
-            const responser = await api.post('/user', finalUser);
+            const responser = await api.post('/register', finalUser);
             if (responser.status === 201 || responser.status === 200) {
                 setTimeout(() => {
                     setLoading(false);
