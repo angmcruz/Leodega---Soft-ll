@@ -1,5 +1,4 @@
 # --- 1. Imagen base de PHP ---
-    #fozar
 FROM php:8.2-fpm
 
 # --- 2. Instalar extensiones necesarias ---
@@ -20,18 +19,13 @@ RUN composer install --no-dev --no-interaction --prefer-dist
 
 COPY . .
 
-# --- 5. Generar storage y logs ---
+# --- 5. Permisos ---
 RUN chmod -R 777 storage bootstrap/cache
 
-# --- 6. LIMPIAR CACHÉ DE LARAVEL ---
-RUN php artisan config:clear \
-    && php artisan cache:clear \
-    && php artisan route:clear \
-    && php artisan view:clear \
-    && php artisan config:cache
+# *** NO correr php artisan config:cache AQUÍ (en build) ***
+# *** NO cachear configuración aquí ***
 
-# --- 7. Puerto (para Render) ---
 EXPOSE 8080
 
-# --- 8. Comando de inicio ---
-CMD sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080"
+# --- 6. Al arrancar el contenedor, sí limpiamos la config ---
+CMD sh -c "php artisan config:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080"
