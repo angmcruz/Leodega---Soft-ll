@@ -24,7 +24,7 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request->email)
-                ->with(['landlord:id,user_id,optional_company', 'tenant:id, user_id, search_preference'])
+                ->with(['landlord:id,user_id,optional_company', 'tenant:id,user_id,search_preference'])
                 ->firstOrFail();
             $token = $user->createToken('auth_token')->plainTextToken;
 
