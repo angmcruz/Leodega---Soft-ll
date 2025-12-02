@@ -1,75 +1,96 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+
+const bodegasMock = [
+  {
+    id: 1,
+    title: "Espacio de Bodega Amplio y Ventilado",
+    location: "Quito, Ecuador",
+    price: 35,
+    size: "30m²",
+    availability: "Disponible",
+    image:
+      "https://images.unsplash.com/photo-1581091870621-3a6b2782a142?q=80&w=1200",
+  },
+  {
+    id: 2,
+    title: "Bodega Pequeña pero Segura",
+    location: "Guayaquil, Ecuador",
+    price: 22,
+    size: "12m²",
+    availability: "Ocupado",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200",
+  },
+];
 
 export default function Listado() {
-  return (
-    <div className="w-full min-h-screen bg-gray-100 p-4 space-y-6">
-      {/* HEADER */}
-      <header className="flex items-center justify-between bg-white p-4 rounded-2xl shadow">
-        <div className="flex items-center gap-3">
-          <div className="text-2xl font-bold text-purple-600">leodega</div>
-          <input
-            type="text"
-            placeholder="Search"
-            className="border rounded-xl px-4 py-2 w-72"
-          />
-        </div>
-        <div className="flex items-center gap-4">
-          <span>Spanish</span>
-          <div className="w-10 h-10 rounded-full bg-purple-300"></div>
-        </div>
-      </header>
+  const { state } = useLocation();
 
-      {/* TITULO + FILTROS */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Bodegas en Guayaquil</h1>
-        <div className="flex items-center gap-2">
-          <button className="px-3 py-1 bg-white shadow rounded-xl text-sm">Precio</button>
-          <button className="px-3 py-1 bg-white shadow rounded-xl text-sm">Tamaño</button>
-          <button className="px-3 py-1 bg-white shadow rounded-xl text-sm">Lugar</button>
-          <button className="px-3 py-1 bg-white shadow rounded-xl text-sm">Más</button>
-        </div>
+  return (
+    <div className="w-full min-h-screen bg-gray-50 p-6">
+      
+      {/* Encabezado */}
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Alquiler de Bodegas
+        </h1>
+
+        <p className="text-gray-600">
+          Resultados para:{" "}
+          <span className="font-semibold text-purple-600">
+            {state?.location || "Todas las ubicaciones"}
+          </span>
+        </p>
+
+        {state && (
+          <p className="text-gray-500 text-sm">
+            Del{" "}
+            <strong>{new Date(state.startDate).toLocaleDateString()}</strong> al{" "}
+            <strong>{new Date(state.endDate).toLocaleDateString()}</strong>
+          </p>
+        )}
       </div>
 
-      {/* LAYOUT PRINCIPAL */}
-      <div className="grid grid-cols-3 gap-6">
-        {/* LISTA */}
-        <div className="col-span-1 space-y-4">
-          {/* CARD 1 */}
-          <div className="bg-white p-4 rounded-2xl shadow hover:shadow-lg transition cursor-pointer">
-            <img
-              src="https://images.unsplash.com/photo-1581093458791-9dfcb3082a56"
-              alt="bodega"
-              className="rounded-xl w-full h-40 object-cover"
-            />
-            <h2 className="text-lg font-semibold mt-3">The People's Brownstone</h2>
-            <p className="text-xs text-gray-500">1995 Broadway, New York</p>
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-gray-700 font-medium">$3,000 / month</span>
-              <button className="text-gray-400 hover:text-red-500">♡</button>
-            </div>
-          </div>
+      {/* Contenedor de lista + mapa */}
+      <div className="max-w-6xl mx-auto mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Lista */}
+        <div className="col-span-2 flex flex-col gap-5">
+          {bodegasMock.map((b) => (
+            <div
+              key={b.id}
+              className="bg-white rounded-xl shadow-md p-4 flex gap-4 hover:shadow-lg transition cursor-pointer"
+            >
+              <img
+                src={b.image}
+                className="w-40 h-32 object-cover rounded-lg"
+              />
 
-          {/* CARD 2 */}
-          <div className="bg-white p-4 rounded-2xl shadow hover:shadow-lg transition cursor-pointer">
-            <img
-              src="https://images.unsplash.com/photo-1581093458791-9dfcb3082a56"
-              alt="bodega"
-              className="rounded-xl w-full h-40 object-cover"
-            />
-            <h2 className="text-lg font-semibold mt-3">Lovely room in Manhattan</h2>
-            <p className="text-xs text-gray-500">246 Mott St, New York</p>
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-gray-700 font-medium">$2,440 / month</span>
-              <button className="text-gray-400 hover:text-red-500">♡</button>
+              <div>
+                <h2 className="text-xl font-semibold">{b.title}</h2>
+                <p className="text-gray-600">{b.location}</p>
+                <p className="text-purple-600 font-semibold text-lg mt-2">
+                  ${b.price}/día
+                </p>
+                <p className="text-gray-500 text-sm">Tamaño: {b.size}</p>
+                <span
+                  className={`text-sm font-medium ${
+                    b.availability === "Disponible"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {b.availability}
+                </span>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
 
-        {/* MAPA */}
-        <div className="col-span-2 bg-white rounded-2xl shadow relative">
-          <div className="w-full h-[600px] bg-gray-300 rounded-2xl flex items-center justify-center">
-            <span className="text-gray-600">Map Placeholder</span>
-          </div>
+        {/* Mapa (placeholder) */}
+        <div className="w-full h-[400px] bg-gray-300 rounded-xl flex items-center justify-center">
+          <span className="text-gray-700">Aquí irá el mapa</span>
         </div>
       </div>
     </div>

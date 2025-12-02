@@ -30,6 +30,9 @@ import Calendario from './Dashboard/Calendario'
 import Settings from './Dashboard/Settings'
 import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
 
+import LeodegaUI from './Components/LeodegaUI'
+import Listado from './Components/Listado'
+
 
 function App() {
   return (
@@ -55,6 +58,8 @@ function App() {
         <Route path="/solicitudes" element={<Layout><Solicitudes /></Layout>} />
         <Route path="/calendario" element={<Layout><Calendario /></Layout>} />
         <Route path="/settings" element={<Layout><Settings /></Layout>} />
+        <Route path="/leodega-ui" element={<LeodegaUI />} />
+        <Route path="/listado" element={<Listado />} />
 
         <Route path="/" element={
           <>

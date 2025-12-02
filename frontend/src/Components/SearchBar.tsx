@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { es } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
+  const navigate = useNavigate();
+
   const [location, setLocation] = useState("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -24,9 +27,11 @@ const SearchBar = () => {
     }
 
     setError("");
-    console.log("🔍 Buscando bodegas con los siguientes datos:");
-    console.log({ location, startDate, endDate });
-    alert(`Buscando bodegas en "${location}" desde ${startDate.toLocaleDateString()} hasta ${endDate.toLocaleDateString()}`);
+
+    // 👉 Redirigir a la pantalla de listado
+    navigate("/listado", {
+      state: { location, startDate, endDate },
+    });
   };
 
   return (
