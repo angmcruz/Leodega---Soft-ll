@@ -29,11 +29,10 @@ import Solicitudes from './Dashboard/Solicitudes'
 import Calendario from './Dashboard/Calendario'
 import Settings from './Dashboard/Settings'
 import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
-import Report from './Components/Report'
 import Cancellation from './Components/Cancellation'
 import LeodegaUI from './Components/LeodegaUI'
 import Listado from './Components/Listado'
-
+import Report from './Components/Report'
 
 function App() {
   return (
