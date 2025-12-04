@@ -1,126 +1,112 @@
 import React from "react";
-import { Search, Mail, Phone, Shield, Wifi, Video, Truck, Car, Ruler } from "lucide-react";
 
 export default function LeodegaUI() {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      {/* Header */}
-      <header className="w-full bg-white shadow-sm p-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-purple-500 rounded-md" />
-          <span className="font-semibold text-lg">leodega</span>
+    <div className="w-full min-h-screen bg-white text-gray-800 flex flex-col items-center">
+      {/* Top Bar */}
+      <div className="w-full h-16 flex items-center justify-between px-6 border-b bg-white">
+        <div className="flex items-center space-x-2 font-semibold text-xl text-indigo-600">
+          <span>leodega</span>
         </div>
-        <div className="relative w-1/3 hidden md:block">
-          <input
-            className="w-full border rounded-xl px-4 py-2 pl-10 shadow-sm"
-            placeholder="Search"
-          />
-          <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
-        </div>
-        <div className="flex items-center gap-4">
-          <span>Spanish</span>
-          <div className="w-8 h-8 bg-gray-300 rounded-full" />
-        </div>
-      </header>
-
-      {/* Main Layout */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-        {/* Left Column */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Images */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <div className="col-span-2 md:col-span-1 h-48 bg-gray-300 rounded-xl" />
-            <div className="h-48 bg-gray-300 rounded-xl" />
-            <div className="h-48 bg-gray-300 rounded-xl" />
-            <div className="h-48 bg-gray-300 rounded-xl" />
-            <div className="h-48 bg-gray-300 rounded-xl" />
+        <input
+          className="w-1/2 border rounded-full px-4 py-2 text-sm"
+          placeholder="Search"
+        />
+        <div className="flex items-center space-x-4">
+          <span>ES</span>
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+            <span className="text-sm">Melissa Cruz</span>
           </div>
+        </div>
+      </div>
 
-          {/* Price */}
-          <div className="bg-white shadow p-6 rounded-xl">
-            <h2 className="text-2xl font-bold text-purple-600">$425 USD mensual</h2>
-            <p className="text-gray-600">300 m² · Altura 6 metros</p>
-            <div className="flex gap-4 mt-4">
-              <button className="px-4 py-2 bg-orange-400 text-white rounded-lg">Reportar</button>
-              <button className="px-4 py-2 bg-orange-200 text-gray-800 rounded-lg">Reservar</button>
+      {/* Main Content */}
+      <div className="w-full max-w-7xl grid grid-cols-3 gap-6 mt-6 px-6">
+        {/* Left: Images */}
+        <div className="col-span-2 space-y-4">
+          <div className="grid grid-cols-3 gap-2 h-64">
+            <div className="col-span-2 h-full bg-gray-200 rounded-lg"></div>
+            <div className="flex flex-col space-y-2">
+              <div className="h-1/2 bg-gray-200 rounded-lg"></div>
+              <div className="h-1/2 bg-gray-200 rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Card */}
+        <div className="border rounded-xl p-6 h-fit shadow-sm">
+          <div className="flex flex-col items-center text-center">
+            <div className="w-16 h-16 bg-purple-500 text-white flex items-center justify-center rounded-full text-2xl font-bold">
+              EV
+            </div>
+            <h2 className="font-semibold mt-2">Eduardo Vallejo</h2>
+            <button className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg w-full text-sm">Llamar Ahora</button>
+            <button className="mt-2 px-4 py-2 border border-purple-600 text-purple-600 rounded-lg w-full text-sm">Enviar Email</button>
+            <div className="mt-4 text-xs text-gray-500 text-left w-full">
+              <p>Horario de atención</p>
+              <p>Lunes a Viernes: 08h00 - 17h00</p>
+              <p>Disponibilidad</p>
+              <p>Inmediata</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Price and Description */}
+      <div className="w-full max-w-7xl px-6 mt-6 grid grid-cols-3 gap-6">
+        <div className="col-span-2 space-y-6">
+          <div className="border rounded-xl p-6 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-purple-600 font-bold text-2xl">$425 <span className="text-sm font-normal text-gray-500">USD mensual</span></p>
+                <p className="text-gray-600 text-sm mt-1">300 m² • Altura 6 metros</p>
+              </div>
+              <div className="flex space-x-3">
+                <button className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm">Imprimir</button>
+                <button className="px-4 py-2 bg-yellow-500 text-white rounded-lg text-sm">Reservar</button>
+              </div>
             </div>
           </div>
 
-          {/* Description */}
-          <div className="bg-white shadow p-6 rounded-xl">
-            <h3 className="font-semibold text-lg mb-2">Descripción</h3>
-            <p>Amplia bodega con excelentes 24/7 buena seguridad excelente sector industrial, centro de la ciudad.</p>
+          <div className="border rounded-xl p-6 shadow-sm">
+            <h3 className="font-semibold mb-2">Descripción</h3>
+            <p className="text-sm text-gray-600">Amplia bodega con excelente 24/7 buena seguridad excelente sector industrial, centro de la ciudad.</p>
           </div>
 
-          {/* Features */}
-          <div className="bg-white shadow p-6 rounded-xl">
-            <h3 className="font-semibold text-lg mb-4">Características</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <Feature icon={<Ruler />} label="300 m²" />
-              <Feature icon={<Car />} label="Estacionamiento" />
-              <Feature icon={<Shield />} label="Seguridad 24/7" />
-              <Feature icon={<Wifi />} label="Internet" />
-              <Feature icon={<Video />} label="CCTV" />
-              <Feature icon={<Truck />} label="Muelle de carga" />
+          <div className="border rounded-xl p-6 shadow-sm">
+            <h3 className="font-semibold mb-4">Características</h3>
+            <div className="grid grid-cols-3 gap-4 text-sm">
+              {["300 m²", "Estacionamiento", "Seguridad 24/7", "Internet", "CCTV", "Muelle de carga"].map((item, i) => (
+                <div key={i} className="border rounded-lg p-3 text-gray-700 bg-gray-50 text-center">{item}</div>
+              ))}
             </div>
           </div>
 
-          {/* Additional Images */}
-          <div className="bg-white shadow p-6 rounded-xl">
-            <h3 className="font-semibold text-lg mb-4">Imágenes Adicionales</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="h-40 bg-gray-300 rounded-xl" />
-              <div className="h-40 bg-gray-300 rounded-xl" />
+          <div className="border rounded-xl p-6 shadow-sm">
+            <h3 className="font-semibold mb-4">Imágenes Adicionales</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="h-32 bg-gray-200 rounded-lg"></div>
+              <div className="h-32 bg-gray-200 rounded-lg"></div>
+              <div className="h-32 bg-gray-200 rounded-lg"></div>
             </div>
           </div>
 
-          {/* Technical Specs */}
-          <div className="bg-white shadow p-6 rounded-xl">
-            <h3 className="font-semibold text-lg mb-4">Especificaciones Técnicas</h3>
-            <ul className="space-y-2">
-              <Spec label="Dimensiones" value="20m x 15m" />
-              <Spec label="Altura" value="6 metros" />
-              <Spec label="Tipo de suelo" value="Concreto industrial" />
-              <Spec label="Puertas" value="2 Puertas industriales" />
-              <Spec label="Iluminación" value="LED industrial" />
-              <Spec label="Ventilación" value="Natural y forzada" />
-            </ul>
-          </div>
-        </div>
-
-        {/* Right Column: Contact */}
-        <div className="space-y-6">
-          <div className="bg-white shadow p-6 rounded-xl text-center">
-            <div className="w-20 h-20 bg-purple-300 rounded-full mx-auto mb-4" />
-            <h3 className="font-semibold text-lg">Eduardo Vallajo</h3>
-            <p className="text-gray-500 text-sm">5 Opiniones</p>
-            <button className="w-full mt-4 px-4 py-2 bg-purple-500 text-white rounded-lg flex items-center justify-center gap-2">
-              <Phone className="w-4 h-4" /> Llamar Ahora
-            </button>
-            <button className="w-full mt-2 px-4 py-2 border border-purple-400 text-purple-500 rounded-lg flex items-center justify-center gap-2">
-              <Mail className="w-4 h-4" /> Enviar Email
-            </button>
+          <div className="border rounded-xl p-6 shadow-sm">
+            <h3 className="font-semibold mb-4">Especificaciones Técnicas</h3>
+            <table className="w-full text-sm text-gray-700">
+              <tbody>
+                <tr><td className="py-2">Dimensiones</td><td>20m x 15m</td></tr>
+                <tr><td className="py-2">Altura</td><td>6 metros</td></tr>
+                <tr><td className="py-2">Tipo de suelo</td><td>Concreto industrial</td></tr>
+                <tr><td className="py-2">Piso</td><td>2 puertas industriales</td></tr>
+                <tr><td className="py-2">Iluminación</td><td>LED industrial</td></tr>
+                <tr><td className="py-2">Ventilación</td><td>Natural y forzada</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-  );
-}
-
-function Feature({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <div className="flex items-center gap-2 p-3 border rounded-lg bg-gray-50">
-      <span className="text-purple-600">{icon}</span>
-      <span>{label}</span>
-    </div>
-  );
-}
-
-function Spec({ label, value }: { label: string; value: string }) {
-  return (
-    <li className="flex justify-between border-b pb-1">
-      <span className="font-medium">{label}</span>
-      <span>{value}</span>
-    </li>
   );
 }
