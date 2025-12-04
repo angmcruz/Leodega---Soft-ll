@@ -30,7 +30,7 @@ import Calendario from './Dashboard/Calendario'
 import Settings from './Dashboard/Settings'
 import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
 import Report from './Components/Report'
-
+import Cancellation from './Components/Cancellation'
 import LeodegaUI from './Components/LeodegaUI'
 import Listado from './Components/Listado'
 
@@ -62,6 +62,7 @@ function App() {
         <Route path="/leodega-ui" element={<LeodegaUI />} />
         <Route path="/listado" element={<Listado />} />
         <Route path="/reportIncident" element={<Report />} />
+        <Route path="/cancellation" element={<Cancellation />} />
 
         <Route path="/" element={
           <>
