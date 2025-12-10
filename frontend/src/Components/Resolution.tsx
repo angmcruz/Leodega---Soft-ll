@@ -1,111 +1,99 @@
 import React, { useState } from "react";
-import { ChevronLeft, Info, MessageSquare } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-interface IncidentResolutionDecisionProps {
-  incidentId: string;
-  proposedResolution: string;
-  onBack?: () => void;
-  onResolve?: (comments: string) => void;
-  onReject?: (comments: string) => void;
-}
-
-export default function Resolution({
-  incidentId,
-  proposedResolution,
-  onBack,
-  onResolve,
-  onReject,
-}: IncidentResolutionDecisionProps) {
+const Resolution = () => {
+  const navigate = useNavigate();
   const [comments, setComments] = useState("");
 
+  const handleResolve = () => {
+    alert("Has marcado el incidente como resuelto.");
+  };
+
+  const handleReject = () => {
+    alert("Has indicado que el problema persiste.");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-3xl mx-auto">
+    <div className="w-full flex justify-center px-4 py-10 bg-gray-50 min-h-screen">
+      
+      <div className="w-full max-w-4xl bg-white p-6 md:p-10 rounded-xl shadow-sm border">
+        
+        {/* Volver */}
         <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-sm text-gray-600 mb-4"
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
+          onClick={() => navigate(-1)}
         >
-          <ChevronLeft className="w-5 h-5" /> Volver al inicio
+          <span className="text-xl">←</span>
+          Volver al inicio
         </button>
 
-        <div className="bg-white border rounded-lg shadow-sm p-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-            Decisión sobre Resolución del Incidente
-          </h2>
+        {/* Título */}
+        <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+          Decisión sobre Resolución del Incidente
+        </h2>
 
-          <p className="text-sm text-gray-600 mb-4">Incidente: {incidentId}</p>
+        <p className="text-gray-600 mb-6">
+          Incidente: <span className="font-medium">INC-1754968403392</span>
+        </p>
 
-          {/* Aviso */}
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-md flex gap-3 text-sm text-blue-900 mb-6">
-            <Info className="w-5 h-5 text-blue-600" />
-            <div>
-              <p className="font-medium">El incidente ha sido resuelto por el administrador.</p>
-              <p className="mt-1">
-                Por favor, confirme si está de acuerdo con la resolución propuesta o si considera que el
-                problema persiste.
-              </p>
-            </div>
+        {/* Estado */}
+        <div className="p-4 bg-gray-50 border rounded-lg mb-6 flex items-start gap-3">
+          <span className="text-green-600 text-xl">✔</span>
+          <div>
+            <p className="font-semibold text-gray-800">
+              El incidente ha sido resuelto por el administrador.
+            </p>
+            <p className="text-gray-600 text-sm mt-1">
+              Por favor, confirme si está de acuerdo con la resolución propuesta o si considera que el problema persiste.
+            </p>
           </div>
+        </div>
 
-          {/* Resolución propuesta */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Resolución propuesta:</h3>
-            <div className="bg-gray-100 border rounded-md p-4 text-sm text-gray-700">
-              {proposedResolution}
-            </div>
+        {/* Resolución propuesta */}
+        <div className="mb-6">
+          <h3 className="font-semibold text-gray-800 mb-2">Resolución propuesta:</h3>
+          <div className="p-4 bg-gray-100 rounded-lg text-gray-700">
+            El problema reportado ha sido identificado y solucionado. Se han tomado las medidas correctivas necesarias para evitar que vuelva a ocurrir.
           </div>
+        </div>
 
-          {/* Comentarios */}
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">
-              Comentarios adicionales (opcional)
-            </h3>
-            <div className="flex items-start gap-2">
-              <MessageSquare className="w-5 h-5 text-gray-400" />
-              <textarea
-                className="w-full border rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
-                rows={4}
-                placeholder="Proporcione cualquier comentario sobre la resolución o el servicio recibido..."
-                value={comments}
-                onChange={(e) => setComments(e.target.value)}
-              ></textarea>
-            </div>
-          </div>
+        {/* Comentarios */}
+        <div className="mb-6">
+          <h3 className="font-semibold text-gray-800 mb-2">
+            Comentarios adicionales (opcional)
+          </h3>
+          <textarea
+            className="w-full h-28 p-3 border rounded-lg focus:border-purple-500 focus:ring-purple-500 outline-none resize-none"
+            placeholder="Proporcione cualquier comentario sobre la resolución o el servicio recibido..."
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+          ></textarea>
+        </div>
 
-          {/* Botones */}
-          <div className="flex gap-4">
-            <button
-              onClick={() => onResolve?.(comments)}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded-md text-sm font-medium"
-            >
-              Marcar como resuelto
-            </button>
-            <button
-              onClick={() => onReject?.(comments)}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-md text-sm font-medium"
-            >
-              Cerrar sin solución
-            </button>
-          </div>
+        {/* Botones */}
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <button
+            onClick={handleResolve}
+            className="w-full md:w-1/2 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition"
+          >
+            Marcar como resuelto
+          </button>
 
-          {/* Nota */}
-          <p className="mt-6 text-xs text-gray-600 leading-relaxed">
-            <span className="font-semibold">Nota:</span> Si marca como resuelto, el incidente se cerrará definitivamente.
-            Si elige "Cerrar sin solución", el incidente se archivará y podrá reportarlo de nuevo si el problema persiste.
-          </p>
+          <button
+            onClick={handleReject}
+            className="w-full md:w-1/2 bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition"
+          >
+            Cerrar sin solución
+          </button>
+        </div>
+
+        {/* Nota */}
+        <div className="bg-gray-50 border rounded-lg p-4 text-sm text-gray-600">
+          <strong>Nota:</strong> Si marca como resuelto, el incidente se cerrará definitivamente. Si elige "Cerrar sin solución", el incidente se archivará y podrá reportar uno nuevo si el problema persiste.
         </div>
       </div>
     </div>
   );
-}
+};
 
-// Ejemplo de uso
-export const ExampleIncidentDecisionPage = () => (
-  <Resolution
-    incidentId="INC-1754968403392"
-    proposedResolution="El problema reportado ha sido identificado y solucionado. Se han tomado las medidas correctivas necesarias para evitar que vuelva a ocurrir."
-    onBack={() => window.history.back()}
-    onResolve={(c) => alert("Marcado como resuelto. Comentarios: " + c)}
-    onReject={(c) => alert("Cerrado sin solución. Comentarios: " + c)}
-  />
-);
+export default Resolution;

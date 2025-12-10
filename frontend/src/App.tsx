@@ -33,6 +33,9 @@ import Cancellation from './Components/Cancellation'
 import LeodegaUI from './Components/LeodegaUI'
 import Listado from './Components/Listado'
 import Report from './Components/Report'
+import Storage from './Components/Storage'
+import Status from './Components/Status'
+import Resolution from './Components/Resolution'
 
 function App() {
   return (
@@ -62,6 +65,11 @@ function App() {
         <Route path="/listado" element={<Listado />} />
         <Route path="/reportIncident" element={<Report />} />
         <Route path="/cancellation" element={<Cancellation />} />
+        <Route path="/storage" element={<Storage />} />
+        <Route path="/status" element={<Status />} />
+        <Route path="/resolution" element={<Resolution />} />
+
+        
 
         <Route path="/" element={
           <>
