@@ -36,6 +36,7 @@ import Report from './Components/Report'
 import Storage from './Components/Storage'
 import Status from './Components/Status'
 import Resolution from './Components/Resolution'
+import Consulta from './Components/Consulta'
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
         <Route path="/storage" element={<Storage />} />
         <Route path="/status" element={<Status />} />
         <Route path="/resolution" element={<Resolution />} />
+        <Route path="/consulta" element={<Consulta />} />
 
         
 

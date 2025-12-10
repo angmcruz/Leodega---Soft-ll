@@ -31,8 +31,12 @@ const Storage = () => {
 
     <section className="w-full min-h-screen bg-white pb-16">
       <HeaderArrendador />
-      
-          <SearchBar />
+
+
+      <div className="mt-5">
+        <SearchBar />
+      </div>
+
 
 
       {/* Grid RESPONSIVE */}
