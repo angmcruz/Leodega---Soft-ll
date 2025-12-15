@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\ApiAuthenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.api' => ApiAuthenticate::class,
         ]);
+        $middleware->append(SetLocale::class);
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
         $middleware->trustHosts([ // se cambia a hosting cuando haya dominio real
             '127\.0\.0\.1',
