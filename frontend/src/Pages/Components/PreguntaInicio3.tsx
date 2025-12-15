@@ -1,32 +1,93 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProgressBar from './ProgressBar';
 import FooterNav from './FooterNav';
 import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
 import agregarFotos from '../../img/agregarFotos.png';
+import { set } from 'date-fns';
+
+
 const PreguntaInicio3: React.FC = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [error, setError] = useState("");
+
+  const optimizeImage = (
+    file: File,
+    maxWidth = 1600,
+    quality = 0.75
+  ): Promise<string> =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      const img = new Image();
+
+      reader.onload = () => {
+        img.src = reader.result as string;
+      };
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const scale = Math.min(1, maxWidth / img.width);
+
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+
+      reader.readAsDataURL(file);
+    });
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      const previews = files.map((file) => URL.createObjectURL(file));
-      setImagePreviews((prev) => [...prev, ...previews]);
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
+    const storedPhotos: string[] = existingData.step3Photos || [];
+
+    const newFiles = Array.from(e.target.files);
+
+    if (storedPhotos.length + newFiles.length > 10) {
+      setError("Puedes subir un máximo de 10 fotos.");
+      return;
     }
+
+    const optimizedImages = await Promise.all(
+      newFiles.map(file => optimizeImage(file))
+    );
+
+    setImagePreviews(prev => [...prev, ...optimizedImages]);
+
+    localStorage.setItem(
+      "optionData",
+      JSON.stringify({
+        ...existingData,
+        step3Photos: [...storedPhotos, ...optimizedImages],
+      })
+    );
+
+    setError("");
   };
+
+  useEffect (() => {
+    const existingData = JSON.parse(localStorage.getItem("optionData")|| "{}");
+    if(existingData.step3Photos){
+      setImagePreviews(existingData.step3Photos);
+    }
+  })
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <header className="pt-[30px] mb-[10px] px-[30px] lg:pt-[50px] lg:pb-10 lg:pr-[60px] lg:mb-[2px]">
         <div className="flex items-center gap-3 justify-end">
           <img src={leodegalogo} alt="Logo Leodega" className="h-8 md:h-10 lg:h-12" />
-          <img src= '/LOGO_LEODEGA TEXTO-19.png' alt="Leodega" className="h-6 md:h-8 lg:h-10" />
+          <img src='/LOGO_LEODEGA TEXTO-19.png' alt="Leodega" className="h-6 md:h-8 lg:h-10" />
         </div>
       </header>
       <div className="flex-1 mt-[-100px] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-20 py-6 lg:py-8">
@@ -97,7 +158,7 @@ const PreguntaInicio3: React.FC = () => {
           <FooterNav
             onBack={() => navigate('/PreguntaInicio2')}
             onNext={() => navigate('/preguntainicio4')}
-            nextDisabled={imagePreviews.length < 1}
+            nextDisabled={imagePreviews.length < 5}
           />
         </div>
       </div>

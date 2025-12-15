@@ -22,6 +22,7 @@ const PreguntaInicio7 = () => {
   const [politica, setPolitica] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     const storedData = localStorage.getItem("optionData");
@@ -49,6 +50,32 @@ const PreguntaInicio7 = () => {
   const handleCheckboxChange = (name: SeguridadKey) => {
     setSeguridad((prev) => ({ ...prev, [name]: !prev[name] }));
   };
+
+  const uploadPhotos = async (storeRoomId: number) => {
+    const data = JSON.parse(localStorage.getItem("optionData") || "{}");
+    const photos: string[] = data.step3Photos || [];
+
+    if (photos.length < 5) {
+      throw new Error("Se requieren al menos 5 fotos para enviar la solicitud.");
+    }
+
+    const formData = new FormData();
+    formData.append("store_room_id", storeRoomId.toString());
+    for (let i = 0; i < photos.length; i++) {
+      const blob = await fetch(photos[i]).then(res => res.blob());
+      formData.append("photos[]", blob, `photo_${i}.jpg`);
+    }
+
+    await api.post("/store-photos/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      onUploadProgress: (e) => {
+        if (e.total) {
+          const percent = Math.round((e.loaded * 100) / e.total);
+          setUploadProgress(percent);
+        }
+      },
+    });
+  }
 
 
   const handleEnviar = async () => {
@@ -86,15 +113,20 @@ const PreguntaInicio7 = () => {
 
 
       const response = await api.post("/storeRooms", storeRoom);
-      
+
 
       if (response.status === 201 || response.status === 200) {
-        setTimeout(() => {
-          setIsProcessing(false);
-          setIsModalOpen(true);
-          // Limpiar datos, pero mejor no porque falta poner las instancias de las otras tablas 
-          localStorage.removeItem("optionData");
-        }, 1500);
+        const storeRoomId = response.data.id;
+
+        // ⬆️ subir fotos
+        await uploadPhotos(storeRoomId);
+
+        // limpiar
+        localStorage.removeItem("optionData");
+        setUploadProgress(0);
+
+        setIsProcessing(false);
+        setIsModalOpen(true);
       }
     } catch (error) {
       console.error("Error al crear la bodega:", error);
