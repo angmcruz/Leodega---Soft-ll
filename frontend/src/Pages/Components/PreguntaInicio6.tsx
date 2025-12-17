@@ -55,11 +55,11 @@ const PreguntaInicio6 = () => {
           alt="Logo Leodega"
           className="h-10"
         />
-        {/* <img
-          src={leodega}
+        <img
+          src='/LOGO_LEODEGA TEXTO-19.png'
           alt="Leodega"
           className="h-8"
-        /> */}
+        />
       </header>
 
       {/* Contenido principal */}
