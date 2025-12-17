@@ -55,10 +55,11 @@ const Login: React.FC = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <header className="pt-[40px] mb-[10px] pl-[30px] lg:pt-[80px] lg:pl-[60px] lg:mb-[2px]"><div className="flex items-center gap-3">
-                <img src= {leodegalogo}  alt="Logo Leodega" className=" h-10 md:h-12" />
-                <img src='/LOGO_LEODEGA TEXTO-19.png'  alt="Leodega" className=" h-8 md:h-10" />
-            </div>
+            <header className="pt-[30px] mb-[10px] pr-[30px] lg:pt-[50px] lg:pb-10 lg:pr-[60px] lg:mb-[2px]">
+                <div className="flex items-center gap-3 justify-end">
+                    <img src={leodegalogo} alt="Logo Leodega" className="h-10 md:h-12" />
+                    <img src='/LOGO_LEODEGA TEXTO-19.png' alt="Leodega" className="h-8 md:h-10" />
+                </div>
             </header>
 
             <div className="flex-1 flex flex-col lg:flex-row items-center justify-center pl-[30px] lg:pl-[110px] pr-[30px] lg:pr-[80px] mt-[-20px] ">
