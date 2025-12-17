@@ -91,8 +91,8 @@ const Register = () => {
                     />
                 </div>
 
-                <div className="w-full lg:w-1/2 rounded-xl mb-8 lg:mb-0">
-                    <h2 className="text-[30px] text-[#313131] font-semibold mb-4">Registrarse</h2>
+                <div className="w-full lg:w-1/2 rounded-xl mb-8 lg:mb-0 ">
+                    <h2 className="text-[30px] text-[#313131] font-semibold mb-4 mt-12 lg:mt-12 sm:mt-0">Registrarse</h2>
                     <p className='font-light text-[#646464] text-[15px] mb-5'>Vamos a prepararlos para que puedan acceder a su cuenta personal.</p>
                     <form onSubmit={handleSubmit}>
                         <div>
