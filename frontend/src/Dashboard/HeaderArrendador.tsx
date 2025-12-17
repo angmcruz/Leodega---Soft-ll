@@ -13,7 +13,7 @@ export const HeaderArrendador: React.FC<HeaderArrendadorProps> = ({ role }) => {
             <div className="relative">
             <input
                 type="text"
-                placeholder="Search"
+                placeholder="Buscar"
                 className="w-full px-4 py-2 pl-10 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
             />
             
@@ -26,16 +26,6 @@ export const HeaderArrendador: React.FC<HeaderArrendadorProps> = ({ role }) => {
             <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
                 9
             </span>
-            </button>
-
-            <button className="flex items-center gap-2 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors">
-            <img
-                src={bandera}
-                alt="Spanish"
-                className="w-7 h-5 rounded object-cover"
-            />
-            <span className="text-gray-700 text-sm font-medium">Spanish</span>
-            <ChevronDown className="w-4 h-4 text-gray-500" />
             </button>
 
             <button className="flex items-center gap-3 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors">
