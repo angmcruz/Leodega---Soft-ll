@@ -74,7 +74,7 @@ const BodegasArrendador = () => {
 
   const getSortLabel = () => {
     switch (sortBy) {
-      case 'newest': return 'Newest';
+      case 'newest': return 'Nuevo';
       case 'oldest': return 'Oldest';
       case 'name': return 'Name A-Z';
       default: return 'Newest';
@@ -110,7 +110,7 @@ const BodegasArrendador = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Buscar"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white w-80 text-sm"
@@ -122,7 +122,7 @@ const BodegasArrendador = () => {
               onClick={() => setMostrarMenuOrden(!mostrarMenuOrden)}
               className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 bg-white transition-colors"
             >
-              <span className="text-sm text-gray-600">Sort by:</span>
+              <span className="text-sm text-gray-600">Ordenar por:</span>
               <span className="text-sm font-medium text-gray-900">{getSortLabel()}</span>
               <ChevronDown className="w-4 h-4 text-gray-400" />
             </button>
