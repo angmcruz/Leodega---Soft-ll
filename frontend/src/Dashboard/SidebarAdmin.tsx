@@ -45,7 +45,7 @@ export default function SidebarAdmin(
 
                 <div className="mt-8 mb-3 px-6">
                     <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-                        PAGES
+                        Páginas
                     </p>
                 </div>
 
@@ -61,13 +61,13 @@ export default function SidebarAdmin(
                 )}
 
                 <SidebarItem
-                    label="Settings"
+                    label="Configuración"
                     active={activeItem === 'settings'}
                     onClick={() => { setActiveItem('settings'); navigate('/settings'); }}
                 />
 
                 <SidebarItem
-                    label="Logout"
+                    label="Cerrar sesión"
                     active={activeItem === 'logout'}
                     onClick={() => {
                         localStorage.removeItem('auth_user');
