@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { SidebarItem } from "./SidebarItem";
 import { useNavigate } from 'react-router-dom';
 import logoh1 from '../img/LOGO_H_1.png';
+import { Menu, X } from 'lucide-react';
+
 interface SidebarAdminProps {
     readonly activeItem: string;
     readonly setActiveItem: React.Dispatch<React.SetStateAction<string>>;
@@ -12,71 +14,159 @@ export default function SidebarAdmin(
     props: Readonly<SidebarAdminProps>
 ) {
     const { activeItem, setActiveItem, role } = props;
-
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const navigate = useNavigate();
     const basePath = role === "admin" ? "/admin" : "/arrendador";
 
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
+
+    const handleItemClick = (callback: () => void) => {
+        callback();
+        if (window.innerWidth < 1024) {
+            setIsSidebarOpen(false);
+        }
+    };
+    React.useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const sidebar = document.getElementById('sidebar');
+            const menuButton = document.getElementById('menu-button');
+            
+            if (isSidebarOpen && 
+                sidebar && 
+                !sidebar.contains(event.target as Node) &&
+                menuButton && 
+                !menuButton.contains(event.target as Node)) {
+                setIsSidebarOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isSidebarOpen]);
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setIsSidebarOpen(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
-        <aside className="w-[270px] bg-white border-r border-gray-200 flex flex-col flex-shrink-0 min-h-screen">
-            <div className="px-6 py-6 border-b border-gray-100">
-                <div className="flex items-center gap-2.5">
-                    <img src={logoh1} alt="Logo" className="h-12" />
+        <>
+            <button
+                id="menu-button"
+                onClick={toggleSidebar}
+                className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md"
+                aria-label={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
+            >
+                {isSidebarOpen ? <X size={0} /> : <Menu size={24} />}
+            </button>
+
+            {isSidebarOpen && (
+                <div 
+                    className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
+
+            <aside
+                id="sidebar"
+                className={`
+                    fixed lg:sticky top-0 left-0 
+                    w-[270px] bg-white border-r border-gray-200 
+                    flex flex-col flex-shrink-0 min-h-screen
+                    transform transition-transform duration-300 ease-in-out
+                    z-40
+                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                `}
+            >
+                <div className="px-6 py-6 border-b border-gray-100 flex justify-between items-center">
+                    <div className="flex items-center gap-2.5">
+                        <img src={logoh1} alt="Logo" className="h-12" />
+                    </div>
+                    <button
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="lg:hidden p-1 rounded hover:bg-gray-100"
+                        aria-label="Cerrar menú"
+                    >
+                        <X size={20} />
+                    </button>
                 </div>
-            </div>
 
-            <nav className="flex-1 py-6">
-                <SidebarItem
-                    label="Bodegas"
-                    active={activeItem === 'bodegas'}
-                    onClick={() => { setActiveItem('bodegas'); navigate(`${basePath}/bodegas`); }}
-                />
-
-                <SidebarItem
-                    label="Solicitudes"
-                    active={activeItem === 'solicitudes'}
-                    onClick={() => { setActiveItem('solicitudes'); navigate('/solicitudes'); }}
-                />
-
-                <SidebarItem
-                    label="Mensajes"
-                    active={activeItem === 'mensajes'}
-                    onClick={() => { setActiveItem('mensajes'); navigate('/mensajes'); }}
-                />
-
-                <div className="mt-8 mb-3 px-6">
-                    <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-                        Páginas
-                    </p>
-                </div>
-
-                {role === "admin" && (
+                <nav className="flex-1 py-6 overflow-y-auto">
                     <SidebarItem
-                        label="Calendario"
-                        active={activeItem === "calendario"}
-                        onClick={() => {
-                            setActiveItem("calendario");
-                            navigate(`${basePath}/calendario`);
-                        }}
+                        label="Bodegas"
+                        active={activeItem === 'bodegas'}
+                        onClick={() => handleItemClick(() => { 
+                            setActiveItem('bodegas'); 
+                            navigate(`${basePath}/bodegas`); 
+                        })}
                     />
-                )}
 
-                <SidebarItem
-                    label="Configuración"
-                    active={activeItem === 'settings'}
-                    onClick={() => { setActiveItem('settings'); navigate('/settings'); }}
-                />
+                    <SidebarItem
+                        label="Solicitudes"
+                        active={activeItem === 'solicitudes'}
+                        onClick={() => handleItemClick(() => { 
+                            setActiveItem('solicitudes'); 
+                            navigate('/solicitudes'); 
+                        })}
+                    />
 
-                <SidebarItem
-                    label="Cerrar sesión"
-                    active={activeItem === 'logout'}
-                    onClick={() => {
-                        localStorage.removeItem('auth_user');
-                        localStorage.removeItem('auth_token');
-                        setActiveItem('logout');
-                        navigate('/login');
-                    }}
-                />
-            </nav>
-        </aside>
+                    <SidebarItem
+                        label="Mensajes"
+                        active={activeItem === 'mensajes'}
+                        onClick={() => handleItemClick(() => { 
+                            setActiveItem('mensajes'); 
+                            navigate('/mensajes'); 
+                        })}
+                    />
+
+                    <div className="mt-8 mb-3 px-6">
+                        <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                            Páginas
+                        </p>
+                    </div>
+
+                    {role === "admin" && (
+                        <SidebarItem
+                            label="Calendario"
+                            active={activeItem === "calendario"}
+                            onClick={() => handleItemClick(() => {
+                                setActiveItem("calendario");
+                                navigate(`${basePath}/calendario`);
+                            })}
+                        />
+                    )}
+
+                    <SidebarItem
+                        label="Configuración"
+                        active={activeItem === 'settings'}
+                        onClick={() => handleItemClick(() => { 
+                            setActiveItem('settings'); 
+                            navigate('/settings'); 
+                        })}
+                    />
+
+                    <SidebarItem
+                        label="Cerrar sesión"
+                        active={activeItem === 'logout'}
+                        onClick={() => handleItemClick(() => {
+                            localStorage.removeItem('auth_user');
+                            localStorage.removeItem('auth_token');
+                            setActiveItem('logout');
+                            navigate('/login');
+                        })}
+                    />
+                </nav>
+            </aside>
+
+            {!isSidebarOpen && <div className="lg:hidden min-h-[60px]"></div>}
+        </>
     );
 }

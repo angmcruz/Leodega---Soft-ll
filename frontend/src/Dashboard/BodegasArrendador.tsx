@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Search, ChevronDown } from 'lucide-react';
+import { Search, ChevronDown, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import api from "../api/axios";
@@ -13,7 +13,6 @@ interface StorePrice {
   disponibility: boolean;
 }
 
-
 interface Bodega {
   id: number;
   title: string;
@@ -25,7 +24,6 @@ interface Bodega {
   room_type: string;
   image?: string;
   storePrices?: StorePrice[];
-
 }
 
 const BodegasArrendador = () => {
@@ -35,7 +33,7 @@ const BodegasArrendador = () => {
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name'>('newest');
   const [mostrarMenuOrden, setMostrarMenuOrden] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("auth_user") || "{}");
   const landlordId = user?.landlord?.id || "";
@@ -75,9 +73,9 @@ const BodegasArrendador = () => {
   const getSortLabel = () => {
     switch (sortBy) {
       case 'newest': return 'Nuevo';
-      case 'oldest': return 'Oldest';
-      case 'name': return 'Name A-Z';
-      default: return 'Newest';
+      case 'oldest': return 'Antiguo';
+      case 'name': return 'Nombre A-Z';
+      default: return 'Nuevo';
     }
   };
 
@@ -99,13 +97,29 @@ const BodegasArrendador = () => {
     );
   };
 
-
   return (
-    <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
-      <div className="mb-6 mt-3 flex flex-row justify-between">
-        <h1 className="text-2xl font-semibold text-gray-900 pt-3">Bodegas</h1>
+    <div className="px-4 lg:pl-8 lg:pr-8 pt-5 bg-[#f5f6fa] min-h-screen">
+      <div className="mb-6 flex flex-row justify-between items-center">
+        <h1 className="text-2xl font-semibold text-gray-900">Bodegas</h1>
+        <div className="lg:hidden flex items-center gap-2">
+          <button
+            onClick={() => setShowMobileSearch(!showMobileSearch)}
+            className="p-2.5 bg-white border border-gray-300 rounded-lg"
+            title="Buscar"
+          >
+            <Search className="w-5 h-5 text-gray-400" />
+          </button>
+          
+          <button
+            onClick={() => navigate("/PreguntaInicio1")}
+            className="p-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors"
+            title="Nueva Bodega"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+        </div>
 
-        <div className="flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
@@ -134,7 +148,8 @@ const BodegasArrendador = () => {
                   aria-label="Cerrar menú de ordenamiento"
                   className="fixed inset-0 z-[1] cursor-default bg-transparent"
                   onClick={() => setMostrarMenuOrden(false)}
-                />                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-[2]">
+                />
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-[2]">
                   {['newest', 'oldest', 'name'].map((type) => (
                     <button
                       key={type}
@@ -145,7 +160,9 @@ const BodegasArrendador = () => {
                       className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 ${sortBy === type ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
                         }`}
                     >
-                      {getSortLabel()}
+                      {type === 'newest' ? 'Más recientes' : 
+                        type === 'oldest' ? 'Más antiguos' : 
+                        'Nombre A-Z'}
                     </button>
                   ))}
                 </div>
@@ -160,6 +177,69 @@ const BodegasArrendador = () => {
             Añadir Nueva Bodega
           </button>
         </div>
+      </div>
+
+      {showMobileSearch && (
+        <div className="lg:hidden mb-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Buscar bodegas por nombre, ciudad o estado..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-sm"
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="lg:hidden mb-4">
+        <button
+          onClick={() => setMostrarMenuOrden(!mostrarMenuOrden)}
+          className="w-full flex items-center justify-between px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 bg-white transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Ordenar por:</span>
+            <span className="text-sm font-medium text-gray-900">{getSortLabel()}</span>
+          </div>
+          <ChevronDown className="w-4 h-4 text-gray-400" />
+        </button>
+
+        {mostrarMenuOrden && (
+          <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+            <button
+              onClick={() => {
+                setSortBy('newest');
+                setMostrarMenuOrden(false);
+              }}
+              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-t-lg transition-colors ${sortBy === 'newest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                }`}
+            >
+              Más recientes primero
+            </button>
+            <button
+              onClick={() => {
+                setSortBy('oldest');
+                setMostrarMenuOrden(false);
+              }}
+              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${sortBy === 'oldest' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                }`}
+            >
+              Más antiguos primero
+            </button>
+            <button
+              onClick={() => {
+                setSortBy('name');
+                setMostrarMenuOrden(false);
+              }}
+              className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 rounded-b-lg transition-colors ${sortBy === 'name' ? 'text-purple-600 font-medium bg-purple-50' : 'text-gray-700'
+                }`}
+            >
+              Nombre A-Z
+            </button>
+          </div>
+        )}
       </div>
 
       {renderContent()}

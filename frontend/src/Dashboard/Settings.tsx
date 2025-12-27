@@ -1,10 +1,9 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/label-has-for */
 import React, { useState } from 'react';
-import { User, Bell, Lock, CreditCard, Globe, Shield, Mail, Phone, MapPin, Camera } from 'lucide-react';
+import { User, Bell, Lock, CreditCard, Globe, Shield, Mail, Phone, MapPin, Camera, Menu } from 'lucide-react';
 
 const Settings: React.FC = () => {
     const [activeTab, setActiveTab] = useState('perfil');
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [notificaciones, setNotificaciones] = useState({
         emailReservas: true,
         emailMensajes: true,
@@ -22,21 +21,39 @@ const Settings: React.FC = () => {
     ];
 
     return (
-        <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
+        <div className="px-4 lg:pl-8 lg:pr-8 pt-5 bg-[#f5f6fa] min-h-screen">
             <div className="mb-6 mt-3">
                 <h1 className="text-2xl font-semibold text-gray-900">Configuración</h1>
                 <p className="text-gray-600 mt-1">Administra tu cuenta y preferencias</p>
             </div>
 
-            <div className="flex gap-6">
-                <div className="w-64 bg-white rounded-lg shadow-sm p-4">
+            <div className="lg:hidden mb-4">
+                <button
+                    onClick={() => setShowMobileMenu(!showMobileMenu)}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 w-full justify-center"
+                >
+                    <Menu size={16} />
+                    {showMobileMenu ? 'Ocultar Menú' : 'Mostrar Menú'}
+                </button>
+            </div>
+
+            <div className="flex flex-col lg:flex-row gap-6">
+                <div className={`
+                    ${showMobileMenu ? 'block' : 'hidden lg:block'}
+                    w-full lg:w-64 bg-white rounded-lg shadow-sm p-4
+                `}>
                     <nav className="space-y-2">
                         {tabs.map((tab) => {
                             const Icon = tab.icono;
                             return (
                                 <button
                                     key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
+                                    onClick={() => {
+                                        setActiveTab(tab.id);
+                                        if (window.innerWidth < 1024) {
+                                            setShowMobileMenu(false);
+                                        }
+                                    }}
                                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                                         activeTab === tab.id
                                             ? 'bg-purple-50 text-purple-600 font-medium'
@@ -51,30 +68,30 @@ const Settings: React.FC = () => {
                     </nav>
                 </div>
 
-                <div className="flex-1 bg-white rounded-lg shadow-sm p-6">
+                <div className="flex-1 bg-white rounded-lg shadow-sm p-4 lg:p-6">
                     {activeTab === 'perfil' && (
                         <div className="space-y-6">
                             <div>
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Información Personal</h2>
                                 
-                                <div className="flex items-center gap-4 mb-6">
+                                <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
                                     <div className="relative">
-                                        <div className="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center">
-                                            <User size={40} className="text-purple-600" />
+                                        <div className="w-20 h-20 lg:w-24 lg:h-24 bg-purple-100 rounded-full flex items-center justify-center">
+                                            <User size={32} className="text-purple-600 lg:w-10 lg:h-10" />
                                         </div>
                                         <button className="absolute bottom-0 right-0 bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700">
-                                            <Camera size={16} />
+                                            <Camera size={14} className="lg:w-4 lg:h-4" />
                                         </button>
                                     </div>
-                                    <div>
-                                        <button className="text-purple-600 font-medium hover:text-purple-700">
+                                    <div className="text-center sm:text-left">
+                                        <button className="text-purple-600 font-medium hover:text-purple-700 text-sm lg:text-base">
                                             Cambiar foto
                                         </button>
-                                        <p className="text-sm text-gray-500 mt-1">JPG, PNG o GIF (máx. 2MB)</p>
+                                        <p className="text-xs lg:text-sm text-gray-500 mt-1">JPG, PNG o GIF (máx. 2MB)</p>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                     <div>
                                         <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-2">
                                             Nombre
@@ -82,7 +99,7 @@ const Settings: React.FC = () => {
                                         <input
                                             type="text"
                                             defaultValue="Leonardo"
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
                                     <div>
@@ -92,10 +109,10 @@ const Settings: React.FC = () => {
                                         <input
                                             type="text"
                                             defaultValue="Castro"
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
-                                    <div className="col-span-2">
+                                    <div className="lg:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             <Mail size={16} className="inline mr-2" />
                                             Correo Electrónico
@@ -103,7 +120,7 @@ const Settings: React.FC = () => {
                                         <input
                                             type="email"
                                             defaultValue="leancast@espol.edu.ec"
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
                                     <div>
@@ -114,7 +131,7 @@ const Settings: React.FC = () => {
                                         <input
                                             type="tel"
                                             defaultValue="+593 99 123 4567"
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
                                     <div>
@@ -125,16 +142,16 @@ const Settings: React.FC = () => {
                                         <input
                                             type="text"
                                             defaultValue="Guayaquil"
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="flex gap-3 mt-6">
-                                    <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">
+                                <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                                    <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium text-sm lg:text-base">
                                         Guardar Cambios
                                     </button>
-                                    <button className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
+                                    <button className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm lg:text-base">
                                         Cancelar
                                     </button>
                                 </div>
@@ -149,9 +166,9 @@ const Settings: React.FC = () => {
                                 <p className="text-gray-600 mb-6">Elige cómo quieres recibir notificaciones</p>
 
                                 <div className="space-y-4">
-                                    <div className="flex items-center justify-between py-4 border-b">
-                                        <div>
-                                            <h3 className="font-medium text-gray-900">Notificaciones de Reservas por Email</h3>
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 border-b gap-3">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-gray-900 text-sm lg:text-base">Notificaciones de Reservas por Email</h3>
                                             <p className="text-sm text-gray-500">Recibe emails cuando alguien reserva tu bodega</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
@@ -165,9 +182,9 @@ const Settings: React.FC = () => {
                                         </label>
                                     </div>
 
-                                    <div className="flex items-center justify-between py-4 border-b">
-                                        <div>
-                                            <h3 className="font-medium text-gray-900">Notificaciones Push de Reservas</h3>
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 border-b gap-3">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-gray-900 text-sm lg:text-base">Notificaciones Push de Reservas</h3>
                                             <p className="text-sm text-gray-500">Recibe notificaciones push instantáneas</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
@@ -181,9 +198,9 @@ const Settings: React.FC = () => {
                                         </label>
                                     </div>
 
-                                    <div className="flex items-center justify-between py-4 border-b">
-                                        <div>
-                                            <h3 className="font-medium text-gray-900">Mensajes de Usuarios por Email</h3>
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 border-b gap-3">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-gray-900 text-sm lg:text-base">Mensajes de Usuarios por Email</h3>
                                             <p className="text-sm text-gray-500">Recibe emails cuando te envíen mensajes</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
@@ -197,9 +214,9 @@ const Settings: React.FC = () => {
                                         </label>
                                     </div>
 
-                                    <div className="flex items-center justify-between py-4 border-b">
-                                        <div>
-                                            <h3 className="font-medium text-gray-900">Reportes Mensuales</h3>
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 border-b gap-3">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-gray-900 text-sm lg:text-base">Reportes Mensuales</h3>
                                             <p className="text-sm text-gray-500">Resumen de tus bodegas y ganancias</p>
                                         </div>
                                         <label className="relative inline-flex items-center cursor-pointer">
@@ -232,7 +249,7 @@ const Settings: React.FC = () => {
                                                 </label>
                                                 <input
                                                     type="password"
-                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                                 />
                                             </div>
                                             <div>
@@ -241,7 +258,7 @@ const Settings: React.FC = () => {
                                                 </label>
                                                 <input
                                                     type="password"
-                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                                 />
                                             </div>
                                             <div>
@@ -250,22 +267,22 @@ const Settings: React.FC = () => {
                                                 </label>
                                                 <input
                                                     type="password"
-                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                                 />
                                             </div>
-                                            <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">
+                                            <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium text-sm lg:text-base">
                                                 Actualizar Contraseña
                                             </button>
                                         </div>
                                     </div>
 
                                     <div className="border rounded-lg p-4">
-                                        <div className="flex items-center justify-between">
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                             <div>
                                                 <h3 className="font-medium text-gray-900">Autenticación de Dos Factores</h3>
                                                 <p className="text-sm text-gray-500 mt-1">Añade una capa extra de seguridad</p>
                                             </div>
-                                            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium">
+                                            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium text-sm lg:text-base w-full sm:w-auto">
                                                 Activar
                                             </button>
                                         </div>
@@ -274,11 +291,11 @@ const Settings: React.FC = () => {
                                     <div className="border rounded-lg p-4">
                                         <h3 className="font-medium text-gray-900 mb-4">Sesiones Activas</h3>
                                         <div className="space-y-3">
-                                            <div className="flex items-center justify-between py-2">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between py-2 gap-2">
                                                 <div className="flex items-center gap-3">
                                                     <Globe size={20} className="text-gray-400" />
                                                     <div>
-                                                        <p className="font-medium text-gray-900">Chrome en Windows</p>
+                                                        <p className="font-medium text-gray-900 text-sm lg:text-base">Chrome en Windows</p>
                                                         <p className="text-sm text-gray-500">Guayaquil, Ecuador • Ahora</p>
                                                     </div>
                                                 </div>
@@ -292,12 +309,12 @@ const Settings: React.FC = () => {
                     )}
 
                     {activeTab === 'pagos' && (
-                        <div className="space-y-6 h-[500px] ">
+                        <div className="space-y-6">
                             <div>
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Métodos de Pago</h2>
                                 <p className="text-gray-600 mb-6">Administra cómo recibes tus pagos</p>
 
-                                <button className="mb-6 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">
+                                <button className="mb-6 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium text-sm lg:text-base w-full sm:w-auto">
                                     + Agregar Cuenta Bancaria
                                 </button>
 
@@ -311,7 +328,7 @@ const Settings: React.FC = () => {
                     )}
 
                     {activeTab === 'privacidad' && (
-                        <div className="space-y-6 ">
+                        <div className="space-y-6">
                             <div>
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Privacidad y Datos</h2>
                                 
@@ -319,7 +336,7 @@ const Settings: React.FC = () => {
                                     <div className="border rounded-lg p-4">
                                         <h3 className="font-medium text-gray-900 mb-2">Visibilidad del Perfil</h3>
                                         <p className="text-sm text-gray-500 mb-4">Controla quién puede ver tu información</p>
-                                        <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                                        <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm lg:text-base">
                                             <option>Público</option>
                                             <option>Solo usuarios registrados</option>
                                             <option>Privado</option>
@@ -329,7 +346,7 @@ const Settings: React.FC = () => {
                                     <div className="border rounded-lg p-4">
                                         <h3 className="font-medium text-gray-900 mb-2">Descargar mis Datos</h3>
                                         <p className="text-sm text-gray-500 mb-4">Obtén una copia de tu información</p>
-                                        <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
+                                        <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm lg:text-base w-full sm:w-auto">
                                             Solicitar Datos
                                         </button>
                                     </div>
@@ -337,7 +354,7 @@ const Settings: React.FC = () => {
                                     <div className="border border-red-200 rounded-lg p-4 bg-red-50">
                                         <h3 className="font-medium text-red-900 mb-2">Eliminar Cuenta</h3>
                                         <p className="text-sm text-red-600 mb-4">Esta acción es permanente y no se puede deshacer</p>
-                                        <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium">
+                                        <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium text-sm lg:text-base w-full sm:w-auto">
                                             Eliminar Cuenta
                                         </button>
                                     </div>

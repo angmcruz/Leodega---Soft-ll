@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MoreVertical, Paperclip, Send, Star, Trash2, AlertCircle, Inbox, Mail, PenTool } from 'lucide-react';
+import { Search, MoreVertical, Paperclip, Send, Star, Trash2, AlertCircle, Inbox, Mail, PenTool, Menu, X } from 'lucide-react';
 
 type Categoria = 'inbox' | 'favoritos' | 'enviados' | 'redactar' | 'spam' | 'importante' | 'eliminados';
 
@@ -7,6 +7,8 @@ const Mensajes: React.FC = () => {
     const [categoriaActiva, setCategoriaActiva] = useState<Categoria>('inbox');
     const [mensajeSeleccionado, setMensajeSeleccionado] = useState<number | null>(1);
     const [mensajeTexto, setMensajeTexto] = useState('');
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [showMessageList, setShowMessageList] = useState(false);
 
     //data quemada temporalmente, hasta definir el contenido de Mensajes.tsx definitivamente
     const todosMensajes = [
@@ -120,16 +122,68 @@ const Mensajes: React.FC = () => {
         setCategoriaActiva(categoria);
         const primeraCategoria = todosMensajes.find(m => m.categorias.includes(categoria));
         setMensajeSeleccionado(primeraCategoria ? primeraCategoria.id : null);
+        if (window.innerWidth < 1024) {
+            setShowSidebar(false);
+            setShowMessageList(true);
+        }
+    };
+
+    const handleMensajeClick = (id: number) => {
+        setMensajeSeleccionado(id);
+        if (window.innerWidth < 1024) {
+            setShowMessageList(false);
+        }
     };
 
     return (
-        <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen ">
+        <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
             <div className="mb-6 mt-3">
                 <h1 className="text-2xl font-semibold text-gray-900">Mensajes</h1>
             </div>
+            <div className="lg:hidden flex gap-2 mb-4">
+                <button
+                    onClick={() => setShowSidebar(!showSidebar)}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                    <Menu size={16} />
+                    Categorías
+                </button>
+                <button
+                    onClick={() => setShowMessageList(!showMessageList)}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                    <Inbox size={16} />
+                    Mensajes
+                </button>
+            </div>
+
+            {(showSidebar || showMessageList) && (
+                <div 
+                    className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+                    onClick={() => {
+                        setShowSidebar(false);
+                        setShowMessageList(false);
+                    }}
+                />
+            )}
 
             <div className="flex gap-6 h-[700px] pb-3">
-                <div className="w-64 bg-white rounded-lg shadow-sm p-4 flex flex-col">
+                <div className={`
+                    lg:static lg:w-64 lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-4 lg:flex lg:flex-col
+                    fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 p-4 flex flex-col
+                    transform transition-transform duration-300 ease-in-out
+                    ${showSidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                `}>
+                    <div className="lg:hidden flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900">Categorías</h3>
+                        <button
+                            onClick={() => setShowSidebar(false)}
+                            className="p-1 rounded hover:bg-gray-100"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
                     <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 px-4 rounded-lg mb-6 transition-colors">
                         + Nuevo Mensaje
                     </button>
@@ -188,8 +242,23 @@ const Mensajes: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="w-96 bg-white rounded-lg shadow-sm flex flex-col">
-                    <div className="p-4 border-b">
+                <div className={`
+                    lg:static lg:w-96 lg:bg-white lg:rounded-lg lg:shadow-sm lg:flex lg:flex-col
+                    fixed top-0 left-0 h-full w-full bg-white shadow-lg z-50 flex flex-col
+                    transform transition-transform duration-300 ease-in-out
+                    ${showMessageList ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+                `}>
+                    <div className="lg:hidden p-4 border-b flex justify-between items-center">
+                        <h3 className="text-lg font-semibold text-gray-900">Mensajes</h3>
+                        <button
+                            onClick={() => setShowMessageList(false)}
+                            className="p-1 rounded hover:bg-gray-100"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    <div className="lg:p-4 lg:border-b p-4 border-b">
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                             <input
@@ -205,7 +274,7 @@ const Mensajes: React.FC = () => {
                                 <button
                                     type="button"
                                     key={mensaje.id}
-                                    onClick={() => setMensajeSeleccionado(mensaje.id)}
+                                    onClick={() => handleMensajeClick(mensaje.id)}
                                     className={`w-full text-left p-4 border-b cursor-pointer transition-colors ${mensajeSeleccionado === mensaje.id
                                             ? 'bg-blue-50 border-l-4 border-l-blue-500'
                                             : 'hover:bg-gray-50'
@@ -242,13 +311,35 @@ const Mensajes: React.FC = () => {
                             </div>
                         )}
                     </div>
+
+                    <div className="lg:hidden p-4 border-t">
+                        <button
+                            onClick={() => setShowMessageList(false)}
+                            className="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                        >
+                            Cerrar lista
+                        </button>
+                    </div>
                 </div>
 
-                <div className="flex-1 bg-white rounded-lg shadow-sm flex flex-col">
+                <div className={`
+                    flex-1 bg-white rounded-lg shadow-sm flex flex-col
+                    ${showMessageList ? 'hidden lg:flex' : 'flex'}
+                `}>
                     {mensajeActual ? (
                         <>
-                            <div className="p-4 border-b">
-                                <div className="flex items-start justify-between mb-3">
+                            <div className="p-4 border-b flex justify-between items-center">
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        onClick={() => {
+                                            if (window.innerWidth < 1024) {
+                                                setShowMessageList(true);
+                                            }
+                                        }}
+                                        className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                    >
+                                        <X size={20} />
+                                    </button>
                                     <div className="flex items-start gap-3">
                                         <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
                                             {mensajeActual.avatar}
@@ -258,27 +349,27 @@ const Mensajes: React.FC = () => {
                                             <p className="text-sm text-gray-500">Para: mí</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                            <Star size={20} className="text-gray-400" />
-                                        </button>
-                                        <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                                            <MoreVertical size={20} className="text-gray-400" />
-                                        </button>
-                                    </div>
                                 </div>
-                                <h3 className="font-medium text-gray-900">{mensajeActual.asunto}</h3>
-                                <p className="text-xs text-gray-500 mt-1">{mensajeActual.tiempo}</p>
+                                <div className="flex items-center gap-2">
+                                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                        <Star size={20} className="text-gray-400" />
+                                    </button>
+                                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                        <MoreVertical size={20} className="text-gray-400" />
+                                    </button>
+                                </div>
                             </div>
-
+                            
                             <div className="flex-1 p-6 overflow-y-auto">
+                                <h3 className="font-medium text-gray-900 text-lg mb-4">{mensajeActual.asunto}</h3>
+                                <p className="text-xs text-gray-500 mb-4">{mensajeActual.tiempo}</p>
                                 <p className="text-gray-700 leading-relaxed">
                                     {mensajeActual.mensajeCompleto}
                                 </p>
                             </div>
 
                             <div className="p-4 border-t">
-                                <div className="flex items-end gap-3">
+                                <div className="flex flex-col lg:flex-row lg:items-end gap-3">
                                     <div className="flex-1">
                                         <textarea
                                             value={mensajeTexto}
