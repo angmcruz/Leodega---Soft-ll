@@ -36,7 +36,7 @@ const Login: React.FC = () => {
             } else if (data.user.role === "admin") {
                 navigate("/admin/bodegas");
             } else if (data.user.role === "tenant") {
-                navigate("/"); //FALTA AGG CLIENTE
+                navigate("/leodega-ui"); //FALTA AGG CLIENTE
             } else {
                 navigate("/");
             }
