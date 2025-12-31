@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@leodega.com'],
             [
                 'name' => 'Administrador',
-                'lastName' => 'Leodega',
+                'lastname' => 'Leodega',
                 'phone' => '0999999999',
                 'password' => Hash::make('admin123'),
                 'role' => 'admin',
