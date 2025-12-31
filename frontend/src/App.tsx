@@ -23,7 +23,7 @@ import ResetPassword from './Pages/ResetPassword'
 import Decision from './Components/Decision'
 import BodegasAdmin from "./Dashboard/BodegasAdmin";
 import BodegasArrendador from "./Dashboard/BodegasArrendador";
-import Layout from './Dashboard/Layout'
+import Layout from './Arrendador/Layout';
 import Mensajes from './Dashboard/Mensajes'
 import Solicitudes from './Dashboard/Solicitudes'
 import Calendario from './Dashboard/Calendario'
@@ -56,13 +56,18 @@ function App() {
         <Route path="/preguntainicio6" element={<PreguntaInicio6 />} />
         <Route path="/preguntainicio7" element={<PreguntaInicio7 />} />
 
-        <Route path="/arrendador/bodegas" element={<Layout><BodegasArrendador /></Layout>} />
-        <Route path="/admin/bodegas" element={<Layout role="admin"><BodegasAdmin /></Layout>} />
-        <Route path="/mensajes" element={<Layout><Mensajes /></Layout>} />
-        <Route path="/solicitudes" element={<Layout><Solicitudes /></Layout>} />
-        <Route path="/calendario" element={<Layout><Calendario /></Layout>} />
-        <Route path="/settings" element={<Layout><Settings /></Layout>} />
-        <Route path="/leodega-ui" element={<LeodegaUI />} />
+        <Route element={<Layout />}>
+          <Route path="/arrendador/bodegas" element={<BodegasArrendador />} />
+          <Route path="/arrendador/leodega/:id" element={<LeodegaUI />} />
+          <Route path="/admin/bodegas" element={<BodegasAdmin />} />
+          <Route path="/mensajes" element={<Mensajes />} />
+          <Route path="/solicitudes" element={<Solicitudes />} />
+          <Route path="/calendario" element={<Calendario />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+
+
+        <Route path="/leodega/:id" element={<LeodegaUI />} />
         <Route path="/listado" element={<Listado />} />
         <Route path="/reportIncident" element={<Report />} />
         <Route path="/cancellation" element={<Cancellation />} />
@@ -71,7 +76,7 @@ function App() {
         <Route path="/resolution" element={<Resolution />} />
         <Route path="/consulta" element={<Consulta />} />
 
-        
+
 
         <Route path="/" element={
           <>

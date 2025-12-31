@@ -22,7 +22,6 @@ const PreguntaInicio7 = () => {
   const [politica, setPolitica] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     const storedData = localStorage.getItem("optionData");
@@ -53,28 +52,22 @@ const PreguntaInicio7 = () => {
 
   const uploadPhotos = async (storeRoomId: number) => {
     const data = JSON.parse(localStorage.getItem("optionData") || "{}");
-    const photos: string[] = data.step3Photos || [];
-
-    if (photos.length < 5) {
-      throw new Error("Se requieren al menos 5 fotos para enviar la solicitud.");
-    }
+    if (!data.photos || data.photos.length === 0) return;
 
     const formData = new FormData();
-    formData.append("store_room_id", storeRoomId.toString());
-    for (let i = 0; i < photos.length; i++) {
-      const blob = await fetch(photos[i]).then(res => res.blob());
+
+    for (let i = 0; i < data.photos.length; i++) {
+      const base64 = data.photos[i];
+      const response = await fetch(base64);
+      const blob = await response.blob();
       formData.append("photos[]", blob, `photo_${i}.jpg`);
     }
 
-    await api.post("/store-photos/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-      onUploadProgress: (e) => {
-        if (e.total) {
-          const percent = Math.round((e.loaded * 100) / e.total);
-          setUploadProgress(percent);
-        }
-      },
-    });
+    await api.post(`/store-rooms/${storeRoomId}/photos`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   }
 
 
@@ -116,17 +109,17 @@ const PreguntaInicio7 = () => {
 
 
       if (response.status === 201 || response.status === 200) {
-        const storeRoomId = response.data.id;
-
-        // ⬆️ subir fotos
-        await uploadPhotos(storeRoomId);
-
-        // limpiar
-        localStorage.removeItem("optionData");
-        setUploadProgress(0);
-
-        setIsProcessing(false);
-        setIsModalOpen(true);
+        const storeRoomId = response.data.item?.id ?? response.data.id;
+        try {
+          await uploadPhotos(storeRoomId);
+        } catch (e) {
+          console.error("Error subiendo fotos", e);
+        }
+        setTimeout(() => {
+          setIsProcessing(false);
+          setIsModalOpen(true);
+          localStorage.removeItem("optionData");
+        }, 1500);
       }
     } catch (error) {
       console.error("Error al crear la bodega:", error);

@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\StorePhoto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Validator;
 
 class StorePhotoController extends ApiController
 {
-    //
-    public function index()
+    public function index($storeRoomId)
     {
-        return $this->indexModel(StorePhoto::class);
+        return StorePhoto::where('store_room_id', $storeRoomId)->get();
     }
 
     public function show($id)
@@ -21,60 +20,62 @@ class StorePhotoController extends ApiController
         return $this->showModel(StorePhoto::class, $id);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $storeRoomId)
     {
-        $rules = [
-            'store_room_id' => 'required|exists:storeRooms,id',
-            'photo_url' => 'required|string|max:255',
-        ];
+     
+        $validator = Validator::make($request->all(),[
+            'photos' => 'required|array|min:1',
+            'photos.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
 
-        return $this->storeModel($request, StorePhoto::class, $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $photosSaved = [];
+
+        DB::transaction(function () use ($request, $storeRoomId, &$photosSaved) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('store_photos', 'public');
+
+                $photosSaved[] = StorePhoto::create([
+                    'store_room_id' => $storeRoomId,
+                    'photo_url' => $path,
+                ]);
+            }
+        });
+
+        return response()->json([
+            'message' => 'Photos uploaded successfully',
+            'data' => $photosSaved,
+        ], 201);
     }
 
     public function update(Request $request, $id)
     {
-        $rules = [
-            'store_room_id' => 'sometimes|exists:storeRooms,id',
-            'photo_url' => 'sometimes|string|max:255',
-        ];
-
-        return $this->updateModel($request, StorePhoto::class, $id, $rules);
-    }
-
-    public function upload(Request $request)
-    {
-        $request->validate([
-            'store_room_id' => 'required|exists:storeRooms,id',
-            'photos' => 'required|array|min:5|max:10',
-            'photos.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120', // 5MB
-        ]);
-
-        $savedPhotos = [];
-
-        foreach ($request->file('photos') as $photo) {
-            $filename = Str::uuid() . '.' . $photo->getClientOriginalExtension();
-
-            $path = $photo->storeAs(
-                'store-rooms',
-                $filename,
-                'public'
-            );
-
-            $savedPhotos[] = StorePhoto::create([
-                'store_room_id' => $request->store_room_id,
-                'photo_url' => $path,
-            ]);
-        }
-
         return response()->json([
-            'message' => 'Fotos subidas correctamente',
-            'photos' => $savedPhotos,
-        ], 201);
+            'message' => 'Para actualizar una foto, elimina y vuelve a subir',
+        ], 405);
     }
-
 
     public function destroy($id)
     {
-        return $this->destroyModel(StorePhoto::class, $id);
+        $photo = StorePhoto::find($id);
+
+        if (!$photo) {
+            return response()->json([
+                'message' => 'Item not found',
+            ], 404);
+        }
+
+        Storage::disk('public')->delete($photo->photo_url);
+        $photo->delete();
+
+        return response()->json([
+            'message' => 'Photo deleted successfully',
+        ], 200);
     }
 }

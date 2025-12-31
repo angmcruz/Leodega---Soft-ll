@@ -22,7 +22,7 @@ export default function SidebarAdmin({ activeItem, setActiveItem }: SidebarAdmin
                 <SidebarItem
                     label="Bodegas"
                     active={activeItem === 'bodegas'}
-                    onClick={() => { setActiveItem('bodegas'); navigate('/bodegas'); }}
+                    onClick={() => { setActiveItem('bodegas'); navigate('/arrendador/bodegas'); }}
                 />
                 <SidebarItem
                     label="Mensajes"

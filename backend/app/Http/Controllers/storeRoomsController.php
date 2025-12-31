@@ -63,21 +63,69 @@ class StoreRoomsController extends ApiController
 
     public function getByLandlord($landlordId)
     {
-        // Verificar si existe el landlord
         $landlord = Landlords::find($landlordId);
         if (! $landlord) {
             return response()->json(['message' => 'Landlord no encontrado'], 404);
         }
 
-        // Obtener las bodegas con sus relaciones
         $storeRooms = StoreRooms::with(['storePrices', 'storePhotos', 'storeDisponibility'])
             ->where('landlord_id', $landlordId)
-            ->get();
+            ->get()
+            ->map(function ($room) {
+                $firstPhoto = $room->storePhotos->first();
+
+                return [
+                    'id' => $room->id,
+                    'title' => $room->title,
+                    'direction' => $room->direction,
+                    'city' => $room->city,
+                    'size' => $room->size,
+                    'publication_status' => $room->publication_status,
+                    'storage_type' => $room->storage_type,
+                    'room_type' => $room->room_type,
+                    'store_prices' => $room->storePrices,
+                    'image' => $firstPhoto ? asset('storage/' . $firstPhoto->photo_url) : null,
+                ];
+            });
 
         if ($storeRooms->isEmpty()) {
             return response()->json(['message' => 'No se encontraron bodegas para este landlord'], 404);
         }
 
         return response()->json($storeRooms, 200);
+    }
+
+    public function detail($id)
+    {
+        $room = StoreRooms::with([
+            'storePrices',
+            'storePhotos',
+            'landlord.user'
+        ])->find($id);
+
+        if (!$room) {
+            return response()->json(['message' => 'Bodega no encontrada'], 404);
+        }
+
+        return response()->json([
+            'id' => $room->id,
+            'title' => $room->title,
+            'description' => $room->description,
+            'direction' => $room->direction,
+            'city' => $room->city,
+            'size' => $room->size,
+            'security' => $room->security,
+            'room_type' => $room->room_type,
+            'storage_type' => $room->storage_type,
+
+            'prices' => $room->storePrices,
+
+            'photos' => $room->storePhotos->map(fn($p) => asset('storage/' . $p->photo_url)),
+
+            'landlord' => [
+                'name' => $room->landlord->user->name,
+                'email' => $room->landlord->user->email,
+            ],
+        ]);
     }
 }
