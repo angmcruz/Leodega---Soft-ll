@@ -10,8 +10,22 @@ class StoreRoomsController extends ApiController
 {
     public function index()
     {
-        return $this->indexModel(StoreRooms::class);
+        return StoreRooms::with(['storePrices', 'storePhotos'])
+            ->get()
+            ->map(function ($room) {
+                return [
+                    'id' => $room->id,
+                    'title' => $room->title,
+                    'city' => $room->city,
+                    'size' => $room->size,
+                    'store_prices' => $room->storePrices,
+                    'image' => $room->storePhotos->first()
+                        ? asset('storage/' . $room->storePhotos->first()->photo_url)
+                        : null,
+                ];
+            });
     }
+
 
     public function show($id)
     {

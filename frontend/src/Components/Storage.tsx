@@ -1,34 +1,80 @@
+import { useEffect, useState } from "react";
 import { HeaderArrendador } from "../Arrendador/HeaderArrendador";
 import SearchBar from "./SearchBar";
-import { Heart, Star, ArrowRight } from "lucide-react";
-import bodega1 from '../img/Bodega1.jpg'
-import bodega2 from '../img/bodega2.jpg'
-import bodega3 from '../img/bodega3.webp'
+import { Heart, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
+
+/* =======================
+   TIPOS
+======================= */
+
+type StorePhoto = {
+  id: number;
+  photo_url: string;
+};
+
+type StorePrice = {
+  price: number;
+};
 
 type Warehouse = {
   id: number;
-  name: string;
-  price: string;
-  image: string;
-  rating: number;
-  reviews: number;
+  title: string;
+  city: string;
+  size: number;
+  image: string | null;
+  store_prices: StorePrice[];
 };
 
-const baseWarehouses: Warehouse[] = [
-  { id: 1, name: "Bodega 1", price: "$120.00", image: bodega1, rating: 4.8, reviews: 131 },
-  { id: 2, name: "Bodega 2", price: "$60.00", image: bodega2, rating: 4.6, reviews: 64 },
-  { id: 3, name: "Bodega 3", price: "$24.59", image: bodega3, rating: 4.5, reviews: 63 },
-];
-
-const warehouses: Warehouse[] = Array.from({ length: 9 }, (_, i) => ({
-  ...baseWarehouses[i % 3],
-  id: i + 1,
-}));
 
 
 const Storage = () => {
-  return (
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const DEFAULT_IMAGE =
+    "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop";
 
+
+  /* =======================
+     FETCH
+  ======================= */
+
+  useEffect(() => {
+    const fetchWarehouses = async () => {
+      try {
+        const res = await api.get("/storeRooms");
+
+
+        setWarehouses(res.data);
+      } catch (error) {
+        console.error("Error al cargar bodegas:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWarehouses();
+  }, []);
+
+  /* =======================
+     LOADING
+  ======================= */
+
+  if (loading) {
+    return (
+      <section className="min-h-screen flex items-center justify-center">
+        <p className="text-lg text-gray-600">Cargando bodegas...</p>
+      </section>
+    );
+  }
+
+  /* =======================
+     RENDER
+  ======================= */
+
+  return (
     <section className="w-full min-h-screen bg-white pb-16">
       <HeaderArrendador />
 
@@ -36,51 +82,64 @@ const Storage = () => {
         <SearchBar />
       </div>
 
-      {/* Grid RESPONSIVE */}
       <div className="max-w-7xl mx-auto mt-16 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {warehouses.map((warehouse) => (
-          <div
-            key={warehouse.id}
-            className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition hover:shadow-lg"
-          >
-            <div className="relative">
-              <img
-                src={warehouse.image}
-                alt={warehouse.name}
-                className="w-full h-56 object-cover"
-              />
-              <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100 transition">
-                <Heart className="w-5 h-5 text-[#FF4D6D]" />
-              </button>
-            </div>
+        {warehouses.length === 0 ? (
+          <p className="col-span-full text-center text-gray-500">
+            No hay bodegas disponibles
+          </p>
+        ) : (
+          warehouses.map((warehouse) => {
+            return (
+              <div
+                key={warehouse.id}
+                className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition hover:shadow-lg"
+              >
+                {/* IMAGEN */}
+                <div className="relative">
+                  <img
+                    src={warehouse.image || DEFAULT_IMAGE}
+                    alt={warehouse.title}
+                    className="w-full h-56 object-cover"
+                    onError={(e) => {
+                      e.currentTarget.onerror= null;
+                      e.currentTarget.src = DEFAULT_IMAGE;
+                    }}
+                  />
 
+                  <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100 transition">
+                    <Heart className="w-5 h-5 text-[#FF4D6D]" />
+                  </button>
+                </div>
 
-            {/* Info */}
-            <div className="p-5 text-left">
-              <h3 className="text-lg font-semibold text-gray-900">{warehouse.name}</h3>
-              <p className="text-[#3B82F6] font-bold text-md mt-1">{warehouse.price}</p>
+                {/* INFO */}
+                <div className="p-5 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {warehouse.title}
+                  </h3>
 
+                  <p className="text-gray-600 text-sm mt-1">
+                    {warehouse.city} • {warehouse.size} m²
+                  </p>
 
-              {/* Rating */}
-              <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
-                <span className="flex items-center text-[#FFA500]">
-                  <Star className="w-4 h-4 fill-current" /> {warehouse.rating}
-                </span>
-                <span className="text-gray-500">({warehouse.reviews})</span>
+                  <p className="text-[#3B82F6] font-bold text-md mt-2">
+                    $
+                    {warehouse.store_prices?.[0]?.price ?? "N/A"}
+                  </p>
+
+                  <button
+                    onClick={() => navigate(`/leodega/${warehouse.id}`)}
+                    className="mt-5 flex items-center gap-2 border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-100 transition w-full justify-center"
+                  >
+                    Ver bodega <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-
-
-              {/* Botón */}
-              <button className="mt-5 flex items-center gap-2 border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-100 transition w-full justify-center">
-                Ver bodega <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        ))}
+            );
+          })
+        )}
       </div>
     </section>
   );
 };
-
 
 export default Storage;

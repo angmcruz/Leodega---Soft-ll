@@ -2,6 +2,10 @@ import { Heart, Star, ArrowRight } from "lucide-react";
 import bodega1 from '../img/Bodega1.jpg'
 import bodega2 from '../img/bodega2.jpg'
 import bodega3 from '../img/bodega3.webp'
+import { useNavigate } from "react-router-dom";
+
+
+
 const warehouses = [
   {
     id: 1,
@@ -30,6 +34,9 @@ const warehouses = [
 ];
 
 const PopularStorage = () => {
+
+  const navigate = useNavigate();
+
   return (
     <section className="w-full bg-white py-14 px-6 text-center">
       {/* Etiqueta superior */}
@@ -91,7 +98,9 @@ const PopularStorage = () => {
 
       {/* Botón inferior */}
       <div className="mt-14">
-        <button className="flex items-center gap-2 mx-auto bg-white border border-gray-300 shadow-sm hover:shadow-md px-5 py-2 rounded-lg font-medium text-gray-800 transition">
+        <button 
+        onClick = {()=> {window.scrollTo(0, 0);navigate('/storage')}}
+        className="flex items-center gap-2 mx-auto bg-white border border-gray-300 shadow-sm hover:shadow-md px-5 py-2 rounded-lg font-medium text-gray-800 transition">
           Mostrar todas las bodegas
           <ArrowRight className="w-4 h-4" />
         </button>

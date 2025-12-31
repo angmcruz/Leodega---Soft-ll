@@ -9,11 +9,18 @@ use Illuminate\Support\Facades\Validator;
 class ApiController extends Controller
 {
     //
-    protected function indexModel(string $modelClass)
+    protected function indexModel(string $modelClass, array $relations = [])
     {
-        $items = $modelClass::all();
+        $query = $modelClass::query();
+
+        if (!empty($relations)) {
+            $query->with($relations);
+        }
+
+        $items = $query->get();
+
         if ($items->isEmpty()) {
-            return response()->json(['message' => 'No items found', 'status' => 404], 404);
+            return response()->json(['message' => 'No items found'], 404);
         }
 
         return response()->json($items, 200);
@@ -47,7 +54,7 @@ class ApiController extends Controller
                 $mainItem = $modelClass::create($validated);
 
                 $possibleRelations = collect($request->all())
-                    ->filter(fn ($v) => is_array($v))
+                    ->filter(fn($v) => is_array($v))
                     ->keys();
 
                 foreach ($possibleRelations as $relationName) {
@@ -87,7 +94,7 @@ class ApiController extends Controller
         // Agregar "sometimes" automáticamente
         $rules = array_map(function ($r) {
             if (stripos($r, 'sometimes') === false && stripos($r, 'required') === false) {
-                return 'sometimes|'.$r;
+                return 'sometimes|' . $r;
             }
 
             return $r;

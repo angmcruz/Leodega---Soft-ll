@@ -31,7 +31,6 @@ import Settings from './Dashboard/Settings'
 import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
 import Cancellation from './Components/Cancellation'
 import LeodegaUI from './Components/LeodegaUI'
-import Listado from './Components/Listado'
 import Report from './Components/Report'
 import Storage from './Components/Storage'
 import Status from './Components/Status'
@@ -68,7 +67,6 @@ function App() {
 
 
         <Route path="/leodega/:id" element={<LeodegaUI />} />
-        <Route path="/listado" element={<Listado />} />
         <Route path="/reportIncident" element={<Report />} />
         <Route path="/cancellation" element={<Cancellation />} />
         <Route path="/storage" element={<Storage />} />
