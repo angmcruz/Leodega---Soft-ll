@@ -34,11 +34,11 @@ const BodegaCard = ({
 
     return (
         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-            <div className="relative h-120 overflow-hidden">
+            <div className="relative h-48 overflow-hidden">
                 <img
                     src={image || defaultImage}
                     alt={title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-48 object-cover"
                 />
             </div>
 
