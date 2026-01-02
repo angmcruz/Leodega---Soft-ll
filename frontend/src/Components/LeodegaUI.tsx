@@ -23,18 +23,20 @@ export default function LeodegaUI() {
         {/* Left: Images */}
         <div className="col-span-2 space-y-4">
           <div className="grid grid-cols-3 gap-2 h-64">
-            <img
-              src={data.photos?.[0]}
-              className="col-span-2 h-full w-full object-cover rounded-lg"
-            />
-
+            <div className="col-span-2 overflow-hidden rounded-lg">
+              <img
+                src={data.photos?.[0]}
+                className="h-full w-full object-cover"
+              />
+            </div>
             <div className="flex flex-col space-y-2">
               {data.photos?.slice(1, 3).map((img: string, i: number) => (
-                <img
-                  key={i}
-                  src={img}
-                  className="h-1/2 w-full object-cover rounded-lg"
-                />
+                <div key={i} className="h-1/2 overflow-hidden rounded-lg">
+                  <img
+                    src={img}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               ))}
             </div>
           </div>
