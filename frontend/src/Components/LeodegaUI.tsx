@@ -22,7 +22,7 @@ export default function LeodegaUI() {
       <div className="w-full max-w-7xl grid grid-cols-3 gap-6 mt-6 px-6">
         {/* Left: Images */}
         <div className="col-span-2 space-y-4">
-          <div className="grid grid-cols-3 gap-2 h-64">
+          <div className="grid grid-cols-3 gap-2" style={{ height: '256px' }}>
             <div className="col-span-2 overflow-hidden rounded-lg">
               <img
                 src={data.photos?.[0]}
@@ -31,7 +31,7 @@ export default function LeodegaUI() {
             </div>
             <div className="flex flex-col space-y-2">
               {data.photos?.slice(1, 3).map((img: string, i: number) => (
-                <div key={i} className="h-1/2 overflow-hidden rounded-lg">
+                <div key={i} className="overflow-hidden rounded-lg" style={{ height: 'calc(160px - 4px)'  }}>
                   <img
                     src={img}
                     className="h-full w-full object-cover"
