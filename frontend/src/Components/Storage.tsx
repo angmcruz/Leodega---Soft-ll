@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import { HeaderArrendador } from "../Arrendador/HeaderArrendador";
 import SearchBar from "./SearchBar";
-import { Heart, ArrowRight } from "lucide-react";
+import { Heart, ArrowRight, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
-/* =======================
-   TIPOS
-======================= */
-
-type StorePhoto = {
-  id: number;
-  photo_url: string;
-};
 
 type StorePrice = {
   price: number;
@@ -25,28 +17,27 @@ type Warehouse = {
   size: number;
   image: string | null;
   store_prices: StorePrice[];
+  rating_avg?: number;
+  rating_count?: number;
 };
-
-
 
 const Storage = () => {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [ratings, setRatings] = useState<Record<number, number>>({});
+  const [ratedStores, setRatedStores] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
+  const isLogged = !!localStorage.getItem("auth_token");
+
   const DEFAULT_IMAGE =
     "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop";
 
-
-  /* =======================
-     FETCH
-  ======================= */
-
+ 
   useEffect(() => {
     const fetchWarehouses = async () => {
       try {
         const res = await api.get("/storeRooms");
-
-
         setWarehouses(res.data);
       } catch (error) {
         console.error("Error al cargar bodegas:", error);
@@ -58,9 +49,58 @@ const Storage = () => {
     fetchWarehouses();
   }, []);
 
-  /* =======================
-     LOADING
-  ======================= */
+
+  const submitRating = async (warehouse: Warehouse) => {
+    const stars = ratings[warehouse.id];
+    if (!stars) return;
+
+    try {
+      await api.post("/ratings", {
+        store_id: warehouse.id,
+        stars,
+        comment: "Calificación desde Storage",
+      });
+
+      updateWarehouseRating(warehouse.id, stars);
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        // ya estaba calificado → bloquear igual
+        setRatedStores((prev) => new Set(prev).add(warehouse.id));
+      } else if (error.response?.status === 401) {
+        alert("Debes iniciar sesión");
+      } else {
+        console.error("Error rating:", error.response?.data);
+      }
+    }
+  };
+
+ 
+  const updateWarehouseRating = (storeId: number, stars: number) => {
+    setWarehouses((prev) =>
+      prev.map((w) => {
+        if (w.id !== storeId) return w;
+
+        const newCount = (w.rating_count ?? 0) + 1;
+        const newAvg =
+          ((w.rating_avg ?? 0) * (newCount - 1) + stars) / newCount;
+
+        return {
+          ...w,
+          rating_avg: Number(newAvg.toFixed(1)),
+          rating_count: newCount,
+        };
+      })
+    );
+
+    setRatedStores((prev) => new Set(prev).add(storeId));
+
+    setRatings((prev) => {
+      const copy = { ...prev };
+      delete copy[storeId];
+      return copy;
+    });
+  };
+
 
   if (loading) {
     return (
@@ -70,9 +110,6 @@ const Storage = () => {
     );
   }
 
-  /* =======================
-     RENDER
-  ======================= */
 
   return (
     <section className="w-full min-h-screen bg-white pb-16">
@@ -83,60 +120,94 @@ const Storage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto mt-16 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {warehouses.length === 0 ? (
-          <p className="col-span-full text-center text-gray-500">
-            No hay bodegas disponibles
-          </p>
-        ) : (
-          warehouses.map((warehouse) => {
-            return (
-              <div
-                key={warehouse.id}
-                className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden transition hover:shadow-lg"
-              >
-                {/* IMAGEN */}
-                <div className="relative">
-                  <img
-                    src={warehouse.image || DEFAULT_IMAGE}
-                    alt={warehouse.title}
-                    className="w-full h-56 object-cover"
-                    onError={(e) => {
-                      e.currentTarget.onerror= null;
-                      e.currentTarget.src = DEFAULT_IMAGE;
-                    }}
-                  />
+        {warehouses.map((warehouse) => {
+          const alreadyRated = ratedStores.has(warehouse.id);
+          const currentRating =
+            ratings[warehouse.id] ?? warehouse.rating_avg ?? 0;
 
-                  <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100 transition">
-                    <Heart className="w-5 h-5 text-[#FF4D6D]" />
-                  </button>
-                </div>
+          return (
+            <div
+              key={warehouse.id}
+              className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
+            >
+              {/* IMAGEN */}
+              <div className="relative">
+                <img
+                  src={warehouse.image || DEFAULT_IMAGE}
+                  alt={warehouse.title}
+                  className="w-full h-56 object-cover"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = DEFAULT_IMAGE;
+                  }}
+                />
 
-                {/* INFO */}
-                <div className="p-5 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {warehouse.title}
-                  </h3>
-
-                  <p className="text-gray-600 text-sm mt-1">
-                    {warehouse.city} • {warehouse.size} m²
-                  </p>
-
-                  <p className="text-[#3B82F6] font-bold text-md mt-2">
-                    $
-                    {warehouse.store_prices?.[0]?.price ?? "N/A"}
-                  </p>
-
-                  <button
-                    onClick={() => navigate(`/leodega/${warehouse.id}`)}
-                    className="mt-5 flex items-center gap-2 border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-100 transition w-full justify-center"
-                  >
-                    Ver bodega <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
+                <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow">
+                  <Heart className="w-5 h-5 text-[#FF4D6D]" />
+                </button>
               </div>
-            );
-          })
-        )}
+
+              {/* INFO */}
+              <div className="p-5 text-left">
+                <h3 className="text-lg font-semibold">{warehouse.title}</h3>
+
+                <p className="text-gray-600 text-sm">
+                  {warehouse.city} • {warehouse.size} m²
+                </p>
+
+                <p className="text-[#3B82F6] font-bold mt-2">
+                  ${warehouse.store_prices?.[0]?.price ?? "N/A"}
+                </p>
+
+                {/* ⭐ ESTRELLAS */}
+                <div className="flex items-center mt-3 gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-6 h-6 ${
+                        currentRating >= star
+                          ? "text-[#FFA500] fill-[#FFA500]"
+                          : "text-gray-300"
+                      } ${
+                        alreadyRated
+                          ? "cursor-not-allowed opacity-50"
+                          : "cursor-pointer"
+                      }`}
+                      onClick={() => {
+                        if (!isLogged || alreadyRated) return;
+
+                        setRatings((prev) => ({
+                          ...prev,
+                          [warehouse.id]: star,
+                        }));
+                      }}
+                    />
+                  ))}
+
+                  <span className="text-sm text-gray-500 ml-2">
+                    ({warehouse.rating_count ?? 0})
+                  </span>
+                </div>
+
+                {/* BOTÓN */}
+                <button
+                  disabled={!ratings[warehouse.id] || alreadyRated}
+                  onClick={() => submitRating(warehouse)}
+                  className="mt-3 w-full bg-[#FFA500] text-white py-2 rounded-lg disabled:opacity-50"
+                >
+                  {alreadyRated ? "Ya calificado" : "Calificar"}
+                </button>
+
+                <button
+                  onClick={() => navigate(`/leodega/${warehouse.id}`)}
+                  className="mt-3 w-full border py-2 rounded-lg"
+                >
+                  Ver bodega <ArrowRight className="inline w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

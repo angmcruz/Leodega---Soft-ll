@@ -105,9 +105,13 @@ Route::post('/notifications', [NotificationsController::class, 'store']);
 Route::put('/notifications/{id}', [NotificationsController::class, 'update']);
 Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
 
-Route::get('/ratings', [RatingsController::class, 'index']);
+Route::middleware('auth.api:sanctum')->group(function () {
+    Route::get('/ratings', [RatingsController::class, 'index']);
+    Route::post('/ratings', [RatingsController::class, 'store']);
+});
+
 Route::get('/ratings/{id}', [RatingsController::class, 'show']);
-Route::post('/ratings', [RatingsController::class, 'store']);
+
 Route::put('/ratings/{id}', [RatingsController::class, 'update']);
 Route::delete('/ratings/{id}', [RatingsController::class, 'destroy']);
 

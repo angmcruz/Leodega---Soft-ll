@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Landlords;
+use App\Models\Ratings;
 use App\Models\StoreRooms;
 use Illuminate\Http\Request;
 
@@ -10,15 +11,22 @@ class StoreRoomsController extends ApiController
 {
     public function index()
     {
-        return StoreRooms::with(['storePrices', 'storePhotos'])
+        return StoreRooms::with(['storePrices', 'storePhotos', 'landlord.user'])
             ->get()
             ->map(function ($room) {
+                $ratings = Ratings::where('store_id', $room->id);
+                $avg = round($ratings->avg('stars'), 1);
+                $count = $ratings->count();
                 return [
                     'id' => $room->id,
                     'title' => $room->title,
                     'city' => $room->city,
                     'size' => $room->size,
+                    'landlord_id' => $room->landlord_id,
+                    'user_id' => $room->landlord?->user?->id,
                     'store_prices' => $room->storePrices,
+                    'rating_avg' => $avg,
+                    'rating_count' => $count,
                     'image' => $room->storePhotos->first()
                         ? asset('storage/' . $room->storePhotos->first()->photo_url)
                         : null,
