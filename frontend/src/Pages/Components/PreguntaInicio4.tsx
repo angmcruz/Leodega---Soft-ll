@@ -199,7 +199,7 @@ const PreguntaInicio4: React.FC = () => {
             )}
           </div>
 
-          <div className="w-full h-[390px] rounded-2xl overflow-hidden shadow-md mb-10 border border-gray-100">
+          <div className="w-full h-[440px] rounded-2xl overflow-hidden shadow-md mb-10 border border-gray-100">
             <AnyMapContainer center={position} zoom={13} className="w-full h-full">
               <AnyTileLayer
                 attribution='&copy; OpenStreetMap contributors'
