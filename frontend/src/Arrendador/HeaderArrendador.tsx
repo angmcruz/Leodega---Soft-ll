@@ -30,10 +30,10 @@ export const HeaderArrendador: React.FC = () => {
                 <button className="hidden md:flex items-center gap-2 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors">
                     <img
                         src={bandera}
-                        alt="Spanish"
+                        alt="Español"
                         className="w-7 h-5 rounded object-cover"
                     />
-                    <span className="text-gray-700 text-sm font-medium">Spanish</span>
+                    <span className="text-gray-700 text-sm font-medium">Español</span>
                     <ChevronDown className="w-4 h-4 text-gray-500" />
                 </button>
 
