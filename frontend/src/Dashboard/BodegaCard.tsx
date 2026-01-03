@@ -60,7 +60,7 @@ const BodegaCard = ({
                 </div>
 
                 <button 
-                onClick={() => navigate(`/leodega/${id}`)}
+                onClick={() => navigate(`/detalles/${id}`)}
                 className="text-[11px] px-6 bg-[#ebf0fa] text-black py-2.5 rounded-lg hover:bg-gray-100 transition-colors font-medium">
                     Ver Bodega
                 </button>

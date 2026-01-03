@@ -1,8 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 
+
 export default function LeodegaUI() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState<any>(null);
 
@@ -78,7 +80,9 @@ export default function LeodegaUI() {
                 </p>
               </div>
               <div className="flex space-x-3">
-                <button className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm">Reportar</button>
+                <button 
+                onClick={()=>navigate(`/reportIncident/${id}`)}
+                className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm">Reportar</button>
                 <button className="px-4 py-2 bg-yellow-500 text-white rounded-lg text-sm">Reservar</button>
               </div>
             </div>

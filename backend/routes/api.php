@@ -123,7 +123,9 @@ Route::delete('/cancelations_polices/{id}', [CancelationsPolicesController::clas
 
 Route::get('/reports', [ReportsController::class, 'index']);
 Route::get('/reports/{id}', [ReportsController::class, 'show']);
-Route::post('/reports', [ReportsController::class, 'store']);
+Route::middleware('auth.api:sanctum')->group(function () {
+    Route::post('/reports', [ReportsController::class, 'store']);
+});
 Route::put('/reports/{id}', [ReportsController::class, 'update']);
 Route::delete('/reports/{id}', [ReportsController::class, 'destroy']);
 

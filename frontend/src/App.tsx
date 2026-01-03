@@ -36,6 +36,7 @@ import Storage from './Components/Storage'
 import Status from './Components/Status'
 import Resolution from './Components/Resolution'
 import Consulta from './Components/Consulta'
+import Detalles from './Dashboard/Detalles'
 
 function App() {
   return (
@@ -67,12 +68,13 @@ function App() {
 
 
         <Route path="/leodega/:id" element={<LeodegaUI />} />
-        <Route path="/reportIncident" element={<Report />} />
+        <Route path="/reportIncident/:id" element={<Report />} />
         <Route path="/cancellation" element={<Cancellation />} />
         <Route path="/storage" element={<Storage />} />
         <Route path="/status" element={<Status />} />
         <Route path="/resolution" element={<Resolution />} />
         <Route path="/consulta" element={<Consulta />} />
+        <Route path="/detalles/:id" element={<Detalles />} />
 
 
 

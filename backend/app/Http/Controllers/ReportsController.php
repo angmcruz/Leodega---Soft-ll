@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reports;
+use App\Models\StoreRooms;
+use App\Models\ReportEvidence;
 use Illuminate\Http\Request;
 
 class ReportsController extends ApiController
@@ -20,24 +22,51 @@ class ReportsController extends ApiController
 
     public function store(Request $request)
     {
-        $rules = [
-            'user_id' => 'required|exists:user,id',
+        $request->validate([
+            'store_id' => 'required|exists:storeRooms,id',
+            'title' => 'required|string|max:255',
             'report_type' => 'required|string|max:255',
-            'description' => 'required|string',
-            'report_date' => 'sometimes|date',
-            'status' => 'sometimes|in:pending,in_review,resolved',
-        ];
+            'priority' => 'required|in:low,medium,high',
+            'description' => 'required|string|min:20',
+            'files.*' => 'file|max:10240',
+        ]);
 
-        return $this->storeModel($request, Reports::class, $rules);
+        $report = Reports::create([
+            'user_id' => auth()->user()?->id,
+            'store_id' => $request->store_id,
+            'title' => $request->title,
+            'priority' => $request->priority,
+            'report_type' => $request->report_type,
+            'description' => $request->description,
+        ]);
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('reports', 'public');
+
+                $report->evidences()->create([
+                    'file_path' => $path,
+                    'file_type' => $file->getClientMimeType(),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Reporte creado correctamente',
+            'report' => $report
+        ], 201);
     }
+
 
     public function update(Request $request, $id)
     {
         $rules = [
-            'user_id' => 'sometimes|exists:user,id',
+            'store_id' => 'sometimes|exists:storeRooms,id',
+            'reported_user_id' => 'nullable|exists:users,id',
+            'title' => 'sometimes|string|max:255',
             'report_type' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
-            'report_date' => 'sometimes|date',
+            'priority' => 'sometimes|in:low,medium,high',
+            'description' => 'sometimes|string|min:20',
             'status' => 'sometimes|in:pending,in_review,resolved',
         ];
 

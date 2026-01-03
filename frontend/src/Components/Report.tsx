@@ -1,8 +1,23 @@
 import React, { useState } from "react";
 import { Upload, AlertTriangle, ArrowLeft } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../api/axios";
+
 
 export default function Report() {
+  const navigate = useNavigate();
+  const { id: storeId } = useParams<{ id: string }>();
+
   const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const [form, setForm] = useState({
+    report_type: "",
+    priority: "medium",
+    title: "",
+    description: "",
+  });
+
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -10,11 +25,57 @@ export default function Report() {
     }
   };
 
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!storeId) {
+      alert("Bodega no válida");
+      return;
+    }
+
+    if (!form.report_type || !form.title || form.description.length < 20) {
+      alert("Complete todos los campos obligatorios (mín. 20 caracteres)");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("store_id", storeId);
+    formData.append("report_type", form.report_type);
+    formData.append("priority", form.priority);
+    formData.append("title", form.title);
+    formData.append("description", form.description);
+
+    files.forEach(file => {
+      formData.append("files[]", file);
+    });
+
+    try {
+      setLoading(true);
+
+      await api.post("/reports", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      alert("Reporte enviado correctamente");
+      navigate(-1);
+    } catch (error: any) {
+      console.error(error.response?.data || error);
+      alert(error.response?.data?.message || "Error al enviar reporte");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex justify-center">
       <div className="max-w-3xl w-full bg-white p-8 rounded-xl shadow-sm">
         {/* Back */}
-        <button className="flex items-center gap-2 text-gray-600 mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-gray-600 mb-6">
           <ArrowLeft className="w-5 h-5" /> Volver al inicio
         </button>
 
@@ -30,22 +91,32 @@ export default function Report() {
         </div>
 
         {/* Form */}
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Tipo de incidente */}
           <div>
             <label className="font-medium">Tipo de incidente *</label>
-            <select className="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50">
-              <option>Seleccione el tipo de incidente</option>
+            <select className="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"
+              value={form.report_type}
+              onChange={e => setForm({ ...form, report_type: e.target.value })}>
+              <option value="">Seleccione el tipo de incidente</option>
+              <option value="Infraestructura">Infraestructura</option>
+              <option value="Seguridad">Seguridad</option>
+              <option value="Acceso">Acceso</option>
+              <option value="Otro">Otro</option>
             </select>
           </div>
 
           {/* Nivel de urgencia */}
           <div>
             <label className="font-medium">Nivel de urgencia *</label>
-            <select className="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50">
-              <option>Media</option>
-              <option>Alta</option>
-              <option>Baja</option>
+            <select
+              className="mt-1 w-full border rounded-lg px-3 py-2 bg-gray-50"
+              value={form.priority}
+              onChange={e => setForm({ ...form, priority: e.target.value })}
+            >
+              <option value="medium">Media</option>
+              <option value="high">Alta</option>
+              <option value="low">Baja</option>
             </select>
           </div>
 
@@ -56,24 +127,14 @@ export default function Report() {
               type="text"
               placeholder="Resumen breve del problema"
               className="mt-1 w-full border rounded-lg px-3 py-2"
+              value={form.title}
+              onChange={e => setForm({ ...form, title: e.target.value })}
             />
             <p className="text-xs text-gray-500 mt-1">
               Proporcione un título claro y descriptivo
             </p>
           </div>
 
-          {/* Ubicación */}
-          <div>
-            <label className="font-medium">Ubicación específica *</label>
-            <input
-              type="text"
-              placeholder="Ej: Bodega A, Sector 3, Pasillo 2"
-              className="mt-1 w-full border rounded-lg px-3 py-2"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Sea lo más específico posible sobre la ubicación
-            </p>
-          </div>
 
           {/* Descripción */}
           <div>
@@ -81,6 +142,8 @@ export default function Report() {
             <textarea
               placeholder="Describa qué sucedió, cuándo ocurrió, y cualquier información relevante..."
               className="mt-1 w-full border rounded-lg px-3 py-2 h-28"
+              value={form.description}
+              onChange={e => setForm({ ...form, description: e.target.value })}
             />
             <p className="text-xs text-gray-500 mt-1">
               Incluya todos los detalles relevantes (mínimo 20 caracteres)
@@ -118,8 +181,11 @@ export default function Report() {
           </div>
 
           {/* Submit Button */}
-          <button className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium">
-            Enviar reporte de incidente
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium">
+            {loading ? "Enviando reporte..." : "Enviar Reporte"}
           </button>
         </form>
       </div>
