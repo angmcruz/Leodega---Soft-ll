@@ -37,6 +37,7 @@ import Status from './Components/Status'
 import Resolution from './Components/Resolution'
 import Consulta from './Components/Consulta'
 import Detalles from './Dashboard/Detalles'
+import Reportes from './Dashboard/Reportes'
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
         <Route path="/resolution" element={<Resolution />} />
         <Route path="/consulta" element={<Consulta />} />
         <Route path="/detalles/:id" element={<Detalles />} />
+        <Route path="/reportes" element={<Reportes />} />
 
 
 

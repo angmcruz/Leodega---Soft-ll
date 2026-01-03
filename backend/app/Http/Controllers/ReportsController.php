@@ -12,8 +12,12 @@ class ReportsController extends ApiController
     //
     public function index()
     {
-        return $this->indexModel(Reports::class);
+        return Reports::with([
+            'user',
+            'store'
+        ])->get();
     }
+
 
     public function show($id)
     {
