@@ -6,7 +6,7 @@ import SolicitudRevisarResponder from './SolicitudRevisarResponder';
 import SolicitudRechazada from './SolicitudRechazada';
 import type { Solicitud } from './Interfaces/SolicitudesData';
 
-const Reportes: React.FC = () => {
+const Solicitudes: React.FC = () => {
     const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -236,4 +236,4 @@ const Reportes: React.FC = () => {
     );
 };
 
-export default Reportes;
+export default Solicitudes;

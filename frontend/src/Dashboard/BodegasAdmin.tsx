@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import BodegaDetalle from './BodegaDetalle';
 import type { Bodega } from './Interfaces/SolicitudesData';
 import { useNavigate } from 'react-router-dom';
+import api from '../api/axios';
 
 const BodegasAdmin = () => {
     const navigate = useNavigate();
@@ -13,16 +14,38 @@ const BodegasAdmin = () => {
     const [mostrarDetalle, setMostrarDetalle] = useState(false);
 
 
-    const bodegas: Bodega[] = [
-        { id: 1, nameBodega: 'Bodega1', bodega: 1, phoneNumber: '(225) 555-0118', email: 'jane@microsoft.com', country: 'United States', status: 'Active' },
-        { id: 2, nameBodega: 'Bodega1', bodega: 2, phoneNumber: '(205) 555-0100', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
-        { id: 3, nameBodega: 'Bodega1', bodega: 3, phoneNumber: '(302) 555-0107', email: 'jane@microsoft.com', country: 'Iran', status: 'Inactive' },
-        /* { id: 4, nameBodega: 'Bodega1', bodega: 4, phoneNumber: '(252) 555-0126', email: 'jane@microsoft.com', country: 'Iran', status: 'Active' },
-         { id: 5, nameBodega: 'Bodega1', bodega: 5, phoneNumber: '(629) 555-0129', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
-         { id: 6, nameBodega: 'Bodega1', bodega: 6, phoneNumber: '(406) 555-0120', email: 'jane@microsoft.com', country: 'Réunion', status: 'Active' },
-         { id: 7, nameBodega: 'Bodega1', bodega: 7, phoneNumber: '(208) 555-0112', email: 'jane@microsoft.com', country: 'Brazil', status: 'Active' },
-         { id: 8, nameBodega: 'Bodega1', bodega: 8, phoneNumber: '(704) 555-0127', email: 'jane@microsoft.com', country: 'United States', status: 'Inactive' },*/
-    ];
+    const [bodegas, setBodegas] = useState<Bodega[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchBodegas = async () => {
+            try {
+                const { data } = await api.get('/storeRooms');
+                console.log('🟢 Bodegas fetched:', data);
+                const mapped: Bodega[] = data.map((store: any) => ({
+                    id: store.id,
+                    nameBodega: store.title,
+                    bodega: store.id,
+                    phoneNumber: store.landlord?.user?.phone ?? '-',
+                    email: store.landlord?.user?.email ?? '-',
+                    country: store.city,
+                    status:
+                        store.publication_status === 'aproved' ? 'Active' : 'Inactive',
+                }));
+                setBodegas(mapped);
+            } catch (error) {
+                console.error('Error fetching bodegas:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBodegas();
+    }, []);
+
+    if (loading) {
+        return <div className="p-6">Cargando bodegas...</div>;
+    }
 
     const totalPages = 40;
     const bodegasFiltradas = bodegas.filter((bodega) => {
@@ -150,11 +173,6 @@ const BodegasAdmin = () => {
                             </>
                         )}
                     </div>
-
-                    <button
-                        onClick={() => navigate("/preguntainicio1")} className="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
-                        Añadir Nueva Bodega
-                    </button>
                 </div>
             </div>
 
@@ -198,8 +216,8 @@ const BodegasAdmin = () => {
                                     <td className="px-6 py-4">
                                         <span
                                             className={`inline-flex px-3 py-1 text-xs font-medium rounded-md ${bodega.status === 'Active'
-                                                    ? 'bg-teal-100 text-teal-700'
-                                                    : 'bg-red-100 text-red-700'
+                                                ? 'bg-teal-100 text-teal-700'
+                                                : 'bg-red-100 text-red-700'
                                                 }`}
                                         >
                                             {bodega.status}
