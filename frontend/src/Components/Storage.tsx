@@ -199,7 +199,7 @@ const Storage = () => {
                 </button>
 
                 <button
-                  onClick={() => navigate(`/leodega/${warehouse.id}`)}
+                  onClick={() => navigate(`/detalles/${warehouse.id}`)}
                   className="mt-3 w-full border py-2 rounded-lg"
                 >
                   Ver bodega <ArrowRight className="inline w-4 h-4" />

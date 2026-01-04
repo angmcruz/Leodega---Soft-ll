@@ -38,6 +38,7 @@ import Resolution from './Components/Resolution'
 import Consulta from './Components/Consulta'
 import Detalles from './Dashboard/Detalles'
 import Reportes from './Dashboard/Reportes'
+import BodegaModal from './Dashboard/BodegaModal'
 
 function App() {
   return (
@@ -67,7 +68,6 @@ function App() {
           <Route path="/settings" element={<Settings />} />
         </Route>
 
-
         <Route path="/leodega/:id" element={<LeodegaUI />} />
         <Route path="/reportIncident/:id" element={<Report />} />
         <Route path="/cancellation" element={<Cancellation />} />
@@ -84,7 +84,6 @@ function App() {
           <>
             <Header />
             <Hero />
-            <SearchBar />
             <Work />
             <Choose />
             <PopularStorage />

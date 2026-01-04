@@ -22,7 +22,15 @@ class StoreRoomsController extends ApiController
                     'title' => $room->title,
                     'city' => $room->city,
                     'size' => $room->size,
-                    'landlord_id' => $room->landlord_id,
+                    'publication_status' => $room->publication_status,
+                    'landlord' => [
+                        'id' => $room->landlord?->id,
+                        'user' => [
+                            'name' => $room->landlord?->user?->name,
+                            'email' => $room->landlord?->user?->email,
+                            'phone' => $room->landlord?->user?->phone,
+                        ],
+                    ],
                     'user_id' => $room->landlord?->user?->id,
                     'store_prices' => $room->storePrices,
                     'rating_avg' => $avg,
