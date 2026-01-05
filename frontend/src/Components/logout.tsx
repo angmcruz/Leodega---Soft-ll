@@ -16,7 +16,9 @@ const LogoutButton: React.FC = () => {
       //limpiar en web 
       localStorage.removeItem("auth_token");
       localStorage.removeItem("auth_user");
-      navigate("/login");
+
+      delete api.defaults.headers.common["Authorization"];
+      navigate("/login", { replace: true });
       
     } catch (error) {
       console.error("Error al cerrar sesión:", error);

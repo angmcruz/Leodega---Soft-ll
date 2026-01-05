@@ -40,6 +40,9 @@ import Detalles from './Dashboard/Detalles'
 import Reportes from './Dashboard/Reportes'
 import BodegaModal from './Dashboard/BodegaModal'
 
+import Protected from './Routes/Protected'
+import Role from './Routes/Role'
+
 function App() {
   return (
     <Router>
@@ -57,15 +60,26 @@ function App() {
         <Route path="/preguntainicio5" element={<PreguntaInicio5 />} />
         <Route path="/preguntainicio6" element={<PreguntaInicio6 />} />
         <Route path="/preguntainicio7" element={<PreguntaInicio7 />} />
+        <Route element={<Protected />}>
+          <Route element={<Layout />}>
+            {/* ROLES PROTEGIDOS */}
+            <Route element={<Role allowed={["landlord"]} />}>
+              <Route path="/arrendador/bodegas" element={<BodegasArrendador />} />
+              <Route path="/arrendador/leodega/:id" element={<LeodegaUI />}
+              />
+            </Route>
+            <Route element={<Role allowed={["admin"]} />}>
+              <Route path="/admin/bodegas" element={<BodegasAdmin />} />
+            </Route>
+            <Route element={<Role allowed={["admin", "landlord"]} />}>
+              <Route path="/mensajes" element={<Mensajes />} />
+              <Route path="/solicitudes" element={<Solicitudes />} />
+              <Route path="/calendario" element={<Calendario />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
 
-        <Route element={<Layout />}>
-          <Route path="/arrendador/bodegas" element={<BodegasArrendador />} />
-          <Route path="/arrendador/leodega/:id" element={<LeodegaUI />} />
-          <Route path="/admin/bodegas" element={<BodegasAdmin />} />
-          <Route path="/mensajes" element={<Mensajes />} />
-          <Route path="/solicitudes" element={<Solicitudes />} />
-          <Route path="/calendario" element={<Calendario />} />
-          <Route path="/settings" element={<Settings />} />
+
+          </Route>
         </Route>
 
         <Route path="/leodega/:id" element={<LeodegaUI />} />
