@@ -64,10 +64,10 @@ const PreguntaInicio7 = () => {
     }
 
     await api.post(`/store-rooms/${storeRoomId}/photos`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   }
 
 
@@ -121,7 +121,7 @@ const PreguntaInicio7 = () => {
           localStorage.removeItem("optionData");
         }, 1500);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error al crear la bodega:", error);
       alert("Error al enviar la solicitud, vuelve a intentar");
       setIsProcessing(false)

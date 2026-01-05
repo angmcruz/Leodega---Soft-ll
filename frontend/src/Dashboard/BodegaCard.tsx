@@ -30,6 +30,7 @@ const BodegaCard = ({
 
     const navigate = useNavigate();
     const price = storePrices.length > 0 ? storePrices[0].price : null;
+    const numericPrice = Number(price);
 
 
     return (
@@ -43,11 +44,14 @@ const BodegaCard = ({
             </div>
 
             <div className="p-4">
-                
+
                 <h3 className="text-[18px] font-medium text-gray-900">{title}</h3>
 
                 <p className="text-[16px] font-medium text-blue-600">
-                    {price !== null ? `$${price.toFixed(2)}` : "Sin precio"}
+
+
+                    {
+                        Number.isFinite(numericPrice) ? `$${numericPrice.toFixed(2)}` : "Sin precio"}
                 </p>
 
                 <div className="flex items-center gap-2 mb-4">
@@ -59,9 +63,9 @@ const BodegaCard = ({
                     <span className="text-sm text-gray-500">(63)</span>
                 </div>
 
-                <button 
-                onClick={() => navigate(`/leodega/${id}`)}
-                className="text-[11px] px-6 bg-[#ebf0fa] text-black py-2.5 rounded-lg hover:bg-gray-100 transition-colors font-medium">
+                <button
+                    onClick={() => navigate(`/leodega/${id}`)}
+                    className="text-[11px] px-6 bg-[#ebf0fa] text-black py-2.5 rounded-lg hover:bg-gray-100 transition-colors font-medium">
                     Ver Bodega
                 </button>
             </div>
