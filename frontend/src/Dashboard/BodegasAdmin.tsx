@@ -21,7 +21,7 @@ const BodegasAdmin = () => {
         const fetchBodegas = async () => {
             try {
                 const { data } = await api.get('/storeRooms');
-                console.log('🟢 Bodegas fetched:', data);
+                
                 const mapped: Bodega[] = data.map((store: any) => ({
                     id: store.id,
                     nameBodega: store.title,

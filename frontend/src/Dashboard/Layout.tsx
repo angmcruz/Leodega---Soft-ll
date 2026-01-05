@@ -30,7 +30,7 @@ const Layout: React.FC = () => {
       <SidebarAdmin activeItem={activeItem} setActiveItem={setActiveItem} role={role} />
 
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <HeaderDashboard />
+        <HeaderDashboard role={role} />
 
         <main className="flex-1 overflow-auto bg-gray-50">
           <Outlet />
