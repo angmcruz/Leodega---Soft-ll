@@ -111,7 +111,7 @@ const BodegasArrendador = () => {
           </button>
           
           <button
-            onClick={() => navigate("/PreguntaInicio1")}
+            onClick={() => navigate("/preguntainicio1", { state: { from: location.pathname } })}
             className="p-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors"
             title="Nueva Bodega"
           >
