@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react';
 interface SidebarAdminProps {
     readonly activeItem: string;
     readonly setActiveItem: React.Dispatch<React.SetStateAction<string>>;
-    role?: "admin" | "arrendador";
+    role?: "admin" | "landlord" | "tenant";
 }
 
 export default function SidebarAdmin(
@@ -16,7 +16,15 @@ export default function SidebarAdmin(
     const { activeItem, setActiveItem, role } = props;
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const navigate = useNavigate();
-    const basePath = role === "admin" ? "/admin" : "/arrendador";
+    const basePath =
+        role === "admin"
+            ? "/admin"
+            : role === "landlord"
+                ? "/arrendador"
+                : role === "tenant"
+                    ? "/arrendatario"
+                    : "";
+    console.log("SIDEBAR role:", role, "basePath:", basePath);
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -32,11 +40,11 @@ export default function SidebarAdmin(
         const handleClickOutside = (event: MouseEvent) => {
             const sidebar = document.getElementById('sidebar');
             const menuButton = document.getElementById('menu-button');
-            
-            if (isSidebarOpen && 
-                sidebar && 
+
+            if (isSidebarOpen &&
+                sidebar &&
                 !sidebar.contains(event.target as Node) &&
-                menuButton && 
+                menuButton &&
                 !menuButton.contains(event.target as Node)) {
                 setIsSidebarOpen(false);
             }
@@ -57,6 +65,9 @@ export default function SidebarAdmin(
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    
+
+
     return (
         <>
             <button
@@ -69,7 +80,7 @@ export default function SidebarAdmin(
             </button>
 
             {isSidebarOpen && (
-                <div 
+                <div
                     className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
                     onClick={() => setIsSidebarOpen(false)}
                 />
@@ -103,27 +114,28 @@ export default function SidebarAdmin(
                     <SidebarItem
                         label="Bodegas"
                         active={activeItem === 'bodegas'}
-                        onClick={() => handleItemClick(() => { 
-                            setActiveItem('bodegas'); 
-                            navigate(`${basePath}/bodegas`); 
+                        onClick={() => handleItemClick(() => {
+                            setActiveItem('bodegas');
+                            navigate(`${basePath}/bodegas`);
                         })}
                     />
 
                     <SidebarItem
                         label="Solicitudes"
                         active={activeItem === 'solicitudes'}
-                        onClick={() => handleItemClick(() => { 
-                            setActiveItem('solicitudes'); 
-                            navigate('/solicitudes'); 
+                        onClick={() => handleItemClick(() => {
+                            setActiveItem('solicitudes');
+                            navigate(`${basePath}/solicitudes`);
                         })}
                     />
 
                     <SidebarItem
                         label="Mensajes"
                         active={activeItem === 'mensajes'}
-                        onClick={() => handleItemClick(() => { 
-                            setActiveItem('mensajes'); 
-                            navigate('/mensajes'); 
+                        onClick={() => handleItemClick(() => {
+                            setActiveItem('mensajes');
+                            navigate(`${basePath}/mensajes`);
+
                         })}
                     />
 
@@ -147,9 +159,9 @@ export default function SidebarAdmin(
                     <SidebarItem
                         label="Configuración"
                         active={activeItem === 'settings'}
-                        onClick={() => handleItemClick(() => { 
-                            setActiveItem('settings'); 
-                            navigate('/settings'); 
+                        onClick={() => handleItemClick(() => {
+                            setActiveItem('settings');
+                            navigate(`${basePath}/settings`);
                         })}
                     />
 
@@ -160,7 +172,7 @@ export default function SidebarAdmin(
                             localStorage.removeItem('auth_user');
                             localStorage.removeItem('auth_token');
                             setActiveItem('logout');
-                            navigate('/login');
+                            navigate('/login', { replace: true });
                         })}
                     />
                 </nav>
