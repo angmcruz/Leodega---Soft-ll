@@ -175,9 +175,9 @@ const PreguntaInicio3: React.FC = () => {
           </div>
 
           <div className="px-4 sm:px-0">
-            <FooterNav
-              onBack={() => navigate('/PreguntaInicio2')}
-              onNext={handleNext}
+            <FooterNav 
+              onBack={() => navigate('/PreguntaInicio3')}
+              onNext={() => navigate('/PreguntaInicio4')}
               nextDisabled={!canContinue}
             />
           </div>

@@ -93,7 +93,7 @@ const PreguntaInicio1: React.FC = () => {
           
           <FooterNav
             onBack={() => navigate("/arrendador/bodegas")} //como no lo usamos en otro lado se quema
-            onNext={() => selectedOption && navigate("/p reguntainicio2")}
+            onNext={() => selectedOption && navigate("/preguntainicio2")}
             backDisabled={false}
             nextDisabled={!selectedOption}
           />
