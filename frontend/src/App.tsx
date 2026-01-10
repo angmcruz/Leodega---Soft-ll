@@ -31,16 +31,18 @@ import PreguntaInicio1 from './Pages/Components/PreguntaInicio1'
 import Cancellation from './Components/Cancellation'
 import LeodegaUI from './Components/LeodegaUI'
 import Report from './Components/Report'
-import Storage from './Components/Storage'
+import Storage from './Dashboard/Tendant/Storage'
 import Status from './Components/Status'
 import Resolution from './Components/Resolution'
 import Consulta from './Components/Consulta'
 import Detalles from './Dashboard/Detalles'
 import Reportes from './Dashboard/Reportes'
-import BodegaModal from './Dashboard/BodegaModal'
 
 import Protected from './Routes/Protected'
 import Role from './Routes/Role'
+import PagePrincipal from './Dashboard/Tendant/PagePrincipal'
+import MensajesTendant from './Dashboard/Tendant/MensajesTendant'
+import CalendarioTendant from './Dashboard/Tendant/CalendarioTendant'
 
 function App() {
   return (
@@ -97,9 +99,6 @@ function App() {
         <Route path="/consulta" element={<Consulta />} />
         <Route path="/detalles/:id" element={<Detalles />} />
         <Route path="/reportes" element={<Reportes />} />
-
-
-
         <Route path="/" element={
           <>
             <Header />
@@ -111,6 +110,9 @@ function App() {
             <Footer />
           </>
         } />
+        <Route path="/arrendatario/dashboard" element={<PagePrincipal />} />
+        <Route path="/arrendatario/mensajes" element={<MensajesTendant />} />
+        <Route path="/arrendatario/calendario" element={<CalendarioTendant />} />
       </Routes>
     </Router>
   )

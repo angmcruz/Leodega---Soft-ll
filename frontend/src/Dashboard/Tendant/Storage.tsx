@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { HeaderDashboard } from "../Dashboard/HeaderDashboard";
-import SearchBar from "./SearchBar";
+import SearchBar from "../../Components/SearchBar";
 import { Heart, ArrowRight, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import api from "../../api/axios";
+import HeaderTendant from "../../Components/HeaderTendant";
 
 
 type StorePrice = {
@@ -33,7 +33,6 @@ const Storage = () => {
   const DEFAULT_IMAGE =
     "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop";
 
- 
   useEffect(() => {
     const fetchWarehouses = async () => {
       try {
@@ -64,7 +63,6 @@ const Storage = () => {
       updateWarehouseRating(warehouse.id, stars);
     } catch (error: any) {
       if (error.response?.status === 409) {
-        // ya estaba calificado → bloquear igual
         setRatedStores((prev) => new Set(prev).add(warehouse.id));
       } else if (error.response?.status === 401) {
         alert("Debes iniciar sesión");
@@ -112,8 +110,8 @@ const Storage = () => {
 
 
   return (
-    <section className="w-full min-h-screen bg-white pb-16">
-      <HeaderDashboard />
+    <section className="w-full min-h-screen bg-white">
+      <HeaderTendant />
 
       <div className="mt-24">
         <SearchBar />
@@ -147,7 +145,7 @@ const Storage = () => {
                 </button>
               </div>
 
-              {/* INFO */}
+
               <div className="p-5 text-left">
                 <h3 className="text-lg font-semibold">{warehouse.title}</h3>
 
@@ -159,7 +157,6 @@ const Storage = () => {
                   ${warehouse.store_prices?.[0]?.price ?? "N/A"}
                 </p>
 
-                {/* ⭐ ESTRELLAS */}
                 <div className="flex items-center mt-3 gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
@@ -189,7 +186,7 @@ const Storage = () => {
                   </span>
                 </div>
 
-                {/* BOTÓN */}
+
                 <button
                   disabled={!ratings[warehouse.id] || alreadyRated}
                   onClick={() => submitRating(warehouse)}

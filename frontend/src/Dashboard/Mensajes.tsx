@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, MoreVertical, Paperclip, Send, Star, Trash2, AlertCircle, Inbox, Mail, PenTool, Menu, X } from 'lucide-react';
 
-type Categoria = 'inbox' | 'favoritos' | 'enviados' | 'redactar' | 'spam' | 'importante' | 'eliminados';
+type Categoria = 'inbox' | 'enviados' | 'redactar' | 'importante' | 'eliminados';
 
 const Mensajes: React.FC = () => {
     const [categoriaActiva, setCategoriaActiva] = useState<Categoria>('inbox');
@@ -110,10 +110,8 @@ const Mensajes: React.FC = () => {
 
     const categorias = [
         { id: 'inbox' as Categoria, nombre: 'Inbox', icono: Inbox, count: todosMensajes.filter(m => m.categorias.includes('inbox')).length },
-        { id: 'favoritos' as Categoria, nombre: 'Favoritos', icono: Star, count: todosMensajes.filter(m => m.categorias.includes('favoritos')).length },
         { id: 'enviados' as Categoria, nombre: 'Enviados', icono: Send, count: todosMensajes.filter(m => m.categorias.includes('enviados')).length },
         { id: 'redactar' as Categoria, nombre: 'Redactar', icono: PenTool, count: 0 },
-        { id: 'spam' as Categoria, nombre: 'Spam', icono: AlertCircle, count: todosMensajes.filter(m => m.categorias.includes('spam')).length },
         { id: 'importante' as Categoria, nombre: 'Importante', icono: Mail, count: todosMensajes.filter(m => m.categorias.includes('importante')).length },
         { id: 'eliminados' as Categoria, nombre: 'Eliminados', icono: Trash2, count: todosMensajes.filter(m => m.categorias.includes('eliminados')).length },
     ];
@@ -216,30 +214,6 @@ const Mensajes: React.FC = () => {
                         </div>
                     </div>
 
-                    <div>
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase mb-3">Label</h3>
-                        <div className="space-y-2">
-                            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 px-3 py-1.5 rounded">
-                                <input type="checkbox" className="w-4 h-4 text-cyan-500 rounded" />
-                                <span>Primary</span>
-                            </label>
-                            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 px-3 py-1.5 rounded">
-                                <input type="checkbox" className="w-4 h-4 text-cyan-500 rounded" />
-                                <span>Social</span>
-                            </label>
-                            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 px-3 py-1.5 rounded">
-                                <input type="checkbox" className="w-4 h-4 text-cyan-500 rounded" />
-                                <span>Work</span>
-                            </label>
-                            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50 px-3 py-1.5 rounded">
-                                <input type="checkbox" className="w-4 h-4 text-cyan-500 rounded" />
-                                <span>Friends</span>
-                            </label>
-                            <button className="w-full text-left text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5">
-                                + Create New Label
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
                 <div className={`
