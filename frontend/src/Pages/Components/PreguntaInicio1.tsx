@@ -34,6 +34,8 @@ const PreguntaInicio1: React.FC = () => {
     }
   }, []);
 
+ 
+
   const handleOptionClick = (id: string) => {
     setSelectedOption(id);
     const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
@@ -44,6 +46,8 @@ const PreguntaInicio1: React.FC = () => {
 
     localStorage.setItem("optionData", JSON.stringify(updatedData));
   };
+
+  
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
