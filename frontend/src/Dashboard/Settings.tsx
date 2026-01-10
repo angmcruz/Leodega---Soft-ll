@@ -29,8 +29,6 @@ const Settings: React.FC = () => {
         phone: "",
     });
     useEffect(() => {
-        console.log("TOKEN:", localStorage.getItem("token"));
-
         const load = async () => {
             const { data } = await api.get("/profile");
             setPerfil({
