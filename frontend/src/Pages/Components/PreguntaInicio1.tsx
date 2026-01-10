@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import FooterNav from "./FooterNav";
 import leodegalogo from '../../img/LOGO_LEODEGAISO.png';
@@ -13,6 +13,7 @@ import bodegaLogo from '../../img/bodegaLogo.png';
 const PreguntaInicio1: React.FC = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string>("");
+  
 
   const options = [
     { id: "habitacion", name: "Habitación", image: habitacionLogo },
@@ -33,6 +34,8 @@ const PreguntaInicio1: React.FC = () => {
     }
   }, []);
 
+ 
+
   const handleOptionClick = (id: string) => {
     setSelectedOption(id);
     const existingData = JSON.parse(localStorage.getItem("optionData") || "{}");
@@ -43,6 +46,8 @@ const PreguntaInicio1: React.FC = () => {
 
     localStorage.setItem("optionData", JSON.stringify(updatedData));
   };
+
+  
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -91,7 +96,7 @@ const PreguntaInicio1: React.FC = () => {
           </div>
           
           <FooterNav
-            onBack={() => navigate("/register")}
+            onBack={() => navigate("/arrendador/bodegas")} //como no lo usamos en otro lado se quema
             onNext={() => selectedOption && navigate("/preguntainicio2")}
             backDisabled={false}
             nextDisabled={!selectedOption}

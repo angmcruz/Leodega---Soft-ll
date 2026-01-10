@@ -212,7 +212,7 @@ const PreguntaInicio4: React.FC = () => {
 
           <ProgressBar totalSteps={7} activeIndex={3} />
 
-          <FooterNav onBack={() => navigate("/preguntainicio3")} onNext={() => navigate("/preguntainicio5")} />
+          <FooterNav onBack={() => navigate("/preguntainicio4")} onNext={() => navigate("/preguntainicio5")} />
         </div>
       </main>
     </div>

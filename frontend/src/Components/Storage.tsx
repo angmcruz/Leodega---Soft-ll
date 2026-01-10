@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HeaderArrendador } from "../Arrendador/HeaderArrendador";
+import { HeaderDashboard } from "../Dashboard/HeaderDashboard";
 import SearchBar from "./SearchBar";
 import { Heart, ArrowRight, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -113,7 +113,7 @@ const Storage = () => {
 
   return (
     <section className="w-full min-h-screen bg-white pb-16">
-      <HeaderArrendador />
+      <HeaderDashboard />
 
       <div className="mt-24">
         <SearchBar />

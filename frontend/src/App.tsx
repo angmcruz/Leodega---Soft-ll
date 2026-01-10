@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Header from './Components/Header'
 import Hero from './Components/Hero'
-import SearchBar from './Components/SearchBar'
 import Work from './Components/Work'
 import Choose from './Components/Choose'
 import PopularStorage from './Components/PopularStorage'
@@ -23,7 +22,7 @@ import ResetPassword from './Pages/ResetPassword'
 import Decision from './Components/Decision'
 import BodegasAdmin from "./Dashboard/BodegasAdmin";
 import BodegasArrendador from "./Dashboard/BodegasArrendador";
-import Layout from './Arrendador/Layout';
+import Layout from './Dashboard/Layout';
 import Mensajes from './Dashboard/Mensajes'
 import Solicitudes from './Dashboard/Solicitudes'
 import Calendario from './Dashboard/Calendario'
@@ -71,11 +70,18 @@ function App() {
             <Route element={<Role allowed={["admin"]} />}>
               <Route path="/admin/bodegas" element={<BodegasAdmin />} />
             </Route>
+
             <Route element={<Role allowed={["admin", "landlord"]} />}>
-              <Route path="/mensajes" element={<Mensajes />} />
-              <Route path="/solicitudes" element={<Solicitudes />} />
-              <Route path="/calendario" element={<Calendario />} />
-              <Route path="/settings" element={<Settings />} />
+              
+              <Route path="/admin/mensajes" element={<Mensajes />} />
+              <Route path="/admin/solicitudes" element={<Solicitudes />} />
+              <Route path="/admin/settings" element={<Settings />} />
+              <Route path="/admin/calendario" element={<Calendario />} />
+              
+              <Route path="/arrendador/mensajes" element={<Mensajes />} />
+              <Route path="/arrendador/solicitudes" element={<Solicitudes />} />
+              <Route path="/arrendador/settings" element={<Settings />} />
+              <Route path="/arrendador/calendario" element={<Calendario />} />
             </Route>
 
 

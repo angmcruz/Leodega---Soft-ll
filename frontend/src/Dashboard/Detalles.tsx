@@ -1,10 +1,10 @@
-import { HeaderArrendador } from "./HeaderArrendador"
+import { HeaderDashboard } from "./HeaderDashboard"
 import LeodegaUI from "../Components/LeodegaUI";
 
 const Detalles: React.FC = () => {
     return (
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-            <HeaderArrendador />
+            <HeaderDashboard />
             <LeodegaUI />
 
         </div>
