@@ -7,10 +7,6 @@ const api = axios.create({
     Accept: 'application/json',
   },
 });
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("auth_token");
-
 
 // request identificada 
 
@@ -22,7 +18,6 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
-
 
 
 export default api;
