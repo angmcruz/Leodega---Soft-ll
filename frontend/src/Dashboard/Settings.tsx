@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Bell, Lock, CreditCard, Globe, Shield, Mail, Phone, MapPin, Camera, Menu } from 'lucide-react';
+import api from '../api/axios';
 
 const Settings: React.FC = () => {
     const [activeTab, setActiveTab] = useState('perfil');
@@ -19,6 +20,51 @@ const Settings: React.FC = () => {
         { id: 'pagos', nombre: 'Pagos', icono: CreditCard },
         { id: 'privacidad', nombre: 'Privacidad', icono: Shield },
     ];
+
+    // Profile
+    const [perfil, setPerfil] = useState({
+        name: "",
+        lastname: "",
+        email: "",
+        phone: "",
+    });
+    useEffect(() => {
+        console.log("TOKEN:", localStorage.getItem("token"));
+
+        const load = async () => {
+            const { data } = await api.get("/profile");
+            setPerfil({
+                name: data.name ?? "",
+                lastname: data.lastname ?? "",
+                email: data.email ?? "",
+                phone: data.phone ?? "",
+
+            });
+        };
+        load();
+    }, []);
+
+    const [loading, setLoading] = useState(false);
+    const handleGuardar = async () => {
+        try {
+            setLoading(true);
+
+            await api.put("/profile", {
+                name: perfil.name,
+                lastname: perfil.lastname,
+                email: perfil.email,
+                phone: perfil.phone,
+            });
+
+            alert("Perfil actualizado con exito");
+        } catch (error) {
+           alert("Error al guardar el perfil");
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+
 
     return (
         <div className="px-4 lg:pl-8 lg:pr-8 pt-5 bg-[#f5f6fa] min-h-screen">
@@ -54,11 +100,10 @@ const Settings: React.FC = () => {
                                             setShowMobileMenu(false);
                                         }
                                     }}
-                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                                        activeTab === tab.id
-                                            ? 'bg-purple-50 text-purple-600 font-medium'
-                                            : 'text-gray-700 hover:bg-gray-50'
-                                    }`}
+                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === tab.id
+                                        ? 'bg-purple-50 text-purple-600 font-medium'
+                                        : 'text-gray-700 hover:bg-gray-50'
+                                        }`}
                                 >
                                     <Icon size={20} />
                                     <span>{tab.nombre}</span>
@@ -73,7 +118,7 @@ const Settings: React.FC = () => {
                         <div className="space-y-6">
                             <div>
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Información Personal</h2>
-                                
+
                                 <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
                                     <div className="relative">
                                         <div className="w-20 h-20 lg:w-24 lg:h-24 bg-purple-100 rounded-full flex items-center justify-center">
@@ -98,7 +143,8 @@ const Settings: React.FC = () => {
                                         </label>
                                         <input
                                             type="text"
-                                            defaultValue="Leonardo"
+                                            value={perfil.name}
+                                            onChange={(e) => setPerfil({ ...perfil, name: e.target.value })}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
@@ -108,7 +154,8 @@ const Settings: React.FC = () => {
                                         </label>
                                         <input
                                             type="text"
-                                            defaultValue="Castro"
+                                            value={perfil.lastname}
+                                            onChange={(e) => setPerfil({ ...perfil, lastname: e.target.value })}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
@@ -119,7 +166,8 @@ const Settings: React.FC = () => {
                                         </label>
                                         <input
                                             type="email"
-                                            defaultValue="leancast@espol.edu.ec"
+                                            value={perfil.email}
+                                            onChange={(e) => setPerfil({ ...perfil, email: e.target.value })}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
@@ -130,26 +178,20 @@ const Settings: React.FC = () => {
                                         </label>
                                         <input
                                             type="tel"
-                                            defaultValue="+593 99 123 4567"
+                                            value={perfil.phone}
+                                            onChange={(e) => setPerfil({ ...perfil, phone: e.target.value })}
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            <MapPin size={16} className="inline mr-2" />
-                                            Ciudad
-                                        </label>
-                                        <input
-                                            type="text"
-                                            defaultValue="Guayaquil"
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
-                                        />
-                                    </div>
+
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                                    <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium text-sm lg:text-base">
-                                        Guardar Cambios
+                                    <button onClick={handleGuardar}
+                                        disabled={loading}
+                                        className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                                    >
+                                        {loading ? "Guardando..." : "Guardar Cambios"}
                                     </button>
                                     <button className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm lg:text-base">
                                         Cancelar
@@ -175,7 +217,7 @@ const Settings: React.FC = () => {
                                             <input
                                                 type="checkbox"
                                                 checked={notificaciones.emailReservas}
-                                                onChange={(e) => setNotificaciones({...notificaciones, emailReservas: e.target.checked})}
+                                                onChange={(e) => setNotificaciones({ ...notificaciones, emailReservas: e.target.checked })}
                                                 className="sr-only peer"
                                             />
                                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -191,7 +233,7 @@ const Settings: React.FC = () => {
                                             <input
                                                 type="checkbox"
                                                 checked={notificaciones.pushReservas}
-                                                onChange={(e) => setNotificaciones({...notificaciones, pushReservas: e.target.checked})}
+                                                onChange={(e) => setNotificaciones({ ...notificaciones, pushReservas: e.target.checked })}
                                                 className="sr-only peer"
                                             />
                                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -207,7 +249,7 @@ const Settings: React.FC = () => {
                                             <input
                                                 type="checkbox"
                                                 checked={notificaciones.emailMensajes}
-                                                onChange={(e) => setNotificaciones({...notificaciones, emailMensajes: e.target.checked})}
+                                                onChange={(e) => setNotificaciones({ ...notificaciones, emailMensajes: e.target.checked })}
                                                 className="sr-only peer"
                                             />
                                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -223,7 +265,7 @@ const Settings: React.FC = () => {
                                             <input
                                                 type="checkbox"
                                                 checked={notificaciones.emailReportes}
-                                                onChange={(e) => setNotificaciones({...notificaciones, emailReportes: e.target.checked})}
+                                                onChange={(e) => setNotificaciones({ ...notificaciones, emailReportes: e.target.checked })}
                                                 className="sr-only peer"
                                             />
                                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
@@ -238,7 +280,7 @@ const Settings: React.FC = () => {
                         <div className="space-y-6">
                             <div>
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Seguridad de la Cuenta</h2>
-                                
+
                                 <div className="space-y-6">
                                     <div className="border rounded-lg p-4">
                                         <h3 className="font-medium text-gray-900 mb-4">Cambiar Contraseña</h3>
@@ -331,7 +373,7 @@ const Settings: React.FC = () => {
                         <div className="space-y-6">
                             <div>
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Privacidad y Datos</h2>
-                                
+
                                 <div className="space-y-4">
                                     <div className="border rounded-lg p-4">
                                         <h3 className="font-medium text-gray-900 mb-2">Visibilidad del Perfil</h3>
