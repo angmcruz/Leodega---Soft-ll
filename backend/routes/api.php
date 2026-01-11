@@ -19,6 +19,7 @@ use App\Http\Controllers\TenantsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SecurityController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -37,6 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update']);
 });
 Route::middleware('auth:sanctum')->put('/password', [SecurityController::class, 'changePassword']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/sessions', [SessionController::class, 'index']);
+    Route::delete('/sessions/{tokenId}', [SessionController::class, 'destroy']);
+});
 
 
 Route::get('/user', [UserController::class, 'index']);

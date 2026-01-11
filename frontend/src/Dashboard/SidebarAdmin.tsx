@@ -24,7 +24,7 @@ export default function SidebarAdmin(
                 : role === "tenant"
                     ? "/arrendatario"
                     : "";
-    console.log("SIDEBAR role:", role, "basePath:", basePath);
+    
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
