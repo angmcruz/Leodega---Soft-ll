@@ -83,7 +83,6 @@ const PreguntaInicio4: React.FC = () => {
     };
 
     localStorage.setItem("optionData", JSON.stringify(updatedData));
-    console.log("Datos guardados en localStorage:", updatedData);
   };
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, MoreVertical, Paperclip, Send, Star, Trash2, AlertCircle, Inbox, Mail, PenTool, Menu, X } from 'lucide-react';
 
-type Categoria = 'inbox' | 'enviados' | 'redactar' | 'importante' | 'eliminados';
+type Categoria = 'inbox' | 'enviados' | 'importante' | 'eliminados';
 
 const Mensajes: React.FC = () => {
     const [categoriaActiva, setCategoriaActiva] = useState<Categoria>('inbox');
@@ -111,7 +111,6 @@ const Mensajes: React.FC = () => {
     const categorias = [
         { id: 'inbox' as Categoria, nombre: 'Inbox', icono: Inbox, count: todosMensajes.filter(m => m.categorias.includes('inbox')).length },
         { id: 'enviados' as Categoria, nombre: 'Enviados', icono: Send, count: todosMensajes.filter(m => m.categorias.includes('enviados')).length },
-        { id: 'redactar' as Categoria, nombre: 'Redactar', icono: PenTool, count: 0 },
         { id: 'importante' as Categoria, nombre: 'Importante', icono: Mail, count: todosMensajes.filter(m => m.categorias.includes('importante')).length },
         { id: 'eliminados' as Categoria, nombre: 'Eliminados', icono: Trash2, count: todosMensajes.filter(m => m.categorias.includes('eliminados')).length },
     ];

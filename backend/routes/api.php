@@ -3,8 +3,10 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CancelationsPolicesController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\LandlordsController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PaymentsController;
@@ -145,3 +147,14 @@ Route::get('/store_moderation/{id}', [StoreModerationController::class, 'show'])
 Route::post('/store_moderation', [StoreModerationController::class, 'store']);
 Route::put('/store_moderation/{id}', [StoreModerationController::class, 'update']);
 Route::delete('/store_moderation/{id}', [StoreModerationController::class, 'destroy']);
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/conversations', [ConversationController::class, 'index']);
+    Route::post('/conversations', [ConversationController::class, 'store']);
+
+    Route::get('/conversations/{conversation}/messages', [MessageController::class, 'index']);
+    Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store']);
+    Route::post('/conversations/{conversation}/read', [MessageController::class, 'markRead']);
+});

@@ -103,9 +103,6 @@ const PreguntaInicio7 = () => {
 
       };
 
-      console.log("Datos enviados:", storeRoom);
-
-
       const response = await api.post("/storeRooms", storeRoom);
 
 
