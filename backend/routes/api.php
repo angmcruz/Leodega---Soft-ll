@@ -157,4 +157,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/conversations/{conversation}/messages', [MessageController::class, 'index']);
     Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store']);
     Route::post('/conversations/{conversation}/read', [MessageController::class, 'markRead']);
+    
 });
+
