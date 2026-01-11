@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../api/axios";
-import { Send, Plus } from "lucide-react";
+import { Send, Plus, Search, Paperclip, X } from "lucide-react";
 
 interface User {
     id: number;
@@ -10,10 +10,13 @@ interface User {
 
 interface Message {
     id: number;
-    body: string;
+    body: string | null;
     sender_id: number;
     created_at: string;
     sender: User;
+    file_path?: string;
+    file_type?: string;
+    file_name?: string;
 }
 
 interface Conversation {
@@ -33,48 +36,56 @@ const Mensajes = () => {
     const [showNewChat, setShowNewChat] = useState(false);
     const [search, setSearch] = useState("");
 
+    const [file, setFile] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    /** Auth */
+    /* ================= LOADERS ================= */
+
     const loadAuthUser = async () => {
         const res = await api.get("/me");
         setAuthUser(res.data.user);
     };
 
-    /** Conversaciones */
     const loadConversations = async () => {
         const res = await api.get("/conversations");
         setConversations(res.data);
     };
 
-    /** Mensajes */
-    const loadMessages = async (conversationId: number) => {
-        const res = await api.get(`/conversations/${conversationId}/messages`);
+    const loadMessages = async (id: number) => {
+        const res = await api.get(`/conversations/${id}/messages`);
         setMessages(res.data.data);
     };
 
-    const filteredConversations = conversations.filter((conv) => {
-        const otherUser = conv.users.find(
-            (u) => u.id !== authUser?.id
-        );
+    const loadUsers = async () => {
+        const res = await api.get("/user");
+        setUsers(res.data);
+    };
 
-        const nameMatch =
-            otherUser?.name
-                ?.toLowerCase()
-                .includes(search.toLowerCase()) ||
-            otherUser?.lastname
-                ?.toLowerCase()
-                .includes(search.toLowerCase());
+    /* ================= FILE ================= */
 
-        const messageMatch =
-            conv.last_message?.body
-                ?.toLowerCase()
-                .includes(search.toLowerCase());
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selected = e.target.files?.[0];
+        if (!selected) return;
 
-        return nameMatch || messageMatch;
-    });
+        setFile(selected);
 
+        if (selected.type.startsWith("image/")) {
+            setPreview(URL.createObjectURL(selected));
+        } else {
+            setPreview(null);
+        }
+    };
 
-    /** Abrir conversación + marcar leídos */
+    const removeFile = () => {
+        setFile(null);
+        setPreview(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+
+    /* ================= ACTIONS ================= */
+
     const openConversation = async (conv: Conversation) => {
         setActiveConversation(conv);
         await loadMessages(conv.id);
@@ -82,157 +93,209 @@ const Mensajes = () => {
         loadConversations();
     };
 
-    /** Enviar mensaje */
     const sendMessage = async () => {
-        if (!messageText.trim() || !activeConversation) return;
+        if (!activeConversation) return;
+        if (!messageText.trim() && !file) return;
 
-        await api.post(`/conversations/${activeConversation.id}/messages`, {
-            body: messageText,
-        });
+        const formData = new FormData();
+        formData.append("body", messageText);
+        if (file) formData.append("file", file);
+
+        await api.post(
+            `/conversations/${activeConversation.id}/messages`,
+            formData,
+            { headers: { "Content-Type": "multipart/form-data" } }
+        );
 
         setMessageText("");
+        removeFile();
         loadMessages(activeConversation.id);
         loadConversations();
     };
 
-    /** Nuevo chat */
     const startConversation = async (userId: number) => {
         const res = await api.post("/conversations", { user_id: userId });
         setShowNewChat(false);
         setActiveConversation(res.data);
-        loadConversations();
         loadMessages(res.data.id);
+        loadConversations();
     };
 
-    /** Usuarios */
-    const loadUsers = async () => {
-        const res = await api.get("/user");
-        setUsers(res.data);
-    };
+    /* ================= EFFECTS ================= */
 
     useEffect(() => {
         loadAuthUser();
         loadConversations();
     }, []);
 
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    /* ================= FILTER ================= */
+
+    const filteredConversations = conversations.filter(conv => {
+        const otherUser = conv.users.find(u => u.id !== authUser?.id);
+        return `${otherUser?.name} ${otherUser?.lastname}`
+            .toLowerCase()
+            .includes(search.toLowerCase());
+    });
+
+    /* ================= UI ================= */
+
     return (
         <div className="flex h-screen bg-gray-100">
+
             {/* SIDEBAR */}
             <div className="w-1/4 bg-white border-r flex flex-col">
-
-                <div className="flex justify-between items-center p-4 border-b">
+                <div className="p-4 border-b flex justify-between items-center">
                     <h2 className="font-bold text-lg">Chats</h2>
                     <button onClick={() => { setShowNewChat(true); loadUsers(); }}>
                         <Plus />
                     </button>
                 </div>
 
-                {/* SEARCH */}
-                <div className="p-3 border-b">
-                    <input
-                        type="text"
-                        placeholder="Buscar chat..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full px-3 py-2 text-sm border rounded
-                       focus:outline-none focus:ring
-                       focus:ring-blue-200"
-                    />
+                <div className="p-2 border-b">
+                    <div className="flex items-center bg-gray-100 rounded px-2">
+                        <Search size={16} />
+                        <input
+                            className="bg-transparent flex-1 px-2 py-1 outline-none text-sm"
+                            placeholder="Buscar chat..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
                 </div>
 
-                {filteredConversations.map((conv) => {
-                    const otherUser = conv.users.find(u => u.id !== authUser?.id);
+                <div className="flex-1 overflow-y-auto">
+                    {filteredConversations.map(conv => {
+                        const otherUser = conv.users.find(u => u.id !== authUser?.id);
+                        return (
+                            <div
+                                key={conv.id}
+                                onClick={() => openConversation(conv)}
+                                className={`px-4 py-3 border-b cursor-pointer flex gap-3
+                                    ${conv.unread_count > 0 ? "bg-blue-50" : "hover:bg-gray-100"}`}
+                            >
+                                <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
+                                    {otherUser?.name.charAt(0)}
+                                </div>
 
-                    return (
-                        <div
-                            key={conv.id}
-                            onClick={() => openConversation(conv)}
-                            className={`p-4 border-b cursor-pointer flex items-center gap-3 min-w-0
-                                ${conv.unread_count > 0 ? "bg-blue-50" : "hover:bg-gray-100"}
-                            `}
-                        >
-                            <div className="flex-1 min-w-0">
-                                <p className="font-semibold truncate">
-                                    {otherUser?.name} {otherUser?.lastname}
-                                </p>
-
-                                {conv.last_message && (
-                                    <p className={`text-sm truncate ${conv.unread_count > 0
-                                        ? "font-bold text-black"
-                                        : "text-gray-500"
-                                        }`}>
-                                        {conv.last_message.sender_id === authUser?.id && "Tú: "}
-                                        {conv.last_message.body}
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-semibold truncate">
+                                        {otherUser?.name} {otherUser?.lastname}
                                     </p>
+                                    {conv.last_message && (
+                                        <p className="text-sm truncate text-gray-500">
+                                            {conv.last_message.sender_id === authUser?.id && "Tú: "}
+                                            {conv.last_message.body ?? "📎 Archivo"}
+                                        </p>
+                                    )}
+                                </div>
+
+                                {conv.unread_count > 0 && (
+                                    <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+                                        {conv.unread_count}
+                                    </span>
                                 )}
                             </div>
-
-                            {conv.unread_count > 0 && (
-                                <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
-                                    {conv.unread_count}
-                                </span>
-                            )}
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
 
             {/* CHAT */}
             <div className="flex-1 flex flex-col">
-                {activeConversation ? (
-                    <>
-                        <div className="p-4 border-b bg-white font-bold">
-                            Chat
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto p-4 space-y-2">
-                            {messages.length === 0 && (
-                                <p className="text-gray-400 text-center">No hay mensajes aún</p>
-                            )}
-
-                            {messages.map((msg) => (
-                                <div
-                                    key={msg.id}
-                                    className={`max-w-md p-2 rounded
-                                        ${msg.sender_id === authUser?.id
-                                            ? "bg-blue-500 text-white ml-auto"
-                                            : "bg-gray-200"
-                                        }
-                                    `}
-                                >
-                                    {msg.body}
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="p-4 border-t flex gap-2">
-                            <input
-                                className="flex-1 border rounded px-3 py-2"
-                                value={messageText}
-                                onChange={(e) => setMessageText(e.target.value)}
-                                placeholder="Escribe un mensaje..."
-                            />
-                            <button
-                                onClick={sendMessage}
-                                className="bg-blue-600 text-white px-4 rounded"
-                            >
-                                <Send />
-                            </button>
-                        </div>
-                    </>
-                ) : (
+                {!activeConversation ? (
                     <div className="flex-1 flex items-center justify-center text-gray-400">
                         Selecciona una conversación
                     </div>
+                ) : (
+                    <>
+                        <div className="p-4 border-b bg-white font-semibold">Chat</div>
+
+                        <div className="flex-1 overflow-y-auto p-4 space-y-2">
+                            {messages.map(msg => (
+                                <div
+                                    key={msg.id}
+                                    className={`max-w-[70%] px-3 py-2 rounded-lg text-sm
+                                        ${msg.sender_id === authUser?.id
+                                            ? "bg-blue-500 text-white ml-auto"
+                                            : "bg-gray-200"}`}
+                                >
+                                    {msg.file_path && msg.file_type?.startsWith("image/") && (
+                                        <img
+                                            src={msg.file_path}
+                                            alt=""
+                                            className="rounded mb-1 max-h-60"
+                                        />
+                                    )}
+
+                                    {msg.file_path && !msg.file_type?.startsWith("image/") && (
+                                        <a
+                                            href={msg.file_path}
+                                            target="_blank"
+                                            className="text-blue-700 underline block mb-1"
+                                        >
+                                            📎 {msg.file_name}
+                                        </a>
+                                    )}
+
+                                    {msg.body}
+                                </div>
+                            ))}
+                            <div ref={messagesEndRef} />
+                        </div>
+
+                        {file && (
+                            <div className="px-4 py-2 bg-gray-100 flex items-center gap-3 border-t">
+                                {preview ? (
+                                    <img src={preview} className="h-20 rounded" />
+                                ) : (
+                                    <span className="text-sm">📎 {file.name}</span>
+                                )}
+                                <button onClick={removeFile}>
+                                    <X size={16} />
+                                </button>
+                            </div>
+                        )}
+
+                        <div className="p-3 border-t bg-white flex items-center gap-2">
+                            <button onClick={() => fileInputRef.current?.click()}>
+                                <Paperclip />
+                            </button>
+
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                hidden
+                                onChange={handleFileChange}
+                            />
+
+                            <input
+                                className="flex-1 bg-gray-100 rounded-full px-4 py-2 outline-none"
+                                placeholder="Escribe un mensaje..."
+                                value={messageText}
+                                onChange={(e) => setMessageText(e.target.value)}
+                            />
+
+                            <button
+                                onClick={sendMessage}
+                                className="bg-blue-600 text-white p-3 rounded-full"
+                            >
+                                <Send size={18} />
+                            </button>
+                        </div>
+                    </>
                 )}
             </div>
 
-            {/* MODAL NUEVO CHAT */}
+            {/* MODAL */}
             {showNewChat && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
                     <div className="bg-white w-96 rounded p-4">
                         <h3 className="font-bold mb-3">Nuevo chat</h3>
-                        {users.map((u) => (
+                        {users.filter(u => u.id !== authUser?.id).map(u => (
                             <div
                                 key={u.id}
                                 onClick={() => startConversation(u.id)}
@@ -241,10 +304,7 @@ const Mensajes = () => {
                                 {u.name} {u.lastname}
                             </div>
                         ))}
-                        <button
-                            onClick={() => setShowNewChat(false)}
-                            className="mt-3 text-sm text-red-500"
-                        >
+                        <button onClick={() => setShowNewChat(false)} className="mt-3 text-red-500">
                             Cancelar
                         </button>
                     </div>

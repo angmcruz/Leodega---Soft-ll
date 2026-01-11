@@ -10,7 +10,7 @@ class Conversation extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'conversation_user');
     }
 
     public function messages()
@@ -21,6 +21,13 @@ class Conversation extends Model
     public function lastMessage()
     {
         return $this->hasOne(Message::class)->latestOfMany();
+    }
+
+    public function unreadMessagesFor($userId)
+    {
+        return $this->messages()
+            ->where('sender_id', '!=', $userId)
+            ->where('is_read', false);
     }
 }
 
