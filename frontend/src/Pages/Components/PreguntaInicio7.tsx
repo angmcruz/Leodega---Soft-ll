@@ -68,7 +68,8 @@ const PreguntaInicio7 = () => {
         "Content-Type": "multipart/form-data",
       },
     });
-  }
+  };
+
 
 
   const handleEnviar = async () => {
