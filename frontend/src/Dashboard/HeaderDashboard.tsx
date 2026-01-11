@@ -1,11 +1,14 @@
 import { Bell, ChevronDown } from "lucide-react";
+import React, { useState, useEffect } from 'react';
 import perfil from '../img/perfil.jpg';
+import api from "../api/axios";
 
 
 type RoleType = "admin" | "landlord" | "tenant";
 interface HeaderDashboardProps {
     role?: RoleType | null;
 }
+
 
 
 export const HeaderDashboard: React.FC<HeaderDashboardProps> = ({ role }) => {
@@ -17,6 +20,21 @@ export const HeaderDashboard: React.FC<HeaderDashboardProps> = ({ role }) => {
                 : role === "tenant"
                     ? "Arrendatario"
                     : "Usuario";
+
+
+    const [nombre, setNombre] = useState("");
+    const [apellido, setApellido] = useState("");
+
+    useEffect(() => {
+        const load = async () => {
+            const { data } = await api.get("/profile");
+            setNombre(data.name);
+            setApellido(data.lastname);
+
+        };
+        load();
+    }, []);
+    
     return (
         <header className="bg-white border-b border-gray-200 px-8 py-3.5 flex items-center justify-between h-[72px]">
             <div className="flex-1 max-w-md">
@@ -44,7 +62,7 @@ export const HeaderDashboard: React.FC<HeaderDashboardProps> = ({ role }) => {
                         className="w-9 h-9 rounded-full object-cover"
                     />
                     <div className="text-left">
-                        <p className="text-sm font-medium text-gray-800">Melissa Cruz</p>
+                        <p className="text-sm font-medium text-gray-800"> {nombre} {apellido}</p>
                         <p className="text-xs text-gray-500">{roleLabel}</p>
                     </div>
                     <ChevronDown className="w-4 h-4 text-gray-500" />

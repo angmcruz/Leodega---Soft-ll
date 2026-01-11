@@ -28,19 +28,29 @@ const Settings: React.FC = () => {
         email: "",
         phone: "",
     });
+
+    const [profileMsg, setProfileMsg] = useState<{ type: "success" | "error" | ""; text: string }>({
+        type: "",
+        text: "",
+    });
+    const [profileErrors, setProfileErrors] = useState<{ email?: string }>({});
+
     useEffect(() => {
-        console.log("TOKEN:", localStorage.getItem("token"));
-
         const load = async () => {
-            const { data } = await api.get("/profile");
-            setPerfil({
-                name: data.name ?? "",
-                lastname: data.lastname ?? "",
-                email: data.email ?? "",
-                phone: data.phone ?? "",
-
-            });
+            try {
+                const { data } = await api.get("/profile");
+                setPerfil({
+                    name: data.name ?? "",
+                    lastname: data.lastname ?? "",
+                    email: data.email ?? "",
+                    phone: data.phone ?? "",
+                });
+            } catch (error) {
+                console.error("Error cargando perfil:", error);
+                setProfileMsg({ type: "error", text: "No se pudo cargar el perfil." });
+            }
         };
+
         load();
     }, []);
 
@@ -48,6 +58,8 @@ const Settings: React.FC = () => {
     const handleGuardar = async () => {
         try {
             setLoading(true);
+            setProfileErrors({});
+            setProfileMsg({ type: "", text: "" });
 
             await api.put("/profile", {
                 name: perfil.name,
@@ -56,14 +68,69 @@ const Settings: React.FC = () => {
                 phone: perfil.phone,
             });
 
-            alert("Perfil actualizado con exito");
-        } catch (error) {
-           alert("Error al guardar el perfil");
+            setProfileMsg({ type: "success", text: "Perfil actualizado con éxito." });
+        } catch (error: any) {
+            const data = error?.response?.data;
+
+            const emailError = data?.errors?.email?.[0];
+
+            setProfileErrors({
+                email: emailError,
+            });
+
         } finally {
             setLoading(false);
         }
     };
-    
+
+    // SEGURIDAD
+
+    const [passwordF, setPasswordF] = useState({
+        actual_p: "",
+        new_p: "",
+        new_p_c: "",
+    });
+    const [passMsg, setPassMsg] = useState<string>("");
+    const [passErrors, setPassErrors] = useState<{
+        actual_p?: string;
+        new_p?: string;
+        new_p_c?: string;
+    }>({});
+
+
+    const [passLoading, setPassLoading] = useState(false);
+
+    const handleActualizarPassword = async () => {
+        setPassMsg("");
+        setPassErrors({});
+        try {
+            setPassLoading(true);
+            console.log("ENVIANDO:", passwordF);
+
+            await api.put("/password", passwordF);
+            setPasswordF({
+                actual_p: "",
+                new_p: "",
+                new_p_c: "",
+            });
+        } catch (error: any) {
+            const data = error?.response?.data;
+            const errs = data?.errors || {};
+            setPassErrors({
+                actual_p: errs.actual_p?.[0],
+                new_p: errs.new_p?.[0],
+                new_p_c: errs.new_p_c?.[0],
+            });
+        } finally {
+            setPassLoading(false);
+        }
+    };
+
+
+
+
+
+
 
 
     return (
@@ -167,9 +234,17 @@ const Settings: React.FC = () => {
                                         <input
                                             type="email"
                                             value={perfil.email}
-                                            onChange={(e) => setPerfil({ ...perfil, email: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
+                                            onChange={(e) => {
+                                                setPerfil({ ...perfil, email: e.target.value });
+                                                setProfileErrors((prev) => ({ ...prev, email: undefined }));
+                                                setProfileMsg({ type: "", text: "" });
+                                            }}
+                                            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${profileErrors.email ? "border-red-500" : "border-gray-300"
+                                                }`}
                                         />
+                                        {profileErrors.email && (
+                                            <p className="mt-1 text-xs text-red-600">{profileErrors.email}</p>
+                                        )}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -186,16 +261,39 @@ const Settings: React.FC = () => {
 
                                 </div>
 
+                                <div> {profileMsg.text && (
+                                    <p
+                                        className={`mt-3 text-sm font-medium ${profileMsg.type === "success"
+                                            ? "text-green-600"
+                                            : "text-red-600"
+                                            }`}
+                                    >
+                                        {profileMsg.text}
+                                    </p>
+                                )}  </div>
+
+
                                 <div className="flex flex-col sm:flex-row gap-3 mt-6">
+
                                     <button onClick={handleGuardar}
                                         disabled={loading}
                                         className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
                                     >
                                         {loading ? "Guardando..." : "Guardar Cambios"}
                                     </button>
-                                    <button className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm lg:text-base">
+
+                                    <button
+                                        type="button"
+                                        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm lg:text-base"
+                                        onClick={() => {
+                                            setProfileMsg({ type: "", text: "" });
+                                            setProfileErrors({});
+                                        }}
+                                    >
                                         Cancelar
                                     </button>
+
+
                                 </div>
                             </div>
                         </div>
@@ -276,7 +374,9 @@ const Settings: React.FC = () => {
                         </div>
                     )}
 
-                    {activeTab === 'seguridad' && (
+
+
+                    {activeTab === 'seguridad' && ( // SEGURIDAD
                         <div className="space-y-6">
                             <div>
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Seguridad de la Cuenta</h2>
@@ -291,6 +391,8 @@ const Settings: React.FC = () => {
                                                 </label>
                                                 <input
                                                     type="password"
+                                                    value={passwordF.actual_p}
+                                                    onChange={(e) => setPasswordF({ ...passwordF, actual_p: e.target.value })}
                                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                                 />
                                             </div>
@@ -300,6 +402,8 @@ const Settings: React.FC = () => {
                                                 </label>
                                                 <input
                                                     type="password"
+                                                    value={passwordF.new_p}
+                                                    onChange={(e) => setPasswordF({ ...passwordF, new_p: e.target.value })}
                                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                                 />
                                             </div>
@@ -309,26 +413,27 @@ const Settings: React.FC = () => {
                                                 </label>
                                                 <input
                                                     type="password"
+                                                    value={passwordF.new_p_c}
+                                                    onChange={(e) => setPasswordF({ ...passwordF, new_p_c: e.target.value })}
                                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm lg:text-base"
                                                 />
                                             </div>
-                                            <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium text-sm lg:text-base">
-                                                Actualizar Contraseña
+                                            <button
+                                                onClick={handleActualizarPassword}
+                                                disabled={passLoading}
+                                                className={`px-6 py-2 text-white rounded-lg font-medium text-sm lg:text-base ${passLoading ? "bg-purple-300 cursor-not-allowed" : "bg-purple-600 hover:bg-purple-700"
+                                                    }`}
+                                            >
+                                                {passLoading ? "Actualizando..." : "Actualizar Contraseña"}
                                             </button>
+                                            {passMsg && (
+                                                <p className="mt-3 text-sm font-medium text-red-600">
+                                                    {passMsg}
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
 
-                                    <div className="border rounded-lg p-4">
-                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                            <div>
-                                                <h3 className="font-medium text-gray-900">Autenticación de Dos Factores</h3>
-                                                <p className="text-sm text-gray-500 mt-1">Añade una capa extra de seguridad</p>
-                                            </div>
-                                            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium text-sm lg:text-base w-full sm:w-auto">
-                                                Activar
-                                            </button>
-                                        </div>
-                                    </div>
 
                                     <div className="border rounded-lg p-4">
                                         <h3 className="font-medium text-gray-900 mb-4">Sesiones Activas</h3>
