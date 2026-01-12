@@ -94,7 +94,7 @@ function App() {
         <Route path="/reportIncident/:id" element={<Report />} />
         <Route path="/cancellation" element={<Cancellation />} />
         <Route path="/storage" element={<Storage />} />
-        <Route path="/status" element={<Status />} />
+        <Route path="/  " element={<Status />} />
         <Route path="/resolution" element={<Resolution />} />
         <Route path="/consulta" element={<Consulta />} />
         <Route path="/detalles/:id" element={<Detalles />} />

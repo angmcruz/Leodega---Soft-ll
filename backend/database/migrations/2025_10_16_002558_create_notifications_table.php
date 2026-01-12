@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained('reservations')->onDelete('cascade');
-            $table->foreignId('emisor_id')->constrained('user')->onDelete('cascade');
-            $table->foreignId('receptor_id')->constrained('user')->onDelete('cascade');
-            $table->string('message')->nullable(false);
+            $table->foreignId('sender_id')->constrained('user')->cascadeOnDelete();
+            $table->foreignId('receiver_id')->constrained('user')->cascadeOnDelete();
+            $table->string('type');
+            $table->string('title');
+            $table->text('body')->nullable();
+            $table->json('data')->nullable();
+            $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
     }

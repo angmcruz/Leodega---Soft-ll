@@ -12,24 +12,26 @@ class Notifications extends Model
     protected $table = 'notifications';
 
     protected $fillable = [
-        'reservation_id',
-        'emisor_id',
-        'receptor_id',
-        'message',
+        'sender_id',
+        'receiver_id',
+        'type',
+        'title',
+        'body',
+        'data',
+        'is_read',
     ];
 
-    public function reservation()
-    {
-        return $this->belongsTo(Reservations::class, 'reservation_id');
+    protected $casts = [
+        'data' => 'array',
+        'is_read' => 'boolean',
+    ];
+
+    public function sender(){
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function emisor()
+    public function receiver()
     {
-        return $this->belongsTo(User::class, 'emisor_id');
-    }
-
-    public function receptor()
-    {
-        return $this->belongsTo(User::class, 'receptor_id');
+        return $this->belongsTo(User::class, 'receiver_id');
     }
 }

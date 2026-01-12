@@ -110,11 +110,6 @@ Route::post('/payments', [PaymentsController::class, 'store']);
 Route::put('/payments/{id}', [PaymentsController::class, 'update']);
 Route::delete('/payments/{id}', [PaymentsController::class, 'destroy']);
 
-Route::get('/notifications', [NotificationsController::class, 'index']);
-Route::get('/notifications/{id}', [NotificationsController::class, 'show']);
-Route::post('/notifications', [NotificationsController::class, 'store']);
-Route::put('/notifications/{id}', [NotificationsController::class, 'update']);
-Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy']);
 
 Route::middleware('auth.api:sanctum')->group(function () {
     Route::get('/ratings', [RatingsController::class, 'index']);
@@ -158,3 +153,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store']);
     Route::post('/conversations/{conversation}/read', [MessageController::class, 'markRead']);
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/notifications', [NotificationsController::class, 'index']);
+    Route::post('/notifications', [NotificationsController::class, 'store']);
+    Route::post('/notifications/{notification}/read', [NotificationsController::class, 'markAsRead']);
+    Route::get('/notifications-unread-count', [NotificationsController::class, 'unreadCount']);
+
+});
+

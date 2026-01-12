@@ -3,47 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notifications;
+use App\NotificationType;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
-class NotificationsController extends ApiController
+class NotificationsController extends Controller
 {
     //
     public function index()
     {
-        return $this->indexModel(Notifications::class);
-    }
-
-    public function show($id)
-    {
-        return $this->showModel(Notifications::class, $id);
+        return Notifications::where('receiver_id', auth()->id())
+            ->latest()
+            ->limit(20)
+            ->get();
     }
 
     public function store(Request $request)
     {
-        $rules = [
-            'reservation_id' => 'required|exists:reservations,id',
-            'emisor_id' => 'required|exists:user,id',
-            'receptor_id' => 'required|exists:user,id',
-            'message' => 'required|string|max:500',
-        ];
+        $request->validate([
+            'receiver_id' => 'required|exists:users,id',
+            'type' => ['required', new Enum(NotificationType::class)],
+            'title' => 'required|string|max:100',
+            'body' => 'nullable|string',
+            'data' => 'nullable|array',
+        ]);
 
-        return $this->storeModel($request, Notifications::class, $rules);
+        return Notifications::create([
+            'sender_id' => auth()->id(),
+            'receiver_id' => $request->receiver_id,
+            'type' => $request->type,
+            'title' => $request->title,
+            'body' => $request->body,
+            'data' => $request->data,
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function markAsRead(Notifications $notification)
     {
-        $rules = [
-            'reservation_id' => 'sometimes|exists:reservations,id',
-            'emisor_id' => 'sometimes|exists:user,id',
-            'receptor_id' => 'sometimes|exists:user,id',
-            'message' => 'sometimes|string|max:500',
-        ];
+        if ($notification->receiver_id !== auth()->id()) {
+            abort(403);
+        }
 
-        return $this->updateModel($request, Notifications::class, $id, $rules);
+        $notification->update(['is_read' => true]);
+
+        return response()->json([
+            'message' => 'Notificación marcada como leída'
+        ]);
     }
 
-    public function destroy($id)
+
+    public function unreadCount()
     {
-        return $this->destroyModel(Notifications::class, $id);
+        $count = Notifications::where('receiver_id', auth()->id())
+            ->where('is_read', false)
+            ->count();
+
+        return response()->json([
+            'count' => $count
+        ]);
     }
 }

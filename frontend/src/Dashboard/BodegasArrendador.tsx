@@ -42,7 +42,6 @@ const BodegasArrendador = () => {
     const fetchStore = async () => {
       try {
         const response = await api.get(`landlords/${landlordId}/storeRooms`);
-        console.log("Respuesta del backend:", response.data);
         const data = response.data.map((b: any) => ({
           ...b,
           storePrices: b.store_prices,
@@ -91,9 +90,6 @@ const BodegasArrendador = () => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {bodegas.map((bodega) => {
-          console.log("BODEGA COMPLETA:", bodega);
-          console.log("IMAGEN:", bodega.image);
-
           return (
             <BodegaCard
               key={bodega.id}
