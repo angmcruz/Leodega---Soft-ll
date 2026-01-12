@@ -137,7 +137,7 @@ const SolicitudRevisarResponderL: React.FC<Props> = ({
                 <h3 className="text-xl font-semibold text-red-600">Rechazar Reserva</h3>
               </div>
               <p className="text-sm text-gray-600">
-                Rechaza la solicitud indicando la razón (se guarda en cancelation_reason).
+                Rechaza la solicitud indicando la razón.
               </p>
             </button>
           </div>
