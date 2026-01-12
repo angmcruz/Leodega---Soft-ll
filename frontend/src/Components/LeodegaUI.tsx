@@ -33,7 +33,7 @@ export default function LeodegaUI() {
             </div>
             <div className="flex flex-col space-y-2">
               {data.photos?.slice(1, 3).map((img: string, i: number) => (
-                <div key={i} className="overflow-hidden rounded-lg" style={{ height: 'calc(160px - 4px)'  }}>
+                <div key={i} className="overflow-hidden rounded-lg" style={{ height: 'calc(160px - 4px)' }}>
                   <img
                     src={img}
                     className="h-full w-full object-cover"
@@ -80,9 +80,9 @@ export default function LeodegaUI() {
                 </p>
               </div>
               <div className="flex space-x-3">
-                <button 
-                onClick={()=>navigate(`/reportIncident/${id}`)}
-                className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm">Reportar</button>
+                <button
+                  onClick={() => navigate(`/reportIncident/${id}`)}
+                  className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm">Reportar</button>
                 <button className="px-4 py-2 bg-yellow-500 text-white rounded-lg text-sm">Reservar</button>
               </div>
             </div>

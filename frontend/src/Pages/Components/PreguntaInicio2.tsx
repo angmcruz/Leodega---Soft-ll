@@ -64,7 +64,7 @@ const PreguntaInicio2: React.FC = () => {
             </header>
 
             <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-20 py-6 lg:py-8">
-                <div className="w-full max-w-4xl text-center lg:text-left">
+                <div className="w-full max-w-4xl text-center lg:text-left pb-28">
                     <h1 className="text-[20px] sm:text-[22px] md:text-[25px] lg:text-[30px] font-semibold text-center text-[#1a1a1a] mb-5 sm:mb-6 lg:mb-7 leading-tight lg:mt-[-70px]">
                         ¿Qué tipo de almacenamiento deseas?
                     </h1>
@@ -76,8 +76,8 @@ const PreguntaInicio2: React.FC = () => {
                                     key={option.id}
                                     onClick={() => handleOptionClick(option.id)}
                                     className={`w-full bg-white rounded-xl lg:rounded-2xl p-5 sm:p-6 flex items-start gap-4 sm:gap-5 transition-all duration-300 border-2 text-left ${selectedOption === option.id
-                                            ? 'border-[#8b5cf6] shadow-xl'
-                                            : 'border-[#e5e7eb] hover:border-[#d1d5db] hover:shadow-lg'
+                                        ? 'border-[#8b5cf6] shadow-xl'
+                                        : 'border-[#e5e7eb] hover:border-[#d1d5db] hover:shadow-lg'
                                         }`}
                                 >
                                     <div className="flex-1">
