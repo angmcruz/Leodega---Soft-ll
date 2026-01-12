@@ -51,7 +51,7 @@ export const HeaderDashboard: React.FC<HeaderDashboardProps> = ({ role }) => {
 
     return (
         <header className="bg-white border-b border-gray-200 px-8 py-3.5 flex items-center justify-between h-[72px]">
-            <div className="flex-1 max-w-md">
+            <div className="flex-1 max-w-md invisible">
                 <div className="relative">
                     <input
                         type="text"

@@ -580,8 +580,9 @@ const Settings: React.FC = () => {
                                             <option>Solo usuarios registrados</option>
                                             <option>Privado</option>
                                         </select>
-                                    </div>
-
+                                    </div>  
+                                    
+                                    {/* SE NECESITA UNA LIBRERIA PARA ESTO
                                     <div className="border rounded-lg p-4">
                                         <h3 className="font-medium text-gray-900 mb-2">Descargar mis Datos</h3>
                                         <p className="text-sm text-gray-500 mb-4">Obtén una copia de tu información</p>
@@ -589,6 +590,7 @@ const Settings: React.FC = () => {
                                             Solicitar Datos
                                         </button>
                                     </div>
+                                    */}
 
                                     <div className="border border-red-200 rounded-lg p-4 bg-red-50">
                                         <h3 className="font-medium text-red-900 mb-2">Eliminar Cuenta</h3>
