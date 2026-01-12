@@ -26,16 +26,8 @@ const Login: React.FC = () => {
             localStorage.removeItem("auth_token");
             localStorage.removeItem("auth_user");
             const { data } = await api.post("/login", { email, password });
-
-            console.log("Respuesta login completa:", data);
-            console.log("Token recibido:", data.token);
-
             localStorage.setItem("auth_token", data.token);
-
             localStorage.setItem("auth_user", JSON.stringify(data.user));
-
-            console.log("Token en localStorage:", localStorage.getItem("auth_token"));
-            console.log("User en localStorage:", localStorage.getItem("auth_user"));
 
             if (data.user.role === "landlord") {
                 navigate("/arrendador/bodegas");

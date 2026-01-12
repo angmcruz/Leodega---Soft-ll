@@ -126,6 +126,57 @@ const Settings: React.FC = () => {
         }
     };
 
+    // SESIONES ACTIVAS 
+    const [sessions, setSessions] = useState<any[]>([]);
+    const [sessionsLoading, setSessionsLoading] = useState(false);
+    const [sessionsMsg, setSessionsMsg] = useState<{ type: "success" | "error" | ""; text: string }>({
+        type: "",
+        text: "",
+    });
+    const handleSession = async () => {
+        try {
+            setSessionsLoading(true);
+            setSessionsMsg({ type: "", text: "" });
+            const { data } = await api.get("/sessions");
+            setSessions(data.sessions ?? []);
+        } catch (error) {
+            console.error("Error cargando sesiones:", error);
+        } finally {
+            setSessionsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (activeTab === "seguridad") {
+            handleSession();
+        }
+    }, [activeTab]);
+
+    const cerrarSesion = async (tokenId: number) => {
+        try {
+            setSessionsMsg({ type: "", text: "" });
+            await api.delete(`/sessions/${tokenId}`);
+            setSessionsMsg({ type: "success", text: "Sesión cerrada." });
+            await handleSession();
+        } catch (error: any) {
+            console.error("Error cerrando sesión:", error);
+
+        }
+    };
+
+    const getDeviceLabel = (ua?: string) => {
+        if (!ua) return "Dispositivo desconocido";
+        const base = ua.split("(")[0].trim(); 
+        return base || "Dispositivo";
+    };
+
+    const getLastUsedLabel = (s: any) => {
+        if (s.is_current) return "Ahora";
+        if (s.last_used_at) return `Último uso: ${s.last_used_at}`;
+        return "Sin información de uso";
+    };
+
+
 
 
 
@@ -436,83 +487,122 @@ const Settings: React.FC = () => {
 
 
                                     <div className="border rounded-lg p-4">
-                                        <h3 className="font-medium text-gray-900 mb-4">Sesiones Activas</h3>
-                                        <div className="space-y-3">
-                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between py-2 gap-2">
-                                                <div className="flex items-center gap-3">
-                                                    <Globe size={20} className="text-gray-400" />
-                                                    <div>
-                                                        <p className="font-medium text-gray-900 text-sm lg:text-base">Chrome en Windows</p>
-                                                        <p className="text-sm text-gray-500">Guayaquil, Ecuador • Ahora</p>
-                                                    </div>
+                                        <div className="flex items-center justify-between gap-3 mb-4">
+                                            <h3 className="font-medium text-gray-900">Sesiones Activas</h3>
+
+
+                                        </div>
+                                            {sessionsLoading ? (
+                                                <p className="text-sm text-gray-500">Cargando sesiones...</p>
+                                            ) : sessions.length === 0 ? (
+                                                <p className="text-sm text-gray-500">No hay sesiones registradas.</p>
+                                            ) : (
+                                                <div className="space-y-3">
+                                                    {sessions.map((s) => (
+                                                        <div
+                                                            key={s.id}
+                                                            className="flex flex-col sm:flex-row sm:items-center justify-between py-2 gap-2 border-b last:border-b-0"
+                                                        >
+                                                            <div className="flex items-center gap-3">
+                                                                <Globe size={20} className="text-gray-400" />
+                                                                <div>
+                                                                    <p className="font-medium text-gray-900 text-sm lg:text-base">
+                                                                        {getDeviceLabel(s.user_agent)}
+                                                                    </p>
+                                                                    <p className="text-sm text-gray-500">
+                                                                        {s.ip_address ?? "IP desconocida"} • {getLastUsedLabel(s)}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            {s.is_current ? (
+                                                                <span className="text-sm text-green-600 font-medium">Actual</span>
+                                                            ) : (
+                                                                <button
+                                                                    onClick={() => cerrarSesion(s.id)}
+                                                                    className="text-sm text-red-600 font-medium hover:underline"
+                                                                >
+                                                                    Cerrar
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                                <span className="text-sm text-green-600 font-medium">Actual</span>
+                                            )}
+
+                                            {sessionsMsg.text && (
+                                                <p
+                                                    className={`mt-3 text-sm font-medium ${sessionsMsg.type === "success" ? "text-green-600" : "text-red-600"
+                                                        }`}
+                                                >
+                                                    {sessionsMsg.text}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                    )}
+
+                            {activeTab === 'pagos' && (
+                                <div className="space-y-6">
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Métodos de Pago</h2>
+                                        <p className="text-gray-600 mb-6">Administra cómo recibes tus pagos</p>
+
+                                        <button className="mb-6 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium text-sm lg:text-base w-full sm:w-auto">
+                                            + Agregar Cuenta Bancaria
+                                        </button>
+
+                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
+                                            <CreditCard size={48} className="mx-auto text-gray-400 mb-3" />
+                                            <p className="text-gray-600">No tienes métodos de pago configurados</p>
+                                            <p className="text-sm text-gray-500 mt-1">Agrega una cuenta bancaria para recibir pagos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeTab === 'privacidad' && (    // PRIVACIDAD Y DATOSSSSS
+                                <div className="space-y-6">
+                                    <div>
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Privacidad y Datos</h2>
+
+                                        <div className="space-y-4">
+                                            <div className="border rounded-lg p-4">
+                                                <h3 className="font-medium text-gray-900 mb-2">Visibilidad del Perfil</h3>
+                                                <p className="text-sm text-gray-500 mb-4">Controla quién puede ver tu información</p>
+                                                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm lg:text-base">
+                                                    <option>Público</option>
+                                                    <option>Solo usuarios registrados</option>
+                                                    <option>Privado</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="border rounded-lg p-4">
+                                                <h3 className="font-medium text-gray-900 mb-2">Descargar mis Datos</h3>
+                                                <p className="text-sm text-gray-500 mb-4">Obtén una copia de tu información</p>
+                                                <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm lg:text-base w-full sm:w-auto">
+                                                    Solicitar Datos
+                                                </button>
+                                            </div>
+
+                                            <div className="border border-red-200 rounded-lg p-4 bg-red-50">
+                                                <h3 className="font-medium text-red-900 mb-2">Eliminar Cuenta</h3>
+                                                <p className="text-sm text-red-600 mb-4">Esta acción es permanente y no se puede deshacer</p>
+                                                <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium text-sm lg:text-base w-full sm:w-auto">
+                                                    Eliminar Cuenta
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
-                    )}
-
-                    {activeTab === 'pagos' && (
-                        <div className="space-y-6">
-                            <div>
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">Métodos de Pago</h2>
-                                <p className="text-gray-600 mb-6">Administra cómo recibes tus pagos</p>
-
-                                <button className="mb-6 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium text-sm lg:text-base w-full sm:w-auto">
-                                    + Agregar Cuenta Bancaria
-                                </button>
-
-                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
-                                    <CreditCard size={48} className="mx-auto text-gray-400 mb-3" />
-                                    <p className="text-gray-600">No tienes métodos de pago configurados</p>
-                                    <p className="text-sm text-gray-500 mt-1">Agrega una cuenta bancaria para recibir pagos</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {activeTab === 'privacidad' && (
-                        <div className="space-y-6">
-                            <div>
-                                <h2 className="text-xl font-semibold text-gray-900 mb-4">Privacidad y Datos</h2>
-
-                                <div className="space-y-4">
-                                    <div className="border rounded-lg p-4">
-                                        <h3 className="font-medium text-gray-900 mb-2">Visibilidad del Perfil</h3>
-                                        <p className="text-sm text-gray-500 mb-4">Controla quién puede ver tu información</p>
-                                        <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 text-sm lg:text-base">
-                                            <option>Público</option>
-                                            <option>Solo usuarios registrados</option>
-                                            <option>Privado</option>
-                                        </select>
-                                    </div>
-
-                                    <div className="border rounded-lg p-4">
-                                        <h3 className="font-medium text-gray-900 mb-2">Descargar mis Datos</h3>
-                                        <p className="text-sm text-gray-500 mb-4">Obtén una copia de tu información</p>
-                                        <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-sm lg:text-base w-full sm:w-auto">
-                                            Solicitar Datos
-                                        </button>
-                                    </div>
-
-                                    <div className="border border-red-200 rounded-lg p-4 bg-red-50">
-                                        <h3 className="font-medium text-red-900 mb-2">Eliminar Cuenta</h3>
-                                        <p className="text-sm text-red-600 mb-4">Esta acción es permanente y no se puede deshacer</p>
-                                        <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium text-sm lg:text-base w-full sm:w-auto">
-                                            Eliminar Cuenta
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
             </div>
-        </div>
-    );
+            </div>
+            );
 };
 
-export default Settings;
+            export default Settings;

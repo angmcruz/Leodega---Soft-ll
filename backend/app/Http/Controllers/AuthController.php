@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 class AuthController extends Controller
 {
@@ -26,7 +28,24 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)
                 ->with(['landlord:id,user_id,optional_company', 'tenant:id,user_id,search_preference'])
                 ->firstOrFail();
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $tokenResult = $user->createToken('auth_token');
+            $token = $tokenResult->plainTextToken;
+
+            // Guardar metadata solo si existe token y columnas
+            try {
+                $latestToken = $user->tokens()->latest('id')->first();
+                if ($latestToken) {
+                    $latestToken->ip_address = $request->ip();
+                    $latestToken->user_agent = $request->userAgent();
+                    $latestToken->save();
+                }
+            } catch (\Throwable $e) {
+                Log::warning('No se pudo guardar metadata del token', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
+
 
             return response()->json([
                 'status' => 'success',
@@ -78,7 +97,20 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
         // ya con token de acceso
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $tokenResult = $user->createToken('auth_token');
+        $token = $tokenResult->plainTextToken;
+        try {
+            $latestToken = $user->tokens()->latest('id')->first();
+            if ($latestToken) {
+                $latestToken->ip_address = $request->ip();
+                $latestToken->user_agent = $request->userAgent();
+                $latestToken->save();
+            }
+        } catch (\Throwable $e) {
+            Log::warning('No se pudo guardar metadata del token', [
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',
