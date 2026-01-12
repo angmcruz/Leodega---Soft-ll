@@ -166,6 +166,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/notifications', [NotificationsController::class, 'store']);
     Route::post('/notifications/{notification}/read', [NotificationsController::class, 'markAsRead']);
     Route::get('/notifications-unread-count', [NotificationsController::class, 'unreadCount']);
+    Route::patch('/notifications/{id}/read', [NotificationsController::class, 'markAsRead']);
 
 });
 

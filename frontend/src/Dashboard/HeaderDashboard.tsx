@@ -2,7 +2,7 @@ import { Bell, ChevronDown } from "lucide-react";
 import React, { useState, useEffect } from 'react';
 import perfil from '../img/perfil.jpg';
 import api from "../api/axios";
-
+import NotificationsDropdown from "./NotificatiosnDropdown";
 
 type RoleType = "admin" | "landlord" | "tenant";
 interface HeaderDashboardProps {
@@ -21,20 +21,36 @@ export const HeaderDashboard: React.FC<HeaderDashboardProps> = ({ role }) => {
                     ? "Arrendatario"
                     : "Usuario";
 
+    const [unreadCount, setUnreadCount] = useState(0);
 
     const [nombre, setNombre] = useState("");
     const [apellido, setApellido] = useState("");
+    const [showNotifications, setShowNotifications] = useState(false);
+
 
     useEffect(() => {
-        const load = async () => {
-            const { data } = await api.get("/profile");
-            setNombre(data.name);
-            setApellido(data.lastname);
+        const loadData = async () => {
+            try {
+                const [profileRes, notifRes] = await Promise.all([
+                    api.get("/profile"),
+                    api.get("/notifications-unread-count"),
+                ]);
 
+                console.log("UNREAD NOTIFICATIONS:", notifRes.data);
+
+                setNombre(profileRes.data.name);
+                setApellido(profileRes.data.lastname);
+                setUnreadCount(notifRes.data.count);
+            } catch (error) {
+                console.error("Error loading header data", error);
+            }
         };
-        load();
+
+
+        loadData();
     }, []);
-    
+
+
     return (
         <header className="bg-white border-b border-gray-200 px-8 py-3.5 flex items-center justify-between h-[72px]">
             <div className="flex-1 max-w-md">
@@ -48,13 +64,24 @@ export const HeaderDashboard: React.FC<HeaderDashboardProps> = ({ role }) => {
                 </div>
             </div>
 
-            <div className="flex items-center gap-6">
-                <button className="relative p-2 hover:bg-gray-50 rounded-lg transition-colors">
+            <div className="flex items-center gap-6 relative">
+                <button
+                    onClick={() => setShowNotifications(!showNotifications)}
+                    className="relative p-2 hover:bg-gray-50 rounded-lg transition-colors">
                     <Bell className="w-5 h-5 text-gray-600" />
-                    <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
-                        9
-                    </span>
+                    {unreadCount > 0 && (
+                        <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
+                            {unreadCount}
+                        </span>
+                    )}
                 </button>
+
+                {showNotifications && (
+                    <NotificationsDropdown
+                        onClose={() => setShowNotifications(false)}
+                        onUnreadChange={setUnreadCount}
+                    />
+                )}
 
                 <button className="flex items-center gap-3 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors">
                     <img

@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NotificationType;
 use App\Models\Reports;
 use App\Models\StoreRooms;
 use App\Models\ReportEvidence;
+use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReportsController extends ApiController
 {
     //
-    public function index()
-    {
-        return Reports::with([
-            'user',
-            'store'
-        ])->get();
+    public function index(){
+        return Reports::with(['user', 'store'])->get();
     }
 
 
@@ -54,6 +54,56 @@ class ReportsController extends ApiController
                 ]);
             }
         }
+
+        $admins = User::where('role', 'admin')->get();
+
+        foreach ($admins as $admin) {
+            Log::info('Enviando notificación', [
+                'from' => auth()->id(),
+                'to' => $admin->id,
+                'type' => NotificationType::STORE_REPORTED->value,
+            ]);
+            NotificationService::send(
+                auth()->id(),
+                $admin->id,
+                NotificationType::STORE_REPORTED,
+                'Nuevo Reporte Creado',
+                $report->title,
+                [
+                    'report_id' => $report->id,
+                    'store_id' => $report->store_id,
+                    'priority' => $report->priority,
+                ]
+            );
+        }
+
+        $store = StoreRooms::with('landlord.user')->find($request->store_id);
+
+        if ($store && $store->landlord && $store->landlord->user) {
+            $landlordUserId = $store->landlord->user->id;
+
+            // Evitar duplicar si también es admin
+            if (! $admins->contains('id', $landlordUserId)) {
+                Log::info('Notificación a landlord', [
+                    'to' => $landlordUserId,
+                    'report_id' => $report->id,
+                ]);
+
+                NotificationService::send(
+                    auth()->id(),
+                    $landlordUserId,
+                    NotificationType::STORE_REPORTED,
+                    'Reporte en tu bodega',
+                    $report->title,
+                    [
+                        'report_id' => $report->id,
+                        'store_id' => $report->store_id,
+                        'priority' => $report->priority,
+                    ]
+                );
+            }
+        }
+
 
         return response()->json([
             'message' => 'Reporte creado correctamente',
