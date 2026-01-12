@@ -22,6 +22,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\ReservationsController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -104,11 +105,13 @@ Route::post('/storeDisponibility', [StoreDisponibilityController::class, 'store'
 Route::put('/storeDisponibility/{id}', [StoreDisponibilityController::class, 'update']);
 Route::delete('/storeDisponibility/{id}', [StoreDisponibilityController::class, 'destroy']);
 
-Route::get('/reservations', [StoreDisponibilityController::class, 'index']);
-Route::get('/reservations/{id}', [StoreDisponibilityController::class, 'show']);
-Route::post('/reservations', [StoreDisponibilityController::class, 'store']);
-Route::put('/reservations/{id}', [StoreDisponibilityController::class, 'update']);
-Route::delete('/reservations/{id}', [StoreDisponibilityController::class, 'destroy']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/reservations', [ReservationsController::class, 'store']);
+    Route::get('/landlord/reservations', [ReservationsController::class, 'landlordIndex']);
+    Route::patch('/landlord/reservations/{reservation}/status', [ReservationsController::class, 'updateStatus']);
+    Route::get('/storeRooms/{id}/reserved-dates', [ReservationsController::class, 'reservedDates']);
+});
+
 
 Route::get('/payments', [PaymentsController::class, 'index']);
 Route::get('/payments/{id}', [PaymentsController::class, 'show']);
