@@ -36,8 +36,6 @@ export const HeaderDashboard: React.FC<HeaderDashboardProps> = ({ role }) => {
                     api.get("/notifications-unread-count"),
                 ]);
 
-                console.log("UNREAD NOTIFICATIONS:", notifRes.data);
-
                 setNombre(profileRes.data.name);
                 setApellido(profileRes.data.lastname);
                 setUnreadCount(notifRes.data.count);

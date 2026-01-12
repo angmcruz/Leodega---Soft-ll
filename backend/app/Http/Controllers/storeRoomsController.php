@@ -153,6 +153,8 @@ class StoreRoomsController extends ApiController
             'photos' => $room->storePhotos->map(fn($p) => asset('storage/' . $p->photo_url)),
 
             'landlord' => [
+                'id' => $room->landlord->id,
+                'user_id' => $room->landlord->user->id,
                 'name' => $room->landlord->user->name,
                 'email' => $room->landlord->user->email,
             ],

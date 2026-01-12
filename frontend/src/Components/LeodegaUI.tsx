@@ -16,6 +16,8 @@ function isDateBetween(target: string, start: string, end: string) {
   return target >= start && target <= end;
 }
 
+
+
 export default function LeodegaUI() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -138,6 +140,13 @@ export default function LeodegaUI() {
   const initials =
     (data.landlord?.name?.charAt(0) || "L") +
     ((data.landlord?.name?.charAt(1) || "").toUpperCase());
+
+
+  const handleContactar = async () => {
+    navigate("/arrendador/mensajes");
+
+  };
+
 
   return (
     <div className="w-full min-h-screen bg-[#f5f6fa] text-gray-800">
@@ -296,10 +305,12 @@ export default function LeodegaUI() {
                 <p className="text-xs text-gray-500 mt-1">Arrendador</p>
 
                 <div className="w-full mt-4 space-y-2">
-                  <button className="px-4 py-2 bg-purple-600 text-white rounded-lg w-full text-sm hover:bg-purple-700">
+                  <button onClick={handleContactar}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg w-full text-sm hover:bg-purple-700">
                     Contactar ahora
                   </button>
-                  <button className="px-4 py-2 border border-purple-600 text-purple-700 rounded-lg w-full text-sm hover:bg-purple-50">
+                  <button onClick={handleContactar}
+                    className="px-4 py-2 border border-purple-600 text-purple-700 rounded-lg w-full text-sm hover:bg-purple-50">
                     Enviar email a {data.landlord.email}
                   </button>
                 </div>
@@ -355,9 +366,8 @@ export default function LeodegaUI() {
                     min={todayISO}
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className={`w-full border rounded-xl px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-purple-200 ${
-                      startDisabled ? "border-red-400" : "border-gray-300"
-                    }`}
+                    className={`w-full border rounded-xl px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-purple-200 ${startDisabled ? "border-red-400" : "border-gray-300"
+                      }`}
                   />
                   {startDisabled && (
                     <p className="text-xs text-red-600 mt-1">Esta fecha está dentro de un rango reservado.</p>
@@ -371,9 +381,8 @@ export default function LeodegaUI() {
                     min={startDate || todayISO}
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className={`w-full border rounded-xl px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-purple-200 ${
-                      endDisabled || rangeHasOverlap ? "border-red-400" : "border-gray-300"
-                    }`}
+                    className={`w-full border rounded-xl px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-purple-200 ${endDisabled || rangeHasOverlap ? "border-red-400" : "border-gray-300"
+                      }`}
                   />
                 </div>
 
