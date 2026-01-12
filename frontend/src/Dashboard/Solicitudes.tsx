@@ -96,12 +96,11 @@ const Solicitudes: React.FC = () => {
         setShowMobileFilters(false);
     };
 
-    // =========================
-    // NAVEGACIÓN
-    // =========================
     const handleRowClick = (s: Solicitud) => {
         setSolicitudSeleccionada(s);
-        setMostrarSolicitudNueva(true);
+        if (s.tipo === "Solicitud") {
+            setMostrarSolicitudNueva(true);
+        }
     };
 
     const volver = () => {
@@ -116,7 +115,6 @@ const Solicitudes: React.FC = () => {
         return (
             <SolicitudRechazada
                 solicitud={solicitudSeleccionada}
-                razonRechazo={razonRechazo}
                 onVolverDashboard={volver}
             />
         );
@@ -158,7 +156,7 @@ const Solicitudes: React.FC = () => {
     // =========================
     return (
         <div className="px-4 lg:pl-8 lg:pr-8 pt-5 bg-[#f5f6fa] min-h-screen">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-6">Reportes</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 mb-6">Reportes & solicitudes (cambiar nombre)</h1>
 
             {/* FILTROS DESKTOP */}
             <div className="hidden md:inline-flex items-center gap-3 pl-4 pr-4 bg-white border border-gray-200 rounded-xl shadow-sm mb-6">
@@ -177,6 +175,9 @@ const Solicitudes: React.FC = () => {
                     <option value="Acceso">Acceso</option>
                     <option value="Seguridad">Seguridad</option>
                     <option value="Infraestructura">Infraestructura</option>
+                    <option value="Cancelacion">Cancelación</option>
+                    <option value="Reporte">Reporte</option>
+                    <option value="Solicitud">Solicitud</option>
                 </select>
 
                 <select value={filtroEstado} onChange={(e) => setFiltroEstado(e.target.value)}
