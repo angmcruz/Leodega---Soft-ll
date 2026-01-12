@@ -73,7 +73,7 @@ const PreguntaInicio3: React.FC = () => {
         </div>
       </header>
       <div className="flex-1 flex flex-col items-center justify-start px-4 sm:px-6 lg:px-8 xl:px-20 pt-[8px]">
-        <div className="w-full max-w-4xl">
+                <div className="w-full max-w-4xl text-center lg:text-left pb-28">
           <h1 className="text-[20px] sm:text-[22px] md:text-[24px] lg:text-[26px] xl:text-[28px] font-semibold text-center text-[#1a1a1a] mb-4 mt-2">
             Agrega algunas fotos de tu bodega
           </h1>

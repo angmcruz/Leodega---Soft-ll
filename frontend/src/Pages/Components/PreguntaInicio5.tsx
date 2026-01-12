@@ -85,7 +85,7 @@ const PreguntaInicio5 = () => {
               rows={5}
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
-              placeholder="Te divertirás mucho en este cómodo lugar para quedarte."
+              placeholder="Ideal para almacenar muebles y cajas durante una mudanza o remodelación..."
               className="w-full border border-gray-300 rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
             ></textarea>
 
