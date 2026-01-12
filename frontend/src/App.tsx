@@ -37,7 +37,7 @@ import Resolution from './Components/Resolution'
 import Consulta from './Components/Consulta'
 import Detalles from './Dashboard/Detalles'
 import Reportes from './Dashboard/Reportes'
-
+import SolicitudesL from './Dashboard/SolicitudesL'
 import Protected from './Routes/Protected'
 import Role from './Routes/Role'
 import PagePrincipal from './Dashboard/Tendant/PagePrincipal'
@@ -81,7 +81,7 @@ function App() {
               <Route path="/admin/calendario" element={<Calendario />} />
               
               <Route path="/arrendador/mensajes" element={<Mensajes />} />
-              <Route path="/arrendador/solicitudes" element={<Solicitudes />} />
+              <Route path="/arrendador/solicitudes" element={<SolicitudesL />} />
               <Route path="/arrendador/settings" element={<Settings />} />
               <Route path="/arrendador/calendario" element={<Calendario />} />
             </Route>
