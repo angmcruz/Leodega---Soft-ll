@@ -173,3 +173,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
+Route::middleware('auth:sanctum')->delete('/account', [UserController::class, 'destroySelf']);
+
+
