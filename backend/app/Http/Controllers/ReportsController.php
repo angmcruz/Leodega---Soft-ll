@@ -58,11 +58,6 @@ class ReportsController extends ApiController
         $admins = User::where('role', 'admin')->get();
 
         foreach ($admins as $admin) {
-            Log::info('Enviando notificación', [
-                'from' => auth()->id(),
-                'to' => $admin->id,
-                'type' => NotificationType::STORE_REPORTED->value,
-            ]);
             NotificationService::send(
                 auth()->id(),
                 $admin->id,

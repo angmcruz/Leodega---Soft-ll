@@ -2,34 +2,45 @@ import { Bell, LogOut, Menu, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import logo from '../img/LOGO_H_1.png';
 import { Link } from "react-router-dom";
+import api from "../api/axios";
+import NotificationsDropdown from "../Dashboard/NotificatiosnDropdown";
 
 const HeaderTendant = () => {
     const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
     const [userName, setUserName] = useState(null);
     const [userLastName, setUserLastName] = useState("");
-    
+    const [unreadCount, setUnreadCount] = useState(0);
+    const [showNotifications, setShowNotifications] = useState(false);
+
+
     const toggleNabbar = () => {
         setMobileDrawerOpen(!mobileDrawerOpen);
     }
-    
+
     useEffect(() => {
-        const userData = localStorage.getItem('auth_user');
-        if (userData) {
+        const loadData = async () => {
             try {
-                const user = JSON.parse(userData);
-                setUserName(user.name);
-                setUserLastName(user.lastname);
+                const [profileRes, notifRes] = await Promise.all([
+                    api.get("/profile"),
+                    api.get("/notifications-unread-count"),
+                ]);
+
+                setUserName(profileRes.data.name);
+                setUserLastName(profileRes.data.lastname);
+                setUnreadCount(notifRes.data.count);
             } catch (error) {
-                console.error('Error al parsear usuario:', error);
+                console.error("Error cargando header tenant", error);
             }
-        }
+        };
+
+        loadData();
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('auth_user');
         localStorage.removeItem('auth_token');
     };
-    
+
     const navItems = [
         { label: "Bodegas populares", href: "/storage", path: "/storage" },
         { label: "Mensajes", href: "/arrendatario/mensajes", path: "/arrendatario/mensajes" },
@@ -45,9 +56,9 @@ const HeaderTendant = () => {
                             <img className="h-10 w-50 mr-2" src={logo} alt="logo" />
                         </Link>
                     </div>
-                    
+
                     <ul className='hidden lg:flex ml-14 space-x-12'>
-                        {navItems.map((item, index)=>(
+                        {navItems.map((item, index) => (
                             <li key={index}>
                                 <a href={item.href}>{item.label}</a>
                             </li>
@@ -63,33 +74,51 @@ const HeaderTendant = () => {
                                 )}
                             </div>
                         </div>
-                        <div>
+                      
+                        <button
+                            onClick={() => setShowNotifications(!showNotifications)}
+                            className="relative p-2 hover:bg-gray-100 rounded-lg"
+                        >
                             <Bell size={22} />
-                        </div>
+                            {unreadCount > 0 && (
+                                <span className="absolute top-0 right-0 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
+                                    {unreadCount}
+                                </span>
+                            )}
+                        </button>
+
+                        {showNotifications && (
+                            <NotificationsDropdown
+                                onClose={() => setShowNotifications(false)}
+                                onUnreadChange={setUnreadCount}
+                            />
+                        )}
+
+
                         <Link to="/login" onClick={handleLogout} className="text-center">
                             <LogOut className="inline-block mr-2" size={22} />
                         </Link>
                     </div>
-                    
+
                     <div className="lg:hidden flex items-center space-x-4">
                         <div className="py-1 px-2 rounded-md text-white bg-leodega_p text-center text-sm">
                             <div>{userName || "Usuario"}</div>
                             <div className="text-xs">{userLastName || ""}</div>
                         </div>
-                        
+
                         <button onClick={toggleNabbar}>
                             {mobileDrawerOpen ? <X color='black' /> : <Menu color='black' />}
                         </button>
                     </div>
                 </div>
-                
+
                 {mobileDrawerOpen && (
                     <div className="fixed right-0 z-20 bg-white w-full flex flex-col justify-center items-center space-y-6 lg:hidden pt-4 pb-6">
                         <div className="py-2 px-3 rounded-md text-white bg-leodega_p w-40 text-center mb-4">
                             <div>{userName || "Usuario"}</div>
                             <div className="text-sm">{userLastName || ""}</div>
                         </div>
-                        
+
                         <ul className="flex flex-col items-center space-y-6 w-full">
                             {navItems.map((item, index) => (
                                 <li key={index} className='py-2 w-full text-center border-b'>

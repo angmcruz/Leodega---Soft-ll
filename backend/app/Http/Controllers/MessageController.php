@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NotificationType;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MessageController extends Controller
 {
@@ -29,11 +32,30 @@ class MessageController extends Controller
             'body' => 'required|string',
         ]);
 
-        return Message::create([
+        $message = Message::create([
             'conversation_id' => $conversation->id,
             'sender_id' => auth()->id(),
             'body' => $request->body,
         ]);
+
+        $conversation->users
+            ->where('id', '!=', auth()->id())
+            ->each(function ($user) use ($conversation, $message) {
+            NotificationService::send(
+                auth()->id(),          // quien envía
+                $user->id,             // quien recibe
+                NotificationType::MESSAGE,
+                'Nuevo mensaje',
+                Str::limit($message->body, 50),
+                [
+                    'conversation_id' => $conversation->id,
+                    'message_id' => $message->id,
+                ]
+            );
+        });
+
+        return $message;
+        
     }
 
     // Marcar mensajes como leídos

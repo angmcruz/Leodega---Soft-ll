@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NotificationType;
 use App\Models\Reservations;
 use App\Models\StoreRooms;
 use App\Models\Tenants;
 use App\Models\Landlords;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 
 class ReservationsController extends Controller
@@ -47,12 +49,26 @@ class ReservationsController extends Controller
             'creation_date' => now(),
         ]);
 
+        $room->load('landlord.user');
+        if ($room->landlord && $room->landlord->user) {
+            NotificationService::send(
+                auth()->id(),
+                $room->landlord->user->id,
+                NotificationType::RESERVATION_REQUEST,
+                'Nueva solicitud de reserva',
+                'Han solicitado reservar tu bodega',
+                [
+                    'reservation_id' => $reservation->id,
+                    'store_room_id' => $room->id,
+                ]
+            );
+        }
+
         return response()->json([
             'message' => 'Solicitud enviada',
             'reservation' => $reservation
         ], 201);
     }
-
 
 
     public function landlordIndex(Request $request)
@@ -70,7 +86,6 @@ class ReservationsController extends Controller
 
         return response()->json($items);
     }
-
 
 
     public function updateStatus(Request $request, Reservations $reservation)
@@ -113,6 +128,17 @@ class ReservationsController extends Controller
                 'cancelation_reason' => null,
             ]);
 
+            NotificationService::send(
+                auth()->id(),
+                $reservation->tenants->user->id,
+                NotificationType::RESERVATION_CONFIRMED,
+                'Reserva confirmada',
+                'Tu reserva ha sido confirmada',
+                [
+                    'reservation_id' => $reservation->id,
+                    'store_room_id' => $reservation->store_room_id,
+                ]
+            );
 
             Reservations::where('store_room_id', $reservation->store_room_id)
                 ->where('status', 'pending')
@@ -134,6 +160,18 @@ class ReservationsController extends Controller
             'status' => 'canceled',
             'cancelation_reason' => $data['cancelation_reason'] ?? 'Rejected by landlord',
         ]);
+
+        NotificationService::send(
+            auth()->id(),
+            $reservation->tenants->user->id,
+            NotificationType::RESERVATION_CANCELED,
+            'Reserva cancelada',
+            $reservation->cancelation_reason,
+            [
+                'reservation_id' => $reservation->id,
+                'store_room_id' => $reservation->store_room_id,
+            ]
+        );
 
         return response()->json([
             'message' => 'Reserva cancelada',
