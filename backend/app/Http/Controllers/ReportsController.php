@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\NotificationType;
 use App\Models\Reports;
 use App\Models\StoreRooms;
-use App\Models\ReportEvidence;
 use App\Models\User;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
@@ -14,7 +13,8 @@ use Illuminate\Support\Facades\Log;
 class ReportsController extends ApiController
 {
     //
-    public function index(){
+    public function index()
+    {
         return Reports::with(['user', 'store'])->get();
     }
 
@@ -42,6 +42,8 @@ class ReportsController extends ApiController
             'priority' => $request->priority,
             'report_type' => $request->report_type,
             'description' => $request->description,
+            'status' => 'pending',
+            'cancelation_reason' => null,
         ]);
 
         if ($request->hasFile('files')) {
@@ -117,9 +119,45 @@ class ReportsController extends ApiController
             'priority' => 'sometimes|in:low,medium,high',
             'description' => 'sometimes|string|min:20',
             'status' => 'sometimes|in:pending,in_review,resolved',
+            'status' => 'sometimes|in:pending,confirmed,canceled',
+            'cancelation_reason' => 'nullable|string|max:1000',
         ];
 
         return $this->updateModel($request, Reports::class, $id, $rules);
+    }
+
+     public function updateStatus(Request $request, Reports $report)
+    {
+        if ($request->user()->role !== 'admin') {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+
+        $data = $request->validate([
+            'status' => ['required', 'in:resolved,canceled'],
+            'cancelation_reason' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        if ($data['status'] === 'resolved') {
+            $report->update([
+                'status' => 'resolved',
+                'cancelation_reason' => null,
+            ]);
+
+            return response()->json([
+                'message' => 'Reporte resuelto',
+                'report' => $report->load(['user', 'store', 'evidences']),
+            ]);
+        }
+
+        $report->update([
+            'status' => 'canceled',
+            'cancelation_reason' => $data['cancelation_reason'] ?? 'Canceled by admin',
+        ]);
+
+        return response()->json([
+            'message' => 'Reporte cancelado',
+            'report' => $report->load(['user', 'store', 'evidences']),
+        ]);
     }
 
     public function destroy($id)

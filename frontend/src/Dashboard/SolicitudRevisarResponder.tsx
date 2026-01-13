@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Check, X, AlertTriangle, MessageSquare } from 'lucide-react';
 import type { Solicitud } from './Interfaces/SolicitudesData';
-import { useNavigate } from 'react-router-dom';
+import api from '../api/axios';
 
 
 interface SolicitudRevisarResponderProps {
@@ -23,17 +23,35 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
 
   const datosCompletos = { ...solicitud };
 
-  const handleConfirmarResolver = () => {
+  const handleConfirmarResolver = async () => {
+  try {
+    await api.patch(`/reports/${solicitud.id}/status`, {
+      status: "resolved",
+    });
 
     setMostrarConfirmarResolver(false);
-    onVolver();
-  };
+    onVolver(); 
+  } catch (error) {
+    console.error("Error resolviendo reporte", error);
+    alert("No se pudo marcar como resuelto.");
+  }
+};
 
-  const handleConfirmarRechazo = () => {
-    if (razonRechazo.trim()) {
-      onRechazar(razonRechazo.trim());
-    }
-  };
+  const handleConfirmarRechazo = async () => {
+  if (!razonRechazo.trim()) return;
+
+  try {
+    await api.patch(`/reports/${solicitud.id}/status`, {
+      status: "canceled",
+      cancelation_reason: razonRechazo.trim(),
+    });
+
+    onRechazar(razonRechazo.trim()); 
+  } catch (error) {
+    console.error("Error rechazando reporte", error);
+    alert("No se pudo rechazar el reporte.");
+  }
+};
 
 
 
@@ -137,7 +155,7 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
           </div>
         </div>
 
-        {/* Mensaje importante (si resolver) */}
+        
         {opcionSeleccionada === "resolver" && (
           <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-6">
             <div className="flex gap-3">

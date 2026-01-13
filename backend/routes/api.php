@@ -136,13 +136,15 @@ Route::post('/cancelations_polices', [CancelationsPolicesController::class, 'sto
 Route::put('/cancelations_polices/{id}', [CancelationsPolicesController::class, 'update']);
 Route::delete('/cancelations_polices/{id}', [CancelationsPolicesController::class, 'destroy']);
 
-Route::get('/reports', [ReportsController::class, 'index']);
-Route::get('/reports/{id}', [ReportsController::class, 'show']);
+
 Route::middleware('auth.api:sanctum')->group(function () {
     Route::post('/reports', [ReportsController::class, 'store']);
+    Route::get('/reports', [ReportsController::class, 'index']);
+    Route::get('/reports/{id}', [ReportsController::class, 'show']);
+    Route::put('/reports/{id}', [ReportsController::class, 'update']);
+    Route::patch('/reports/{report}/status', [ReportsController::class, 'updateStatus']);
 });
-Route::put('/reports/{id}', [ReportsController::class, 'update']);
-Route::delete('/reports/{id}', [ReportsController::class, 'destroy']);
+
 
 // Route::resource('reports', ReportsController::class)->except('create', 'edit');
 

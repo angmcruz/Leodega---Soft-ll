@@ -1,9 +1,10 @@
 import {
-    AlertTriangle,Building,Calendar,Clock,MapPin,User,CheckCircle2,
+    AlertTriangle,Building,Calendar,Clock,User,CheckCircle2,
     XCircle,
 } from "lucide-react";
 import React from 'react';
 import type { Solicitud } from './Interfaces/SolicitudesData';
+
 
 interface SolicitudNuevaProps {
     solicitud: Solicitud;
@@ -47,8 +48,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
         return "bg-gray-100";
     };
 
-
-
+    
     return (
     <div className="pl-8 pt-5 pr-8 bg-white">
       <div className="mb-6">
