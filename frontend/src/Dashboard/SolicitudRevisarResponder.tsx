@@ -1,30 +1,30 @@
 
 /* eslint-disable sonarjs/cognitive-complexity */
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { Check, X, AlertTriangle, MessageSquare } from 'lucide-react';
 import type { Solicitud } from './Interfaces/SolicitudesData';
 import { useNavigate } from 'react-router-dom';
 
 
 interface SolicitudRevisarResponderProps {
-    solicitud: Solicitud;
-    onVolver: () => void;
-    onRechazar: (razon: string) => void;
+  solicitud: Solicitud;
+  onVolver: () => void;
+  onRechazar: (razon: string) => void;
 }
 
-const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({ 
-    solicitud, 
-    onVolver,
-    onRechazar 
-}) =>  {
-    const [mostrarConfirmarResolver, setMostrarConfirmarResolver] = useState(false);
+const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
+  solicitud,
+  onVolver,
+  onRechazar
+}) => {
+  const [mostrarConfirmarResolver, setMostrarConfirmarResolver] = useState(false);
   const [razonRechazo, setRazonRechazo] = useState("");
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<"resolver" | "rechazar" | null>(null);
 
-    const datosCompletos = { ...solicitud };
+  const datosCompletos = { ...solicitud };
 
-    const handleConfirmarResolver = () => {
-   
+  const handleConfirmarResolver = () => {
+
     setMostrarConfirmarResolver(false);
     onVolver();
   };
@@ -35,10 +35,10 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
     }
   };
 
-  
 
-  
-    return (
+
+
+  return (
     <div className="w-full bg-gray-50 p-6">
       <div className="w-full mx-auto bg-white p-8 rounded-xl">
         <div className="mb-6 flex flex-row items-center">
@@ -79,11 +79,10 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
                 setOpcionSeleccionada("resolver");
                 setRazonRechazo("");
               }}
-              className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${
-                opcionSeleccionada === "resolver"
+              className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${opcionSeleccionada === "resolver"
                   ? "bg-green-50 border-green-300 shadow-md"
                   : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm"
-              }`}
+                }`}
             >
               <div className="flex items-center gap-2 mb-3">
                 <Check className={`w-5 h-5 ${opcionSeleccionada === "resolver" ? "text-green-600" : "text-gray-400"}`} />
@@ -110,11 +109,10 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
             <button
               type="button"
               onClick={() => setOpcionSeleccionada("rechazar")}
-              className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${
-                opcionSeleccionada === "rechazar"
+              className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${opcionSeleccionada === "rechazar"
                   ? "bg-red-50 border-red-300 shadow-md"
                   : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm"
-              }`}
+                }`}
             >
               <div className="flex items-center gap-2 mb-3">
                 <X className={`w-5 h-5 ${opcionSeleccionada === "rechazar" ? "text-red-600" : "text-gray-400"}`} />
@@ -182,11 +180,10 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
             <button
               onClick={handleConfirmarRechazo}
               disabled={!razonRechazo.trim()}
-              className={`py-3 px-6 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${
-                razonRechazo.trim()
+              className={`py-3 px-6 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${razonRechazo.trim()
                   ? "bg-red-600 text-white hover:bg-red-700"
                   : "bg-red-300 text-white cursor-not-allowed"
-              }`}
+                }`}
             >
               <X size={20} />
               Confirmar Rechazo
@@ -206,11 +203,10 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
                 if (opcionSeleccionada === "resolver") setMostrarConfirmarResolver(true);
               }}
               disabled={opcionSeleccionada !== "resolver"}
-              className={`py-3 px-6 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${
-                opcionSeleccionada === "resolver"
+              className={`py-3 px-6 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${opcionSeleccionada === "resolver"
                   ? "bg-green-600 text-white hover:bg-green-700"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
+                }`}
             >
               <Check size={20} />
               Confirmar Resolución
