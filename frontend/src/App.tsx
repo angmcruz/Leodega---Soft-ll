@@ -71,12 +71,13 @@ function App() {
             </Route>
             <Route element={<Role allowed={["admin"]} />}>
               <Route path="/admin/bodegas" element={<BodegasAdmin />} />
+              <Route path="/admin/solicitudes" element={<Solicitudes />} />
+              
             </Route>
 
             <Route element={<Role allowed={["admin", "landlord"]} />}>
               
               <Route path="/admin/mensajes" element={<Mensajes />} />
-              <Route path="/admin/solicitudes" element={<Solicitudes />} />
               <Route path="/admin/settings" element={<Settings />} />
               <Route path="/admin/calendario" element={<Calendario />} />
               

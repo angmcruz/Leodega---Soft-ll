@@ -16,8 +16,6 @@ function isDateBetween(target: string, start: string, end: string) {
   return target >= start && target <= end;
 }
 
-
-
 export default function LeodegaUI() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -147,6 +145,22 @@ export default function LeodegaUI() {
 
   };
 
+  const role = (() => {
+    try {
+      const raw = localStorage.getItem("auth_user");
+      return raw ? JSON.parse(raw)?.role : null;
+    } catch {
+      return null;
+    }
+  })();
+
+  const handleVolver = () => {
+    if (role === "landlord") navigate("/arrendador/bodegas");
+    else if (role === "tenant") navigate("/storage");
+    //else if (role === "admin") navigate("/admin/bodegas");
+    else navigate("/login");
+  };
+
 
   return (
     <div className="w-full min-h-screen bg-[#f5f6fa] text-gray-800">
@@ -162,7 +176,7 @@ export default function LeodegaUI() {
 
           <div className="flex gap-2">
             <button
-              onClick={() => navigate("/arrendador/bodegas")}
+              onClick={handleVolver}
               className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
             >
               ← Volver a mis bodegas

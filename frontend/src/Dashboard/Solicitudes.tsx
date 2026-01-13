@@ -131,7 +131,7 @@ const Solicitudes: React.FC = () => {
                     setRazonRechazo(r);
                     setMostrarSolicitudRechazada(true);
                 }}
-                onRevisarDetalles={() => setMostrarSolicitudNueva(true)}
+
             />
         );
     }
@@ -152,6 +152,31 @@ const Solicitudes: React.FC = () => {
     if (loading) {
         return <div className="p-6">Cargando reportes...</div>;
     }
+
+    const uiToApiStatus = (estadoUi: string) => {
+        switch (estadoUi) {
+            case "En proceso":
+                return "pending";
+            case "Completada":
+                return "resolved";
+            default:
+                return "pending";
+        }
+    };
+
+    const apiToUiStatus = (status: string) => {
+        switch (status) {
+            case "pending":
+            case "in_review":
+                return "En proceso";
+            case "resolved":
+                return "Completada";
+            default:
+                return "En proceso";
+        }
+    };
+
+    
 
     // =========================
     // UI
