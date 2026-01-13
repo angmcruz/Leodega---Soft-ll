@@ -131,7 +131,7 @@ const Solicitudes: React.FC = () => {
                     setRazonRechazo(r);
                     setMostrarSolicitudRechazada(true);
                 }}
-                onRevisarDetalles={() => setMostrarSolicitudNueva(true)}
+                
             />
         );
     }
