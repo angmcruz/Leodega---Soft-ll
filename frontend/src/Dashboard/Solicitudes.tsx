@@ -25,33 +25,33 @@ const Solicitudes: React.FC = () => {
     // =========================
     // CARGAR REPORTES
     // =========================
+    const fetchReports = async () => {
+        try {
+            setLoading(true);
+            const { data } = await api.get('/reports');
+
+            const mapped: Solicitud[] = data.map((r: any) => ({
+                id: r.id,
+                nombre: r.user?.name ?? 'Usuario desconocido',
+                direccion: r.store?.direction ?? 'Sin dirección',
+                fecha: new Date(r.created_at).toLocaleDateString(),
+                tipo: r.report_type,
+                estado:
+                    r.status === 'resolved'
+                        ? 'Completada'
+                        : r.status === 'canceled'
+                            ? 'Rechazada'
+                            : 'En proceso',
+            }));
+
+            setSolicitudes(mapped);
+        } catch (error) {
+            console.error('Error cargando reportes', error);
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                const { data } = await api.get('/reports');
-
-                const mapped: Solicitud[] = data.map((r: any) => ({
-                    id: r.id,
-                    nombre: r.user?.name ?? 'Usuario desconocido',
-                    direccion: r.store?.direction ?? 'Sin dirección',
-                    fecha: new Date(r.created_at).toLocaleDateString(),
-                    tipo: r.report_type,
-                    estado:
-                        r.status === 'pending'
-                            ? 'En proceso'
-                            : r.status === 'resolved'
-                                ? 'Completada'
-                                : 'Rechazada',
-                }));
-
-                setSolicitudes(mapped);
-            } catch (error) {
-                console.error('Error cargando reportes', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchReports();
     }, []);
 
@@ -110,6 +110,7 @@ const Solicitudes: React.FC = () => {
         setMostrarSolicitudRechazada(false);
         setSolicitudSeleccionada(null);
         setRazonRechazo('');
+        fetchReports();
     };
 
     if (mostrarSolicitudRechazada && solicitudSeleccionada) {
@@ -153,30 +154,7 @@ const Solicitudes: React.FC = () => {
         return <div className="p-6">Cargando reportes...</div>;
     }
 
-    const uiToApiStatus = (estadoUi: string) => {
-        switch (estadoUi) {
-            case "En proceso":
-                return "pending";
-            case "Completada":
-                return "resolved";
-            default:
-                return "pending";
-        }
-    };
 
-    const apiToUiStatus = (status: string) => {
-        switch (status) {
-            case "pending":
-            case "in_review":
-                return "En proceso";
-            case "resolved":
-                return "Completada";
-            default:
-                return "En proceso";
-        }
-    };
-
-    
 
     // =========================
     // UI
