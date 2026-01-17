@@ -10,7 +10,11 @@ const PopularStorage = () => {
   useEffect(() => {
     api.get("/storeRooms")
       .then(res => {
-        const topRated = [...res.data]
+        const approved = res.data.filter(
+          (bodega:any)=> bodega.publication_status === "approved"
+        )
+
+        const topRated = [...approved]
           .sort((a, b) => (b.rating_avg ?? 0) - (a.rating_avg ?? 0))
           .slice(0, 3);
 

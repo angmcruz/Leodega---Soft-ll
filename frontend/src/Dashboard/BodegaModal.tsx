@@ -1,16 +1,36 @@
 import React from 'react';
 import { X, CheckCircle, MapPin, Calendar, Building } from 'lucide-react';
 import bodega1 from '../img/Bodega1.jpg';
+import api from '../api/axios';
+
+
 interface BodegaModalProps {
     isOpen: boolean;
     onClose: () => void;
+    storeId: number;
 }
 
-const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose }) => {
+
+
+const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) => {
+
+    const handleGenerateContract = async () => {
+        try {
+            await api.put(`/storeRooms/${storeId}`, {
+                publication_status: 'approved',
+            });
+
+            alert('Bodega aprobada y contrato generado');
+            onClose();
+        } catch (error) {
+            console.error('Error aprobando bodega', error);
+            alert('Error al aprobar la bodega');
+        }
+    }
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}> 
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                 <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                     <div className="p-6">
@@ -116,9 +136,13 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose }) => {
                             <button onClick={onClose} className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">
                                 Cerrar
                             </button>
-                            <button className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors">
+                            <button
+                                onClick={handleGenerateContract}
+                                className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors"
+                            >
                                 Generar Contrato
                             </button>
+
                         </div>
                     </div>
                 </div>

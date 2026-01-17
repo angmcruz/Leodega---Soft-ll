@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Landlords;
 use App\Models\Ratings;
 use App\Models\StoreRooms;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 
 class StoreRoomsController extends ApiController
@@ -82,6 +83,8 @@ class StoreRoomsController extends ApiController
             'publication_status' => 'in:pending,approved,rejected',
             'publication_date' => 'date',
         ];
+
+       
 
         return $this->updateModel($request, StoreRooms::class, $id, $rules);
     }

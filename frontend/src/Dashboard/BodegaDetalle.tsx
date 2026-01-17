@@ -176,6 +176,7 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
             <BodegaModal
                 isOpen={mostrarModal}
                 onClose={() => setMostrarModal(false)}
+                storeId = {bodega.id}
             />
         </div>
     );

@@ -19,6 +19,7 @@ type Warehouse = {
   store_prices: StorePrice[];
   rating_avg?: number;
   rating_count?: number;
+  publication_status: "approved" | "pending" | "rejected";
 };
 
 const Storage = () => {
@@ -37,7 +38,12 @@ const Storage = () => {
     const fetchWarehouses = async () => {
       try {
         const res = await api.get("/storeRooms");
-        setWarehouses(res.data);
+
+        const approvedWarehouses = res.data.filter(
+          (warehouse: Warehouse) =>
+            warehouse.publication_status === "approved"
+        );
+        setWarehouses(approvedWarehouses);
       } catch (error) {
         console.error("Error al cargar bodegas:", error);
       } finally {
@@ -72,7 +78,7 @@ const Storage = () => {
     }
   };
 
- 
+
   const updateWarehouseRating = (storeId: number, stars: number) => {
     setWarehouses((prev) =>
       prev.map((w) => {
@@ -161,15 +167,13 @@ const Storage = () => {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={`w-6 h-6 ${
-                        currentRating >= star
+                      className={`w-6 h-6 ${currentRating >= star
                           ? "text-[#FFA500] fill-[#FFA500]"
                           : "text-gray-300"
-                      } ${
-                        alreadyRated
+                        } ${alreadyRated
                           ? "cursor-not-allowed opacity-50"
                           : "cursor-pointer"
-                      }`}
+                        }`}
                       onClick={() => {
                         if (!isLogged || alreadyRated) return;
 

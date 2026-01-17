@@ -30,7 +30,7 @@ const BodegasAdmin = () => {
                     email: store.landlord?.user?.email ?? '-',
                     country: store.city,
                     status:
-                        store.publication_status === 'aproved' ? 'Active' : 'Inactive',
+                        store.publication_status === 'approved' ? 'Active' : 'Inactive',
                 }));
                 setBodegas(mapped);
             } catch (error) {
