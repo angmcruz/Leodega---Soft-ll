@@ -189,4 +189,15 @@ class ReservationsController extends Controller
 
         return response()->json($ranges);
     }
+
+    public function tenantIndex(Request $request)
+{
+    $user = $request->user();
+    $tenant = Tenants::where('user_id', $user->id)->firstOrFail();
+
+    return Reservations::with('storeRooms')
+        ->where('tenant_id', $tenant->id)
+        ->orderBy('start_date')
+        ->get();
+}
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, CheckCircle, MapPin, Calendar, Building } from 'lucide-react';
 import bodega1 from '../img/Bodega1.jpg';
 import api from '../api/axios';
@@ -14,6 +14,27 @@ interface BodegaModalProps {
 
 const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) => {
 
+    const [detalle, setDetalle] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const fetchDetalle = async () => {
+            try {
+                setLoading(true);
+                const { data } = await api.get(`/store-rooms/${storeId}/detail`);
+                setDetalle(data);
+            } catch (error) {
+                console.error('Error cargando detalle de bodega', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDetalle();
+    }, [isOpen, storeId]);
+
     const handleGenerateContract = async () => {
         try {
             await api.put(`/storeRooms/${storeId}`, {
@@ -28,6 +49,16 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) =
         }
     }
     if (!isOpen) return null;
+
+    if (loading || !detalle) {
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
+                <div className="bg-white rounded-lg p-6 shadow">
+                    Cargando información de la bodega...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}>
@@ -73,19 +104,24 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) =
                             </div>
 
                             <div className="flex gap-4">
-                                <img src={bodega1} alt="Bodega" className="w-24 h-24 rounded-lg object-cover" />
-
+                                <img
+                                    src={detalle.photos?.[0]}
+                                    alt={detalle.title}
+                                    className="w-24 h-24 rounded-lg object-cover"
+                                />
                                 <div className="flex-1">
                                     <h4 className="font-semibold text-lg text-gray-900 mb-2">
-                                        Bodega Industrial Norte
+                                        {detalle.title}
                                     </h4>
+
                                     <div className="flex items-start gap-2 text-gray-600 mb-2">
                                         <MapPin size={16} className="mt-1 flex-shrink-0" />
-                                        <span className="text-sm">Av. Industrial 1234, Zona Norte, Ciudad</span>
+                                        <span className="text-sm">
+                                            {detalle.direction}
+                                        </span>
                                     </div>
                                     <div className="flex gap-4 text-sm text-gray-700">
-                                        <span className="font-medium">1,200 m²</span>
-                                        <span>8 metros</span>
+                                        <span className="font-medium">{detalle.size} m²</span>
                                     </div>
                                 </div>
                             </div>
@@ -102,31 +138,17 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) =
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-4">
                                     <div>
-                                        <p className="text-sm text-gray-600 mb-1">Fecha de Inicio</p>
-                                        <p className="font-semibold text-gray-900">2024-09-01</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-600 mb-1">Fecha de Fin</p>
-                                        <p className="font-semibold text-gray-900">2025-02-28</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm text-gray-600 mb-1">Duración</p>
-                                        <p className="font-semibold text-gray-900">6 meses</p>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div>
                                         <p className="text-sm text-gray-600 mb-1">Precio Mensual</p>
-                                        <p className="font-semibold text-green-600 text-lg">$25,000 MXN</p>
+                                        <p className="font-semibold text-green-600 text-lg">
+                                            ${detalle.prices?.[0]?.price ?? '—'}
+                                        </p>
                                     </div>
-                                    <div>
-                                        <p className="text-sm text-gray-600 mb-1">Depósito</p>
-                                        <p className="font-semibold text-gray-900">$50,000 MXN</p>
-                                    </div>
+
                                     <div>
                                         <p className="text-sm text-gray-600 mb-1">Valor Total</p>
-                                        <p className="font-bold text-purple-600 text-xl">$200,000 MXN</p>
+                                        <p className="font-bold text-purple-600 text-xl">
+                                            ${detalle.prices?.[0]?.price ?? '—'}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

@@ -145,7 +145,7 @@ export default function SidebarAdmin(
                         </p>
                     </div>
 
-                    {role === "admin" && (
+                    {role === "landlord" && (
                         <SidebarItem
                             label="Calendario"
                             active={activeItem === "calendario"}

@@ -8,16 +8,43 @@ interface BodegaDetalleProps {
     onVolver: () => void;
 }
 
+
+
 const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
     const [detalle, setDetalle] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [mostrarModal, setMostrarModal] = useState(false);
+    const [activeImage, setActiveImage] = useState<string | null>(null);
 
+
+    const securityLabels: Record<string, string> = {
+        camara: 'Cámara de seguridad exterior',
+        ruido: 'Monitor de ruido',
+        control: 'Control de plagas y humedad',
+        objetos: 'Restricción de objetos peligrosos',
+    };
+
+    const roomTypeLabels: Record<string, string> = {
+        habitacion: 'Habitación',
+        garaje: 'Garaje / Parqueadero',
+        contenedor: 'Contenedor',
+        sotano: 'Sótano',
+        atico: 'Ático',
+        bodega: 'Bodega independiente',
+    };
+
+    const storageTypeLabels: Record<string, string> = {
+        completa: 'Bodega completa',
+        privado: 'Espacio privado',
+        compartido: 'Espacio compartido',
+    };
     useEffect(() => {
         const fetchDetalle = async () => {
             try {
                 const { data } = await api.get(`/store-rooms/${bodega.id}/detail`);
                 setDetalle(data);
+                setActiveImage(data.photos?.[0] || null);
+
             } catch (error) {
                 console.error('Error cargando detalles de bodega', error);
             } finally {
@@ -35,6 +62,10 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
     if (!detalle) {
         return <div className="p-6">No se pudo cargar la bodega</div>;
     }
+
+    const securityData = detalle.security
+        ? JSON.parse(detalle.security)
+        : {};
 
     return (
         <div className="pl-8 pt-5 pr-8 bg-[#f5f6fa] min-h-screen">
@@ -54,11 +85,6 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                         </div>
 
                         <span className="text-lg font-medium">leodega</span>
-                    </div>
-
-                    <div className="flex items-center gap-4 mr-3">
-                        <Share2 className="text-gray-700" size={24} />
-                        <Heart className="text-gray-700" size={24} />
                     </div>
                 </div>
 
@@ -129,32 +155,44 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                     </p>
                 </div>
 
-                {/* CARACTERÍSTICAS */}
                 <div className="p-6 border-t border-gray-200">
                     <h3 className="text-2xl font-bold text-gray-800 mb-4">
                         Características
                     </h3>
 
                     <div className="grid grid-cols-2 gap-4">
+
+                        {/* Tipo de espacio */}
                         <div className="flex items-center gap-2 text-gray-700">
                             <span className="text-green-500">✓</span>
-                            <span>{detalle.security}</span>
+                            <span>{roomTypeLabels[detalle.room_type]}</span>
                         </div>
 
+                        {/* Tipo de almacenamiento */}
                         <div className="flex items-center gap-2 text-gray-700">
                             <span className="text-green-500">✓</span>
-                            <span>Zona Industrial</span>
+                            <span>{storageTypeLabels[detalle.storage_type]}</span>
                         </div>
 
+                        {/* Tamaño */}
                         <div className="flex items-center gap-2 text-gray-700">
                             <span className="text-green-500">✓</span>
-                            <span>Centro de la Ciudad</span>
+                            <span>{detalle.size} m² de espacio</span>
                         </div>
 
-                        <div className="flex items-center gap-2 text-gray-700">
-                            <span className="text-green-500">✓</span>
-                            <span>Amplio Espacio</span>
-                        </div>
+                        {/* Seguridad dinámica */}
+                        {Object.entries(securityData)
+                            .filter(([_, value]) => value === true)
+                            .map(([key]) => (
+                                <div
+                                    key={key}
+                                    className="flex items-center gap-2 text-gray-700"
+                                >
+                                    <span className="text-green-500">✓</span>
+                                    <span>{securityLabels[key]}</span>
+                                </div>
+                            ))}
+
                     </div>
                 </div>
 
@@ -171,12 +209,37 @@ const BodegaDetalle: React.FC<BodegaDetalleProps> = ({ bodega, onVolver }) => {
                         </div>
                     </div>
                 </div>
+
+                {/* GALERÍA DE IMÁGENES */}
+                {detalle.photos?.length > 1 && (
+                    <div className="p-6 border-t border-gray-200">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                            Más imágenes del espacio
+                        </h3>
+
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {detalle.photos.slice(1).map((photo: string, index: number) => (
+                                <div
+                                    key={index}
+                                    className="overflow-hidden rounded-xl shadow hover:shadow-lg transition-shadow"
+                                >
+                                    <img
+                                        src={photo}
+                                        alt={`Imagen ${index + 2}`}
+                                        className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
             </div>
 
             <BodegaModal
                 isOpen={mostrarModal}
                 onClose={() => setMostrarModal(false)}
-                storeId = {bodega.id}
+                storeId={bodega.id}
             />
         </div>
     );

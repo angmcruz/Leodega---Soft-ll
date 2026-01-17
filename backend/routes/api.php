@@ -144,6 +144,7 @@ Route::middleware('auth.api:sanctum')->group(function () {
     Route::put('/reports/{id}', [ReportsController::class, 'update']);
     Route::patch('/reports/{report}/status', [ReportsController::class, 'updateStatus']);
 });
+Route::get('/reports/{report}', [ReportsController::class, 'show']);
 
 
 // Route::resource('reports', ReportsController::class)->except('create', 'edit');
@@ -178,3 +179,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->delete('/account', [UserController::class, 'destroySelf']);
 
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/tenant/reservations', [ReservationsController::class, 'tenantIndex']);
+});

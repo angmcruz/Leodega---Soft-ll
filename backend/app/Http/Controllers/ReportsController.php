@@ -19,10 +19,11 @@ class ReportsController extends ApiController
     }
 
 
-    public function show($id)
+    public function show(Reports $report)
     {
-        return $this->showModel(Reports::class, $id);
+        return $report->load(['user', 'store', 'evidences']);
     }
+
 
     public function store(Request $request)
     {
@@ -126,7 +127,7 @@ class ReportsController extends ApiController
         return $this->updateModel($request, Reports::class, $id, $rules);
     }
 
-     public function updateStatus(Request $request, Reports $report)
+    public function updateStatus(Request $request, Reports $report)
     {
         if ($request->user()->role !== 'admin') {
             return response()->json(['message' => 'No autorizado'], 403);

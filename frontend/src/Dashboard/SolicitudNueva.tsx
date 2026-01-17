@@ -1,55 +1,64 @@
 import {
-    AlertTriangle,Building,Calendar,Clock,User,CheckCircle2,
-    XCircle,
+  AlertTriangle, Building, Calendar, Clock, User, CheckCircle2,
+  XCircle,
 } from "lucide-react";
 import React from 'react';
 import type { Solicitud } from './Interfaces/SolicitudesData';
 
 
 interface SolicitudNuevaProps {
-    solicitud: Solicitud;
-    onVolver: () => void;
-    onRevisarResponder: (solicitud: Solicitud) => void;
+  solicitud: Solicitud;
+  onVolver: () => void;
+  onRevisarResponder: (solicitud: Solicitud) => void;
 }
 
 const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, onRevisarResponder }) => {
-    const datosCompletos = { ...solicitud };
+  const datosCompletos = { ...solicitud };
 
-    const handleRevisarResponder = () => {
-        onRevisarResponder(solicitud);
-    };
+  const handleRevisarResponder = () => {
+    onRevisarResponder(solicitud);
+  };
 
-    const badgeEstado = () => {
-        const base = "text-[12px] py-1 px-3 rounded-2xl font-medium";
+  const obtenerIniciales = (nombre: string) => {
+    if (!nombre) return '?';
 
-        switch (datosCompletos.estado) {
-            case "En proceso":
-                return `${base} bg-yellow-50 text-yellow-700`;
-            case "Completada":
-                return `${base} bg-green-50 text-green-700`;
-            case "Rechazada":
-                return `${base} bg-red-50 text-red-700`;
-            default:
-                return `${base} bg-gray-100 text-gray-700`;
-        }
-    };
+    const partes = nombre.trim().split(' ');
+    const iniciales = partes.slice(0, 2).map(p => p[0].toUpperCase());
+    return iniciales.join('');
+  };
 
-    const iconEstado = () => {
-        if (datosCompletos.estado === "En proceso") return <AlertTriangle className="text-yellow-600" size={28} />;
-        if (datosCompletos.estado === "Completada") return <CheckCircle2 className="text-green-600" size={28} />;
-        if (datosCompletos.estado === "Rechazada") return <XCircle className="text-red-600" size={28} />;
-        return <AlertTriangle className="text-gray-600" size={28} />;
-    };
 
-    const colorIconBox = () => {
-        if (datosCompletos.estado === "En proceso") return "bg-yellow-100";
-        if (datosCompletos.estado === "Completada") return "bg-green-100";
-        if (datosCompletos.estado === "Rechazada") return "bg-red-100";
-        return "bg-gray-100";
-    };
+  const badgeEstado = () => {
+    const base = "text-[12px] py-1 px-3 rounded-2xl font-medium";
 
-    
-    return (
+    switch (datosCompletos.estado) {
+      case "En proceso":
+        return `${base} bg-yellow-50 text-yellow-700`;
+      case "Completada":
+        return `${base} bg-green-50 text-green-700`;
+      case "Rechazada":
+        return `${base} bg-red-50 text-red-700`;
+      default:
+        return `${base} bg-gray-100 text-gray-700`;
+    }
+  };
+
+  const iconEstado = () => {
+    if (datosCompletos.estado === "En proceso") return <AlertTriangle className="text-yellow-600" size={28} />;
+    if (datosCompletos.estado === "Completada") return <CheckCircle2 className="text-green-600" size={28} />;
+    if (datosCompletos.estado === "Rechazada") return <XCircle className="text-red-600" size={28} />;
+    return <AlertTriangle className="text-gray-600" size={28} />;
+  };
+
+  const colorIconBox = () => {
+    if (datosCompletos.estado === "En proceso") return "bg-yellow-100";
+    if (datosCompletos.estado === "Completada") return "bg-green-100";
+    if (datosCompletos.estado === "Rechazada") return "bg-red-100";
+    return "bg-gray-100";
+  };
+
+
+  return (
     <div className="pl-8 pt-5 pr-8 bg-white">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-gray-900">Reportes</h1>
@@ -70,7 +79,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
                 Reporte #{String(datosCompletos.id).padStart(5, "0")}
               </h2>
 
-              
+
               {"tiempoTranscurrido" in (datosCompletos as any) && (datosCompletos as any).tiempoTranscurrido ? (
                 <p className="text-gray-500 text-sm">{(datosCompletos as any).tiempoTranscurrido}</p>
               ) : null}
@@ -78,14 +87,14 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
           </div>
         </div>
 
-        
+
         <div className="rounded-md mb-3">
           <span className={badgeEstado()}>{datosCompletos.estado}</span>
         </div>
 
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
+
           <div className="border border-gray-200 rounded-lg p-5">
             <div className="flex items-center gap-2 mb-4">
               <User />
@@ -96,7 +105,10 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
 
             <div className="space-y-4">
               <div className="flex items-center gap-3 pb-3">
-                <div className="w-12 h-12 bg-gray-200 rounded-full flex-shrink-0"></div>
+                <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
+                  {obtenerIniciales(datosCompletos.nombre)}
+                </div>
+
                 <div>
                   <h4 className="font-semibold text-gray-900">{datosCompletos.nombre}</h4>
                 </div>
@@ -104,7 +116,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
 
               <div className="border-t border-gray-300 my-4"></div>
 
-              
+
               {"email" in (datosCompletos as any) && (datosCompletos as any).email ? (
                 <div className="text-sm text-gray-600 break-all">
                   {(datosCompletos as any).email}
@@ -117,7 +129,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
             </div>
           </div>
 
-          
+
           <div className="border border-gray-200 rounded-lg p-5">
             <div className="flex items-center gap-2 mb-4">
               <Building />
@@ -144,7 +156,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
             </div>
           </div>
 
-          
+
           <div className="border border-gray-200 rounded-lg p-5">
             <div className="flex items-center gap-2 mb-4">
               <Calendar />
@@ -164,7 +176,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
                 <span>Estado: <b className="text-gray-900">{datosCompletos.estado}</b></span>
               </div>
 
-              
+
               {"title" in (datosCompletos as any) && (datosCompletos as any).title ? (
                 <div className="pt-3 border-t border-gray-200">
                   <span className="text-xs font-semibold text-gray-500 block mb-1">TÍTULO</span>
@@ -183,7 +195,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
         </div>
       </div>
 
-      
+
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Acciones</h2>
 

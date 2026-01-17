@@ -1,16 +1,68 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import api from '../api/axios';
+
+type CalendarEvent = {
+    id: number;
+    title: string;
+    subtitle?: string;
+    date: Date;
+    hour: number;
+    color: string;
+    allDay?: boolean;
+};
+
 
 const Calendario = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [view, setView] = useState('month');
-    
-    const events = [
-        { id: 1, title: 'Incidente Usuario', date: new Date(2025, 10, 2), hour: 9, color: 'bg-purple-200 border-purple-400' },
-        { id: 2, title: 'Ver reportes', date: new Date(2025, 10, 16), hour: 14, color: 'bg-pink-200 border-pink-400' },
-        { id: 3, title: 'Bodega de Usuario 1', date: new Date(2025, 10, 24), hour: 10, color: 'bg-blue-200 border-blue-400' },
-        { id: 4, title: 'Bodega de Usuario 2', date: new Date(2025, 10, 27), hour: 15, color: 'bg-orange-200 border-orange-400' }
-    ];
+
+    const [events, setEvents] = useState<CalendarEvent[]>([]);
+
+
+    useEffect(() => {
+        const fetchReservations = async () => {
+            try {
+                const { data } = await api.get('/landlord/reservations');
+
+                const calendarEvents: CalendarEvent[] = [];
+
+                data.forEach((reservation: any) => {
+                    const start = new Date(reservation.start_date);
+                    const end = new Date(reservation.end_date);
+
+                    for (
+                        let d = new Date(start);
+                        d <= end;
+                        d.setDate(d.getDate() + 1)
+                    ) {
+                        if (reservation.status !== 'confirmed') return;
+
+                        const roomTitle = reservation.store_rooms?.title ?? 'Bodega';
+                        const tenantName = reservation.tenants?.user
+                            ? `${reservation.tenants.user.name} ${reservation.tenants.user.lastname}`
+                            : 'Arrendatario';
+
+                        calendarEvents.push({
+                            id: reservation.id,
+                            title: roomTitle,
+                            subtitle: tenantName,
+                            date: new Date(d),
+                            hour: 9,
+                            allDay: true,
+                            color: 'bg-green-200 border-green-400',
+                        });
+                    }
+                });
+
+                setEvents(calendarEvents);
+            } catch (error) {
+                console.error('Error cargando reservas', error);
+            }
+        };
+
+        fetchReservations();
+    }, []);
 
     const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
@@ -23,7 +75,7 @@ const Calendario = () => {
         const startingDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
         const prevMonthDays = new Date(year, month, 0).getDate();
         const days = [];
-        
+
         for (let i = startingDay - 1; i >= 0; i--) {
             days.push({ day: prevMonthDays - i, isCurrentMonth: false, date: new Date(year, month - 1, prevMonthDays - i) });
         }
@@ -36,12 +88,12 @@ const Calendario = () => {
         for (let i = 1; i <= remaining; i++) {
             days.push({ day: i, isCurrentMonth: false, date: new Date(year, month + 1, i) });
         }
-        
+
         return days;
     };
 
     const getEventsForDate = (date: any) => {
-        return events.filter(e => 
+        return events.filter(e =>
             e.date.getDate() === date.getDate() &&
             e.date.getMonth() === date.getMonth() &&
             e.date.getFullYear() === date.getFullYear()
@@ -82,7 +134,7 @@ const Calendario = () => {
         }
         return `${currentDate.getDate()} ${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
     };
-    
+
     const DayView = () => (
         <div className="border border-gray-200 rounded-lg overflow-hidden">
             <div className="bg-gray-50 p-3 border-b border-gray-200 text-center">
@@ -96,9 +148,14 @@ const Calendario = () => {
                             {hour.toString().padStart(2, '0')}:00
                         </div>
                         <div className="flex-1 p-2 min-h-[60px]">
-                            {getEventsForDate(currentDate).filter(e => e.hour === hour).map(event => (
+                            {getEventsForDate(currentDate).filter(e => e.allDay || e.hour === hour).map(event => (
                                 <div key={event.id} className={`text-sm px-3 py-2 rounded border-l-4 ${event.color} mb-1`}>
-                                    {event.title}
+                                    <div className="font-medium">{event.title}</div>
+                                    {event.subtitle && (
+                                        <div className="text-xs text-gray-600">
+                                            {event.subtitle}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -130,9 +187,14 @@ const Calendario = () => {
                             </div>
                             {weekDays.map((day, idx) => (
                                 <div key={idx} className="p-2 min-h-[60px] border-l border-gray-100">
-                                    {getEventsForDate(day).filter(e => e.hour === hour).map(event => (
+                                    {getEventsForDate(day).filter(e => e.allDay || e.hour === hour).map(event => (
                                         <div key={event.id} className={`text-xs px-2 py-1 rounded border-l-4 ${event.color} mb-1`}>
-                                            {event.title}
+                                            <div className="font-medium">{event.title}</div>
+                                            {event.subtitle && (
+                                                <div className="text-[10px] text-gray-600 leading-tight">
+                                                    {event.subtitle}
+                                                </div>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -166,7 +228,12 @@ const Calendario = () => {
                             <div className="space-y-1">
                                 {getEventsForDate(dayInfo.date).map(event => (
                                     <div key={event.id} className={`text-xs px-2 py-1 rounded border-l-4 ${event.color}`}>
-                                        {event.title}
+                                        <div className="font-medium truncate">{event.title}</div>
+                                        {event.subtitle && (
+                                            <div className="text-[10px] text-gray-500 truncate">
+                                                {event.subtitle}
+                                            </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>

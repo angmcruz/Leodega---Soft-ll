@@ -1,8 +1,8 @@
 
 /* eslint-disable sonarjs/cognitive-complexity */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Check, X, AlertTriangle, MessageSquare } from 'lucide-react';
-import type { Solicitud } from './Interfaces/SolicitudesData';
+import type { Solicitud, ReporteDetalle } from './Interfaces/SolicitudesData';
 import api from '../api/axios';
 
 
@@ -20,41 +20,73 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
   const [mostrarConfirmarResolver, setMostrarConfirmarResolver] = useState(false);
   const [razonRechazo, setRazonRechazo] = useState("");
   const [opcionSeleccionada, setOpcionSeleccionada] = useState<"resolver" | "rechazar" | null>(null);
+  const [detalle, setDetalle] = useState<ReporteDetalle | null>(null);
+  const [loading, setLoading] = useState(true);
+
 
   const datosCompletos = { ...solicitud };
 
   const handleConfirmarResolver = async () => {
-  try {
-    await api.patch(`/reports/${solicitud.id}/status`, {
-      status: "resolved",
-    });
+    try {
+      await api.patch(`/reports/${solicitud.id}/status`, {
+        status: "resolved",
+      });
 
-    setMostrarConfirmarResolver(false);
-    onVolver(); 
-  } catch (error) {
-    console.error("Error resolviendo reporte", error);
-    alert("No se pudo marcar como resuelto.");
-  }
-};
+      setMostrarConfirmarResolver(false);
+      onVolver();
+    } catch (error) {
+      console.error("Error resolviendo reporte", error);
+      alert("No se pudo marcar como resuelto.");
+    }
+  };
+
+  useEffect(() => {
+    const fetchDetalle = async () => {
+      try {
+        const res = await api.get(`/reports/${solicitud.id}`);
+        setDetalle(res.data);
+      } catch (error) {
+        console.error("Error cargando detalle del reporte", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetalle();
+  }, [solicitud.id]);
+
 
   const handleConfirmarRechazo = async () => {
-  if (!razonRechazo.trim()) return;
+    if (!razonRechazo.trim()) return;
 
-  try {
-    await api.patch(`/reports/${solicitud.id}/status`, {
-      status: "canceled",
-      cancelation_reason: razonRechazo.trim(),
-    });
+    try {
+      await api.patch(`/reports/${solicitud.id}/status`, {
+        status: "canceled",
+        cancelation_reason: razonRechazo.trim(),
+      });
 
-    onRechazar(razonRechazo.trim()); 
-  } catch (error) {
-    console.error("Error rechazando reporte", error);
-    alert("No se pudo rechazar el reporte.");
+      onRechazar(razonRechazo.trim());
+    } catch (error) {
+      console.error("Error rechazando reporte", error);
+      alert("No se pudo rechazar el reporte.");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="p-6 text-gray-600">
+        Cargando detalle del reporte...
+      </div>
+    );
   }
-};
 
-
-
+  if (!detalle) {
+    return (
+      <div className="p-6 text-red-600">
+        No se pudo cargar el detalle del reporte.
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-gray-50 p-6">
@@ -98,8 +130,8 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
                 setRazonRechazo("");
               }}
               className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${opcionSeleccionada === "resolver"
-                  ? "bg-green-50 border-green-300 shadow-md"
-                  : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                ? "bg-green-50 border-green-300 shadow-md"
+                : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm"
                 }`}
             >
               <div className="flex items-center gap-2 mb-3">
@@ -128,8 +160,8 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
               type="button"
               onClick={() => setOpcionSeleccionada("rechazar")}
               className={`border-2 rounded-lg p-5 cursor-pointer transition-all duration-200 ${opcionSeleccionada === "rechazar"
-                  ? "bg-red-50 border-red-300 shadow-md"
-                  : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                ? "bg-red-50 border-red-300 shadow-md"
+                : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm"
                 }`}
             >
               <div className="flex items-center gap-2 mb-3">
@@ -155,7 +187,7 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
           </div>
         </div>
 
-        
+
         {opcionSeleccionada === "resolver" && (
           <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-6">
             <div className="flex gap-3">
@@ -199,8 +231,8 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
               onClick={handleConfirmarRechazo}
               disabled={!razonRechazo.trim()}
               className={`py-3 px-6 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${razonRechazo.trim()
-                  ? "bg-red-600 text-white hover:bg-red-700"
-                  : "bg-red-300 text-white cursor-not-allowed"
+                ? "bg-red-600 text-white hover:bg-red-700"
+                : "bg-red-300 text-white cursor-not-allowed"
                 }`}
             >
               <X size={20} />
@@ -222,8 +254,8 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
               }}
               disabled={opcionSeleccionada !== "resolver"}
               className={`py-3 px-6 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${opcionSeleccionada === "resolver"
-                  ? "bg-green-600 text-white hover:bg-green-700"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-green-600 text-white hover:bg-green-700"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
             >
               <Check size={20} />

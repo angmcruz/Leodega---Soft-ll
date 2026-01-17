@@ -33,6 +33,7 @@ const Solicitudes: React.FC = () => {
             const mapped: Solicitud[] = data.map((r: any) => ({
                 id: r.id,
                 nombre: r.user?.name ?? 'Usuario desconocido',
+                email: r.user?.email ?? '',
                 direccion: r.store?.direction ?? 'Sin dirección',
                 fecha: new Date(r.created_at).toLocaleDateString(),
                 tipo: r.report_type,
