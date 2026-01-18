@@ -25,10 +25,14 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'lastname' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'phone' => fake()->numerify('09########'),
+            'password' => Hash::make('password'),
+            'role' => 'landlord',
+            'state' => 'active',
+            'enable_messages' => true,
+            'start_date' => now(),
         ];
     }
 

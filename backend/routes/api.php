@@ -119,7 +119,10 @@ Route::post('/payments', [PaymentsController::class, 'store']);
 Route::put('/payments/{id}', [PaymentsController::class, 'update']);
 Route::delete('/payments/{id}', [PaymentsController::class, 'destroy']);
 
-
+Route::middleware('auth:sanctum')->post(
+    '/storeRooms',
+    [StoreRoomsController::class, 'store']
+);
 Route::middleware('auth.api:sanctum')->group(function () {
     Route::get('/ratings', [RatingsController::class, 'index']);
     Route::post('/ratings', [RatingsController::class, 'store']);
@@ -173,7 +176,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/notifications/{notification}/read', [NotificationsController::class, 'markAsRead']);
     Route::get('/notifications-unread-count', [NotificationsController::class, 'unreadCount']);
     Route::patch('/notifications/{id}/read', [NotificationsController::class, 'markAsRead']);
-
 });
 
 Route::middleware('auth:sanctum')->delete('/account', [UserController::class, 'destroySelf']);
