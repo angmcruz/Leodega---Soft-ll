@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
@@ -15,6 +16,8 @@ class Message extends Model
         'file_name',
         'is_read',
     ];
+
+     use HasFactory;
 
     public function sender()
     {
