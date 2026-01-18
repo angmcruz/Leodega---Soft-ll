@@ -61,7 +61,7 @@ const SolicitudRevisarResponder: React.FC<SolicitudRevisarResponderProps> = ({
 
     try {
       await api.patch(`/reports/${solicitud.id}/status`, {
-        status: "canceled",
+        status: "resolved",
         cancelation_reason: razonRechazo.trim(),
       });
 

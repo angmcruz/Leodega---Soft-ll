@@ -15,14 +15,15 @@ class ReportsController extends ApiController
     //
     public function index()
     {
-        return Reports::with(['user', 'store'])->get();
+        return Reports::with(['user', 'store', 'evidences'])->get();
     }
 
 
-    public function show(Reports $report)
-    {
-        return $report->load(['user', 'store', 'evidences']);
-    }
+    public function show($id)
+{
+    $report = Reports::with(['user', 'store', 'evidences'])->findOrFail($id);
+    return response()->json(['report' => $report]);
+}
 
 
     public function store(Request $request)
@@ -119,8 +120,7 @@ class ReportsController extends ApiController
             'report_type' => 'sometimes|string|max:255',
             'priority' => 'sometimes|in:low,medium,high',
             'description' => 'sometimes|string|min:20',
-            'status' => 'sometimes|in:pending,in_review,resolved',
-            'status' => 'sometimes|in:pending,confirmed,canceled',
+            'status' => 'sometimes|in:pending,confirmed,canceled, in_review',
             'cancelation_reason' => 'nullable|string|max:1000',
         ];
 
