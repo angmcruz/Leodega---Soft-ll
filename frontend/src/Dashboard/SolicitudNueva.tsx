@@ -207,8 +207,10 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
                 <div key={ev.id} className="mt-2">
                   <button
                     onClick={() => {
-                      const url = `${import.meta.env.VITE_API_URL}/storage/${ev.file_path}`;
+                      const base = import.meta.env.VITE_API_URL.replace(/\/api\/?$/, "");
+                      const url = `${base}/storage/${ev.file_path}`;
                       setImagenAbierta(url);
+                      console.log("IMG URL:", url);
                     }}
                     className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm"
                   >
