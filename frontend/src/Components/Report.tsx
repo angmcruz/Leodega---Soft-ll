@@ -52,12 +52,12 @@ export default function Report() {
 
     try {
       setLoading(true);
-
       await api.post("/reports", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       alert("Reporte enviado correctamente");
+      
       navigate(-1);
     } catch (error: any) {
       console.error(error.response?.data || error);

@@ -2,8 +2,10 @@ import {
   AlertTriangle, Building, Calendar, Clock, User, CheckCircle2,
   XCircle,
 } from "lucide-react";
-import React from 'react';
-import type { Solicitud } from './Interfaces/SolicitudesData';
+import React, { useEffect } from 'react';
+import type { Solicitud, ReporteDetalle } from './Interfaces/SolicitudesData';
+import { useState } from 'react';
+import api from "../api/axios";
 
 
 interface SolicitudNuevaProps {
@@ -12,13 +14,14 @@ interface SolicitudNuevaProps {
   onRevisarResponder: (solicitud: Solicitud) => void;
 }
 
+
 const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, onRevisarResponder }) => {
   const datosCompletos = { ...solicitud };
+
 
   const handleRevisarResponder = () => {
     onRevisarResponder(solicitud);
   };
-
   const obtenerIniciales = (nombre: string) => {
     if (!nombre) return '?';
 
@@ -57,7 +60,21 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
     return "bg-gray-100";
   };
 
+  const [reporte, setReporte] = useState<ReporteDetalle | null>(null);
+  useEffect(() => {
 
+    (async () => {
+
+      const res = await api.get(`/reports/${datosCompletos.id}`);
+      const detalle = res.data?.report ?? res.data;
+      setReporte(detalle);
+
+    })();
+  }, [datosCompletos.id]);
+
+
+
+  const [imagenAbierta, setImagenAbierta] = useState<string | null>(null);
   return (
     <div className="pl-8 pt-5 pr-8 bg-white">
       <div className="mb-6">
@@ -78,6 +95,11 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
               <h2 className="text-[23px] font-bold text-gray-900 mb-1">
                 Reporte #{String(datosCompletos.id).padStart(5, "0")}
               </h2>
+              <div className="flex items-center gap-2 mb-4">
+                <Calendar size={16} />
+                <p>Fecha: <b className="text-gray-900">{datosCompletos.fecha}</b></p>
+              </div>
+
 
 
               {"tiempoTranscurrido" in (datosCompletos as any) && (datosCompletos as any).tiempoTranscurrido ? (
@@ -142,7 +164,7 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
               <div>
                 <span className="text-xs font-semibold text-gray-500 block mb-1">DIRECCIÓN</span>
                 <span className="text-sm text-gray-900 font-semibold block">
-                  {datosCompletos.direccion}
+                  {datosCompletos.direccion.split(",").slice(-4).join(", ")}
                 </span>
 
               </div>
@@ -156,44 +178,72 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
             </div>
           </div>
 
-
           <div className="border border-gray-200 rounded-lg p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Calendar />
-              <h3 className="my-3 text-[22px] ml-2 mr-10 font-semibold text-gray-900 leading-6">
-                Seguimiento
+              <Building />
+              <h3 className="my-3 text-[22px] ml-2 mr-14 font-semibold text-gray-900 leading-6">
+                Evidencias
               </h3>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center text-gray-600 text-sm gap-2">
-                <Calendar size={16} />
-                <span>Fecha: <b className="text-gray-900">{datosCompletos.fecha}</b></span>
+            <div className="space-y-4">
+              <div>
+                <span className="text-xs font-semibold text-gray-500 block mb-1">TITULO</span>
+                <span className="text-sm text-gray-900 font-semibold block">
+                  {reporte?.title}
+                </span>
+
               </div>
 
-              <div className="flex items-center text-gray-600 text-sm gap-2">
-                <Clock size={16} />
-                <span>Estado: <b className="text-gray-900">{datosCompletos.estado}</b></span>
+              <div className="border-t border-gray-300 my-4"></div>
+
+              <div>
+                <span className="text-xs font-semibold text-gray-500 block mb-1">DESCRIPCION</span>
+                <span className="text-sm text-gray-900 font-semibold">{reporte?.description}</span>
               </div>
 
+              {reporte?.evidences?.map(ev => (
 
-              {"title" in (datosCompletos as any) && (datosCompletos as any).title ? (
-                <div className="pt-3 border-t border-gray-200">
-                  <span className="text-xs font-semibold text-gray-500 block mb-1">TÍTULO</span>
-                  <p className="text-sm text-gray-900 font-medium">{(datosCompletos as any).title}</p>
+                <div key={ev.id} className="mt-2">
+                  <button
+                    onClick={() => {
+                      const url = `${import.meta.env.VITE_API_URL}/storage/${ev.file_path}`;
+                      setImagenAbierta(url);
+                    }}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm"
+                  >
+                    Ver Imagen
+                  </button>
                 </div>
-              ) : null}
-
-              {"description" in (datosCompletos as any) && (datosCompletos as any).description ? (
-                <div className="pt-2">
-                  <span className="text-xs font-semibold text-gray-500 block mb-1">DESCRIPCIÓN</span>
-                  <p className="text-sm text-gray-700 leading-6">{(datosCompletos as any).description}</p>
-                </div>
-              ) : null}
+              ))}
             </div>
           </div>
+
+
+
         </div>
       </div>
+
+      {imagenAbierta && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded-xl shadow-lg max-w-xl w-full relative">
+
+            <button
+
+              onClick={() => setImagenAbierta(null)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
+            >
+              ✕
+            </button>
+
+            <img
+              src={imagenAbierta}
+              alt="imagen evidencia"
+              className="w-full rounded-lg"
+            />
+          </div>
+        </div>
+      )}
 
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-6">

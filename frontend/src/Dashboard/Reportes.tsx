@@ -4,7 +4,7 @@ import api from '../api/axios';
 import SolicitudNueva from './SolicitudNueva';
 import SolicitudRevisarResponder from './SolicitudRevisarResponder';
 import SolicitudRechazada from './SolicitudRechazada';
-import type { Solicitud } from './Interfaces/SolicitudesData';
+import type { Solicitud,ReporteDetalle} from './Interfaces/SolicitudesData';
 
 const Reportes: React.FC = () => {
     const [solicitudes, setSolicitudes] = useState<Solicitud[]>([]);
@@ -17,6 +17,7 @@ const Reportes: React.FC = () => {
     const [showMobileFilters, setShowMobileFilters] = useState(false);
 
     const [solicitudSeleccionada, setSolicitudSeleccionada] = useState<Solicitud | null>(null);
+    const [reporteSeleccionado, setReporteSeleccionado] = useState<ReporteDetalle | null>(null);
     const [mostrarSolicitudNueva, setMostrarSolicitudNueva] = useState(false);
     const [mostrarRevisarResponder, setMostrarRevisarResponder] = useState(false);
     const [mostrarSolicitudRechazada, setMostrarSolicitudRechazada] = useState(false);
@@ -131,8 +132,8 @@ const Reportes: React.FC = () => {
             />
         );
     }
-
-    if (mostrarSolicitudNueva && solicitudSeleccionada) {
+    
+    if (mostrarSolicitudNueva && solicitudSeleccionada && reporteSeleccionado) {
         return (
             <SolicitudNueva
                 solicitud={solicitudSeleccionada}
