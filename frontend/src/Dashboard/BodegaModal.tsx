@@ -60,6 +60,18 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) =
         );
     }
 
+    function horaActual() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+
+    const fecha = horaActual();
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -73,7 +85,7 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) =
                                 <CheckCircle className="text-green-600 mt-1" size={24} />
                                 <div className="flex-1">
                                     <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                                        Estado de la Reserva
+                                        Estado de la Solicitud
                                     </h2>
                                     <div className="flex justify-between items-start">
                                         <div>
@@ -81,7 +93,7 @@ const BodegaModal: React.FC<BodegaModalProps> = ({ isOpen, onClose, storeId }) =
                                                 Solicitud Aceptada
                                             </p>
                                             <p className="text-green-600 text-sm">
-                                                Aceptada el 2024-08-11 14:30
+                                                Aceptada el {fecha}
                                             </p>
                                         </div>
                                         <div className="text-right">
