@@ -208,7 +208,12 @@ const SolicitudNueva: React.FC<SolicitudNuevaProps> = ({ solicitud, onVolver, on
                   <button
                     onClick={() => {
                       const base = import.meta.env.VITE_API_URL.replace(/\/api\/?$/, "");
-                      const url = `${base}/storage/${ev.file_path}`;
+
+                      // Normaliza el path por si viene con /storage/
+                      const cleanPath = ev.file_path.replace(/^\/?storage\//, "");
+
+                      const url = `${base}/storage/${cleanPath}`;
+
                       setImagenAbierta(url);
                       console.log("IMG URL:", url);
                     }}
