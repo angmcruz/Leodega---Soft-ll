@@ -12,13 +12,10 @@ class Notifications extends Model
     protected $table = 'notifications';
 
     protected $fillable = [
-        'sender_id',
-        'receiver_id',
-        'type',
-        'title',
-        'body',
-        'data',
-        'is_read',
+        'reservation_id',
+        'emisor_id',
+        'receptor_id',
+        'message',
     ];
 
     protected $casts = [
@@ -26,7 +23,8 @@ class Notifications extends Model
         'is_read' => 'boolean',
     ];
 
-    public function sender(){
+    public function sender()
+    {
         return $this->belongsTo(User::class, 'sender_id');
     }
 

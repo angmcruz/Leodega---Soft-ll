@@ -16,12 +16,10 @@ class NotificationService
         array $data = []
     ): Notifications {
         return Notifications::create([
-            'sender_id' => $senderId,
-            'receiver_id' => $receiverId,
-            'type' => $type->value,
-            'title' => $title,
-            'body' => $body,
-            'data' => $data,
+            'emisor_id' => $senderId,
+            'receptor_id' => $receiverId,
+            'reservation_id' => $data['reservation_id'] ?? null,
+            'message' => $title, 
         ]);
     }
 }
