@@ -16,6 +16,7 @@ class Notifications extends Model
         'emisor_id',
         'receptor_id',
         'message',
+        'is_read',
     ];
 
     protected $casts = [
